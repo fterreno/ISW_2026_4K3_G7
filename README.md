@@ -1,82 +1,59 @@
-# ISW_2026_4K3_G
+<div align="center">
 
-Repositorio utilizado para organizar y gestionar el material generado durante el cursado de **Ingeniería y Calidad de Software**, correspondiente al curso **4K3**, año **2026**.
+<img src="logo_utn.svg" alt="Logo UTN FRC" width="300"/>
 
-## Organización del repositorio
+### **Ingeniería y Calidad de Software**
 
-La estructura fue definida según el tipo y propósito de los artefactos almacenados. La organización no depende de integrantes particulares del grupo, permitiendo incorporar nuevos trabajos, materiales o cambios en la conformación del equipo sin modificar el criterio general del repositorio.
+</div>
 
-```text
+**Integrantes:**
+
+**Docentes:**  
+
+**Curso:** 4K3
+
+## **Documento de Gestión de Configuración**
+
+**Enlace al repositorio público:** [*Repositorio*](https://github.com/fterreno/ISW_2026_4K3_G)
+
+
+## Criterio de Línea Base
+
+Establecemos como criterio para implementar línea base posterior a la entrega corrección de los trabajos prácticos evaluables, con la finalidad de que el repositorio se encuentre actualizado y con información validada. Se identificara de la siguiente forma: `linea_base_<<nro>>`.
+
+## Estructura del Repositorio
+
+```
 ISW_2026_4K3_G/
-│
-├── 01_Gestion_SCM/
-│
-├── 02_Recursos_Catedra/
-│
-├── 03_Registro_Clases/
-│
-├── 04_Trabajos/
+├── 01_Recursos_Catedra/
+│   ├── Bibliografia/
+│   ├── Guias/
+│   ├── Planificacion/
+│   ├── Presentaciones/
+│   └── Programa/
+├── 02_Registro_Clases/
+├── 03_Trabajos_Practicos/
 │   ├── Evaluables/
-│   ├── No_Evaluables/
-│   └── Investigacion_Grupal/
-│
-├── 05_Evaluaciones/
-│
+│   │   └── TP04_SCM/
+│   ├── Investigacion_Grupal/
+│   └── No_Evaluables/
+├── logo_utn.svg
 └── README.md
 ```
 
-## Descripción de los directorios
+## Ítems de Configuración
 
-### `01_Gestion_SCM/`
+| Ítem de Configuración | Tipo | Convención de Nombre | Ubicación |
+|---|---|---|---|
+| Bibliografía | Material de Estudio | `<nombre>.<extension>` | 01_Recursos_Catedra/Bibliografia/ |
+| Guías | Material de Estudio | `<nombre>.<extension>` | 01_Recursos_Catedra/Guias/ |
+| Planificación | Planificación | `<nombre>.<extension>` | 01_Recursos_Catedra/Planificacion/ |
+| Presentaciones | Material de Estudio | `<nro>_<nombre>.<extension>` | 01_Recursos_Catedra/Presentaciones/ |
+| Programa | Planificación | `<nombre>.<extension>` | 01_Recursos_Catedra/Programa/ |
+| Templates | Material de Estudio | `<nombre>.<extension>` | 01_Recursos_Catedra/Templates/ |
+| Registro de Clases | Material de Estudio | `<YYYY-MM-DD>_<autor>.<extension>` | 02_Registro_Clases/ |
+| Trabajos Prácticos Evaluables | Entregas | `TP_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/Evaluables/ |
+| Trabajos de Investigacion Grupal | Entregas | `TP_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/Investigacion_Grupal/ |
+| Trabajos Prácticos Evaluables | Entregas | `TP_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/No_Evaluables/ |
 
-Contiene la documentación utilizada para definir y registrar los criterios de Gestión de Configuración de Software aplicados al repositorio.
-
-En este directorio se documentarán aspectos como la identificación de Ítems de Configuración, convenciones utilizadas, Líneas Base y métricas que correspondan.
-
-### `02_Recursos_Catedra/`
-
-Contiene el material proporcionado por la cátedra durante el cursado, organizado según su finalidad.
-
-Incluye recursos como bibliografía, planificación, presentaciones, guías, templates y demás documentación utilizada como entrada para las actividades de la materia.
-
-### `03_Registro_Clases/`
-
-Contiene los registros elaborados por el grupo a partir de las clases.
-
-Se diferencia entre material correspondiente a clases teóricas y prácticas para facilitar su consulta y seguimiento.
-
-### `04_Trabajos/`
-
-Contiene los trabajos desarrollados durante el cursado.
-
-Los trabajos se clasifican en:
-
-* **Evaluables:** trabajos que forman parte de las instancias evaluativas definidas por la cátedra.
-* **No Evaluables:** actividades prácticas que no constituyen una instancia evaluativa.
-* **Investigacion_Grupal:** trabajos de investigación realizados de manera grupal.
-
-Cada trabajo podrá incorporar subdirectorios propios de acuerdo con los artefactos que sea necesario administrar.
-
-Por ejemplo:
-
-```text
-TP04_SCM/
-├── Consigna/
-├── Desarrollo/
-├── Entrega/
-└── Retroalimentacion/
-```
-
-Esta estructura permite agregar nuevos trabajos manteniendo un mismo criterio de organización.
-
-### `05_Evaluaciones/`
-
-Contiene el material relacionado con las distintas instancias de evaluación de la asignatura, manteniéndolo separado de los trabajos prácticos y del material general de clases.
-
-## Criterio general de organización
-
-El repositorio busca mantener una estructura clara, escalable y consistente durante todo el cursado.
-
-Los archivos se almacenan de acuerdo con su función y naturaleza, y no según la persona que los haya creado. De esta manera, la incorporación o salida de integrantes no requiere modificar la estructura existente.
-
-La definición detallada de los **Ítems de Configuración**, sus reglas de identificación y nombrado, el criterio para establecer **Líneas Base** y las métricas utilizadas se documentará dentro de `01_Gestion_SCM/`.
+**Nota:** El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. Unidad_1_Introduccion.pdf).
