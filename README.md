@@ -7,8 +7,23 @@
 </div>
 
 **Integrantes:**
+- 95028 Alvaretto Caterina
+- 92380 Vaca Sofia Eugenia
+- 94017 Pereyra Agustín
+- 88440 Garcia Pintos Valentin
+- 84037 Ficarra Carla Valentina
+- 90112 Terreno Monla Florencia Sofia
+- 431124 Soledad Cardozo Sofía
+- 78797 Guillermo Ostermann
+- 94309 Camila Arce Sayago
+- 86363 Lanfranco Pucheta
 
 **Docentes:**  
+- Adjunto: Ing. Laura Covaro
+- Auxiliares de Trabajos Prácticos
+    - Ing. Cecilia Massano
+    - Ing. Constanza Garnero
+- Adscripto: Ezequiel Izaguirre
 
 **Curso:** 4K3
 
@@ -52,8 +67,8 @@ ISW_2026_4K3_G/
 | Programa | Planificación | `<nombre>.<extension>` | 01_Recursos_Catedra/Programa/ |
 | Templates | Material de Estudio | `<nombre>.<extension>` | 01_Recursos_Catedra/Templates/ |
 | Registro de Clases | Material de Estudio | `<YYYY-MM-DD>_<autor>.<extension>` | 02_Registro_Clases/ |
-| Trabajos Prácticos Evaluables | Entregas | `TP_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/Evaluables/ |
-| Trabajos de Investigacion Grupal | Entregas | `TP_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/Investigacion_Grupal/ |
-| Trabajos Prácticos Evaluables | Entregas | `TP_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/No_Evaluables/ |
+| Trabajos Prácticos Evaluables | Entregas | `tp_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/Evaluables/ |
+| Trabajos de Investigacion Grupal | Entregas | `tp_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/Investigacion_Grupal/ |
+| Trabajos Prácticos Evaluables | Entregas | `tp_<nro>_<nombre>.<extension>` | 03_Trabajos_Practicos/No_Evaluables/ |
 
 **Nota:** El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. Unidad_1_Introduccion.pdf).
