@@ -49,7 +49,6 @@ ISW_2026_4K3_G/
 ├── 02_Registro_Clases/
 ├── 03_Trabajos_Practicos/
 │   ├── Evaluables/
-│   │   └── TP04_SCM/
 │   ├── Investigacion_Grupal/
 │   └── No_Evaluables/
 ├── logo_utn.svg
