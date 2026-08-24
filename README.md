@@ -18,6 +18,7 @@
 - 78797 Guillermo Ostermann
 - 94309 Camila Arce Sayago
 - 86363 Lanfranco Pucheta
+- 97376 Ulises Valentin Pregot
 
 **Docentes:**
 
@@ -86,11 +87,11 @@ ISW_2026_4K3_G/
 
 | Ítem de Configuración            | Tipo                        | Convención de Nombre                    | Ubicación                                      |
 | -------------------------------- | --------------------------- | --------------------------------------- | ---------------------------------------------- |
-| Bibliografía                     | Material de Estudio         | `<nombre>.<extension>`                  | 01_Recursos_Catedra/Bibliografia/              |
-| Guías                            | Material de Estudio         | `<nombre>.<extension>`                  | 01_Recursos_Catedra/Guias/                     |
-| Planificación                    | Planificación               | `<nombre>.<extension>`                  | 01_Recursos_Catedra/Planificacion/             |
-| Presentaciones                   | Material de Estudio         | `<nro>_<nombre>.<extension>`            | 01_Recursos_Catedra/Presentaciones/            |
-| Templates                        | Material de Estudio         | `<nombre>.<extension>`                  | 01_Recursos_Catedra/Templates/                 |
+| Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra | 01_Recursos_Catedra/Bibliografia/              |
+| Guías                            | Material de Estudio         | `<guia>_<contexto>.<extension>`         | 01_Recursos_Catedra/Guias/                     |
+| Planificación                    | Planificación               | `<nombre>_<periodo>.<extension>`        | 01_Recursos_Catedra/Planificacion/             |
+| Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra | 01_Recursos_Catedra/Presentaciones/            |
+| Templates                        | Material de Estudio         | `<template>_<contexto>.<extension>`     | 01_Recursos_Catedra/Templates/                 |
 | Registro de Clases               | Material de Estudio Grupal  | `<YYYY-MM-DD>_<autor>.<extension>`      | 02_Material_Estudio_Grupal/Registro_Clases/   |
 | Resúmenes                        | Material de Estudio Grupal  | `resumen_<unidad_o_tema>_<autor>.<ext>` | 02_Material_Estudio_Grupal/Resumenes/          |
 | Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<extension>`         | 03_Trabajos_Practicos/Evaluables/              |
