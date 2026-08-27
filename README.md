@@ -88,17 +88,18 @@ ISW_2026_4K3_G/
 
 | Ítem de Configuración            | Tipo                        | Convención de Nombre                         | Ubicación                                      |
 | -------------------------------- | --------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Bibliografia/              |
-| Guías                            | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Guias/                     |
-| Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Planificacion/             |
-| Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Presentaciones/            |
-| Templates                        | Material de Estudio         | `template_<contexto>.<ext1>`                 | 01_Recursos_Catedra/Templates/                 |
-| Registro de Clases               | Material de Estudio Grupal  | `<AAAA-MM-DD>_<autor>.<ext2>`                | 02_Material_Estudio_Grupal/Registro_Clases/    |
-| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`          | 02_Material_Estudio_Grupal/Resumenes/  
-| Ejercicios de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`          | 02_Material_Estudio_Grupal/Ejercicios/          |
-| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<ext3>`                   | 03_Trabajos_Practicos/Evaluables/              |
-| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<pdf>`                   | 03_Trabajos_Practicos/Investigacion_Grupal/    |
-| Trabajos Prácticos No Evaluables | Trabajo en Clase            | `tp_<nro>_<nombre>.<ext4>`                   | 03_Trabajos_Practicos/No_Evaluables/           |
+| Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Bibliografia/              |
+| Guías                            | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Guias/                     |
+| Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Planificacion/             |
+| Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Presentaciones/            |
+| Templates                        | Material de Estudio         | `template_<contexto>.<ext1>`                 | ISW_2026_4K3_G/01_Recursos_Catedra/Templates/                 |
+| Registro de Clases               | Material de Estudio Grupal  | `<AAAA-MM-DD>_<autor>.<ext2>`                | ISW_2026_4K3_G/02_Material_Estudio_Grupal/Registro_Clases/    |
+| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`          | ISW_2026_4K3_G/02_Material_Estudio_Grupal/Resumenes/  
+| Ejercicios de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`        | ISW_2026_4K3_G/02_Material_Estudio_Grupal/Ejercicios/          |
+| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<ext3>`                   | ISW_2026_4K3_G/03_Trabajos_Practicos/Evaluables/              |
+| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<pdf>`                   | ISW_2026_4K3_G/03_Trabajos_Practicos/Investigacion_Grupal/    |
+| Trabajos Prácticos No Evaluables | Trabajo en Clase            | `tp_<nro>_<nombre>.<ext4>`                   | ISW_2026_4K3_G/03_Trabajos_Practicos/No_Evaluables/           |
+| Plan de Gestión de Configuración | Gestión de proyecto         | `README.md`                 |ISW_2026_4K3_G            |
 
 Aclaraciones sobre las reglas de nombrado:
 - El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
