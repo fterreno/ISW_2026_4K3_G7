@@ -93,9 +93,9 @@ ISW_2026_4K3_G/
 | Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Planificacion/             |
 | Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Presentaciones/            |
 | Templates                        | Material de Estudio         | `template_<contexto>.<ext1>`                 | 01_Recursos_Catedra/Templates/                 |
-| Registro de Clases               | Material de Estudio Grupal  | `<YYYY-MM-DD>_<autor>.<ext2>`                | 02_Material_Estudio_Grupal/Registro_Clases/    |
+| Registro de Clases               | Material de Estudio Grupal  | `<AAAA-MM-DD>_<autor>.<ext2>`                | 02_Material_Estudio_Grupal/Registro_Clases/    |
 | Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`          | 02_Material_Estudio_Grupal/Resumenes/  
-| Ejercicio de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`          | 02_Material_Estudio_Grupal/Ejercicios/          |
+| Ejercicios de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`          | 02_Material_Estudio_Grupal/Ejercicios/          |
 | Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<ext3>`                   | 03_Trabajos_Practicos/Evaluables/              |
 | Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<pdf>`                   | 03_Trabajos_Practicos/Investigacion_Grupal/    |
 | Trabajos Prácticos No Evaluables | Trabajo en Clase            | `tp_<nro>_<nombre>.<ext4>`                   | 03_Trabajos_Practicos/No_Evaluables/           |
@@ -103,15 +103,15 @@ ISW_2026_4K3_G/
 Aclaraciones sobre las reglas de nombrado:
 - El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
 - El contenido encerrado con "<>" será remplazado con el siguiente criterio:
-  - "<ext1>": se aceptan archivos con extensión .doc o .xls
-  - "<ext2>": se aceptan archivos con extensión .doc, .pdf o .md
-  - "<ext3>": se aceptan archivos con extensión .pdf o archivos de código
-  - "<ext4>": se aceptan archivos con extensión .pdf, .doc, .png, .jpeg o .md
-  - "<contexto>": será una explicación breve del contenido del archivo, por ejemplo "parcial_1".
-  - "<YYYY-MM-DD>": es la fecha de la clase a la que corresponden las notas.
-  - "<autor>": es el integrante del equipo que realizó las notas.
-  - "<nro>": será un numero decimal correspondiente al parcial o trabajo practico del que trata el archivo.
-  - "<nombre>": se corresponde al nombre asignado por la catedra para el tp o tig.
+  - "ext1": se aceptan archivos con extensión .doc o .xls
+  - "ext2": se aceptan archivos con extensión .doc, .pdf o .md
+  - "ext3": se aceptan archivos con extensión .pdf o archivos de código
+  - "ext4": se aceptan archivos con extensión .pdf, .doc, .png, .jpeg o .md
+  - "contexto": será una explicación breve del contenido del archivo, por ejemplo "parcial_1".
+  - "AAAA-MM-DD": es la fecha de la clase a la que corresponden las notas.
+  - "autor": es el integrante del equipo que realizó las notas.
+  - "nro": será un numero decimal correspondiente al parcial o trabajo practico del que trata el archivo.
+  - "nombre": se corresponde al nombre asignado por la catedra para el tp o tig.
 
 ## Convención de Nombrado de Commits
 
