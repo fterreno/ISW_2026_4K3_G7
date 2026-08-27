@@ -88,17 +88,25 @@ ISW_2026_4K3_G/
 | Ítem de Configuración            | Tipo                        | Convención de Nombre                         | Ubicación                                      |
 | -------------------------------- | --------------------------- | -------------------------------------------- | ---------------------------------------------- |
 | Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Bibliografia/              |
-| Guías                            | Material de Estudio         | `<guia>_<contexto>.<extension>`              | 01_Recursos_Catedra/Guias/                     |
-| Planificación                    | Planificación               | `<nombre>_<periodo>.<extension>`             | 01_Recursos_Catedra/Planificacion/             |
+| Guías                            | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Guias/                     |
+| Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Planificacion/             |
 | Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | 01_Recursos_Catedra/Presentaciones/            |
-| Templates                        | Material de Estudio         | `<template>_<contexto>.<extension>`          | 01_Recursos_Catedra/Templates/                 |
-| Registro de Clases               | Material de Estudio Grupal  | `<YYYY-MM-DD>_<autor>.<extension>`           | 02_Material_Estudio_Grupal/Registro_Clases/    |
-| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro Parcial>_<autor>.<ext>`| 02_Material_Estudio_Grupal/Resumenes/          |
-| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<extension>`              | 03_Trabajos_Practicos/Evaluables/              |
-| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<extension>`             | 03_Trabajos_Practicos/Investigacion_Grupal/    |
-| Trabajos Prácticos No Evaluables | Entregas                    | `tp_<nro>_<nombre>.<extension>`              | 03_Trabajos_Practicos/No_Evaluables/           |
+| Templates                        | Material de Estudio         | `template_<contexto>.<extensión>`          | 01_Recursos_Catedra/Templates/                 |
+| Registro de Clases               | Material de Estudio Grupal  | `<YYYY-MM-DD>_<autor>.<extensión>`           | 02_Material_Estudio_Grupal/Registro_Clases/    |
+| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`| 02_Material_Estudio_Grupal/Resumenes/          |
+| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<extensión>`              | 03_Trabajos_Practicos/Evaluables/              |
+| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<extensión>`             | 03_Trabajos_Practicos/Investigacion_Grupal/    |
+| Trabajos Prácticos No Evaluables | Entregas                    | `tp_<nro>_<nombre>.<extensión>`              | 03_Trabajos_Practicos/No_Evaluables/           |
 
-**Nota:** El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
+Aclaraciones sobre las reglas de nombrado:
+- El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
+- El contenido encerrado con "<>" será remplazado con el siguiente criterio:
+  - "<extensión>": podrá ser PDF, JPEG, PNG, MP4, y archivos de código.
+  - "<contexto>": será una explicación breve del contenido del archivo, por ejemplo "parcial_1".
+  - "<YYYY-MM-DD>": es la fecha de la clase a la que corresponden las notas.
+  - "<autor>": es el integrante del equipo que realizó las notas.
+  - "<nro>": será un numero decimal correspondiente al parcial o trabajo practico del que trata el archivo.
+  - "<nombre>": se corresponde al nombre asignado por la catedra para el tp o tig.
 
 ## Convención de Nombrado de Commits
 
