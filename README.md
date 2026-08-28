@@ -85,33 +85,30 @@ ISW_2026_4K3_G/
 
 ## Ítems de Configuración
 
-| Ítem de Configuración            | Tipo                        | Convención de Nombre                         | Ubicación                                      |
-| -------------------------------- | --------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G7/01_Recursos_Catedra/Bibliografia/              |
-| Guías                            | Material de Estudio         | Se mantiene el nombre oficial de la catedra | ISW_2026_4K3_G7/01_Recursos_Catedra/Guias/                     |
-| Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/             |
-| Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G7/01_Recursos_Catedra/Presentaciones/            |
-| Templates                        | Material de Estudio         | `template_<contexto>.<ext1>`                 | ISW_2026_4K3_G7/01_Recursos_Catedra/Templates/                 |
-| Registro de Clases               | Material de Estudio Grupal  | `<AAAA-MM-DD>_<autor>.<ext2>`                | ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Registro_Clases/    |
-| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`          | ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Resumenes/  
-| Ejercicios de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`        | ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Ejercicios/          |
-| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<ext3>`                   | ISW_2026_4K3_G7/03_Trabajos_Practicos/Evaluables/              |
-| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<pdf>`                   | ISW_2026_4K3_G7/03_Trabajos_Practicos/Investigacion_Grupal/    |
-| Trabajos Prácticos No Evaluables | Trabajo en Clase            | `tp_<nro>_<nombre>.<ext4>`                   | ISW_2026_4K3_G7/03_Trabajos_Practicos/No_Evaluables/           |
-| Plan de Gestión de Configuración | Gestión de proyecto         | `README.md`                 |ISW_2026_4K3_G7            |
+| Ítem de Configuración | Tipo | Convención de Nombre | Extensión | Ubicación |
+|---|---|---|---|---|
+| Bibliografía | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | Según archivo original | `ISW_2026_4K3_G7/01_Recursos_Catedra/Bibliografia/` |
+| Guías | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | Según archivo original | `ISW_2026_4K3_G7/01_Recursos_Catedra/Guias/` |
+| Planificación | Planificación | Se mantiene el nombre oficial de la cátedra. | Según archivo original | `ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/` |
+| Presentaciones | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | Según archivo original | `ISW_2026_4K3_G7/01_Recursos_Catedra/Presentaciones/` |
+| Templates | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | `.doc`, `.xls` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Templates/` |
+| Registro de Clases | Material de Estudio Grupal | `<AAAA-MM-DD>_<autor>` | `.doc`, `.pdf`, `.md` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Registro_Clases/` |
+| Resúmenes | Material de Estudio Grupal | `resumen_parcial_<nro>_<autor>` | `.pdf` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Resumenes/` |
+| Ejercicios de la Guía | Material de Estudio Grupal | `<nro>_<nombre_ejercicio>_<autor>` | `.pdf`, `.doc`, `.png`, `.jpeg`, `.md` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Ejercicios/` |
+| Trabajos Prácticos Evaluables | Entregas | `tp_<nro>_<nombre>` | `.pdf` o archivos de código | `ISW_2026_4K3_G7/03_Trabajos_Practicos/Evaluables/` |
+| Trabajos de Investigación Grupal | Entregas | `tig_<nro>_<nombre>` | `.pdf` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/Investigacion_Grupal/` |
+| Trabajos Prácticos No Evaluables | Trabajo en Clase | `tp_<nro>_<nombre>` | `.pdf`, `.doc`, `.png`, `.jpeg`, `.md` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/No_Evaluables/` |
+| Plan de Gestión de Configuración | Gestión de Proyecto | `README` | `.md` | `ISW_2026_4K3_G7/` |
+
 
 Aclaraciones sobre las reglas de nombrado:
 - El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
 - El contenido encerrado con "<>" será remplazado con el siguiente criterio:
-  - "ext1": se aceptan archivos con extensión .doc o .xls
-  - "ext2": se aceptan archivos con extensión .doc, .pdf o .md
-  - "ext3": se aceptan archivos con extensión .pdf o archivos de código
-  - "ext4": se aceptan archivos con extensión .pdf, .doc, .png, .jpeg o .md
-  - "contexto": será una explicación breve del contenido del archivo, por ejemplo "parcial_1".
-  - "AAAA-MM-DD": es la fecha de la clase a la que corresponden las notas.
+  - "AAAA-MM-DD": es fecha de la clase a la que corresponden las notas.
   - "autor": es el integrante del equipo que realizó las notas.
-  - "nro": será un numero decimal correspondiente al parcial o trabajo practico del que trata el archivo.
-  - "nombre": se corresponde al nombre asignado por la catedra para el tp o tig.
+  - "nro": será un numero decimal entero correspondiente al parcial o trabajo practico del que trata el archivo.
+  - "nombre": se corresponde al nombre asignado por la catedra para el Trabajos Prácticos o Trabajos de Investigación Grupal.
+  - "nombre_ejercicio": nombre descriptivo del ejercicio.
 
 ## Convención de Nombrado de Commits
 
@@ -131,7 +128,7 @@ Se establece como criterio que la línea base se creará luego de la entrega y r
 
 De esta manera, se garantiza que el repositorio contenga una versión actualizada, revisada y validada del trabajo, sobre la cual se podrán gestionar y controlar los cambios posteriores. Asimismo, la creación de la línea base permitirá asegurar que la información incorporada haya sido revisada y aceptada por las autoridades de la materia.
 
-Las líneas base se identificarán con la siguiente etiqueta: `linea_base_<nro>_<nombreTP>`. El nombre del TP se escribe en formato snake_case, sin espacios ni tildes.
+Las líneas base se identificarán con la siguiente etiqueta: `linea_base_<nro>_<nombre_TP>`. El nombre del TP se escribe en formato snake_case, sin espacios ni tildes.
 
 ### Implementación técnica:
 Las líneas base se marcarán utilizando etiquetas (tags) en el motor de Git.
@@ -145,4 +142,4 @@ git tag -a linea_base_1_herramientas_scm -m "Línea Base 1 tras corrección del 
 
 | Etiqueta | Fecha | Descripción |
 | --- | --- | --- |
-| `linea_base_0_ejemplo` | DD/MM/AAAA | Ejemplo: Entrega y revisión del trabajo practico |
+| *`linea_base_0_ejemplo`* | *DD/MM/AAAA* | *Ejemplo: Entrega y revisión del trabajo practico* |
