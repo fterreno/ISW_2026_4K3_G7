@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://identidad.frc.utn.edu.ar/ui/logos/logos-utn-frc/logo-utn-frc-v-Extendida_Facultad_Azul.png" alt="Logo UTN FRC" width="300"/>
+<img src="https://identidad.frc.utn.edu.ar/ui/logos/logos-utn-frc/logo-utn-frc-v-Extendida_Facultad_Azul.png?v=2" alt="Logo UTN FRC" width="300"/>
 
 ### **Ingeniería y Calidad de Software**
 
