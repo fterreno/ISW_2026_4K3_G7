@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo_utn.svg" alt="Logo UTN FRC" width="300"/>
+<img src="https://identidad.frc.utn.edu.ar/ui/logos/logos-utn-frc/logo-utn-frc-v-Extendida_Facultad_Azul.png" alt="Logo UTN FRC" width="300"/>
 
 ### **Ingeniería y Calidad de Software**
 
@@ -32,7 +32,7 @@
 
 ## **Documento de Gestión de Configuración**
 
-**Enlace al repositorio público:** [_Repositorio_](https://github.com/fterreno/ISW_2026_4K3_G)
+**Enlace al repositorio público:** [_Repositorio_](https://github.com/fterreno/ISW_2026_4K3_G7)
 
 ## Herramientas SCM y Flujo de Trabajo
 
@@ -80,7 +80,6 @@ ISW_2026_4K3_G/
 │   ├── Evaluables/
 │   ├── Investigacion_Grupal/
 │   └── No_Evaluables/
-├── logo_utn.svg
 └── README.md
 ```
 
@@ -88,18 +87,18 @@ ISW_2026_4K3_G/
 
 | Ítem de Configuración            | Tipo                        | Convención de Nombre                         | Ubicación                                      |
 | -------------------------------- | --------------------------- | -------------------------------------------- | ---------------------------------------------- |
-| Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Bibliografia/              |
-| Guías                            | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Guias/                     |
-| Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Planificacion/             |
-| Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G/01_Recursos_Catedra/Presentaciones/            |
-| Templates                        | Material de Estudio         | `template_<contexto>.<ext1>`                 | ISW_2026_4K3_G/01_Recursos_Catedra/Templates/                 |
-| Registro de Clases               | Material de Estudio Grupal  | `<AAAA-MM-DD>_<autor>.<ext2>`                | ISW_2026_4K3_G/02_Material_Estudio_Grupal/Registro_Clases/    |
-| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`          | ISW_2026_4K3_G/02_Material_Estudio_Grupal/Resumenes/  
-| Ejercicios de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`        | ISW_2026_4K3_G/02_Material_Estudio_Grupal/Ejercicios/          |
-| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<ext3>`                   | ISW_2026_4K3_G/03_Trabajos_Practicos/Evaluables/              |
-| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<pdf>`                   | ISW_2026_4K3_G/03_Trabajos_Practicos/Investigacion_Grupal/    |
-| Trabajos Prácticos No Evaluables | Trabajo en Clase            | `tp_<nro>_<nombre>.<ext4>`                   | ISW_2026_4K3_G/03_Trabajos_Practicos/No_Evaluables/           |
-| Plan de Gestión de Configuración | Gestión de proyecto         | `README.md`                 |ISW_2026_4K3_G            |
+| Bibliografía                     | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G7/01_Recursos_Catedra/Bibliografia/              |
+| Guías                            | Material de Estudio         | Se mantiene el nombre oficial de la catedra | ISW_2026_4K3_G7/01_Recursos_Catedra/Guias/                     |
+| Planificación                    | Planificación               | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/             |
+| Presentaciones                   | Material de Estudio         | Se mantiene el nombre oficial de la catedra  | ISW_2026_4K3_G7/01_Recursos_Catedra/Presentaciones/            |
+| Templates                        | Material de Estudio         | `template_<contexto>.<ext1>`                 | ISW_2026_4K3_G7/01_Recursos_Catedra/Templates/                 |
+| Registro de Clases               | Material de Estudio Grupal  | `<AAAA-MM-DD>_<autor>.<ext2>`                | ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Registro_Clases/    |
+| Resúmenes                        | Material de Estudio Grupal  | `resumen_parcial_<nro>_<autor>.pdf`          | ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Resumenes/  
+| Ejercicios de la guía             | Material de Estudio Grupal  | `nro_nombreEjercicio_<autor>.<ext4>`        | ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Ejercicios/          |
+| Trabajos Prácticos Evaluables    | Entregas                    | `tp_<nro>_<nombre>.<ext3>`                   | ISW_2026_4K3_G7/03_Trabajos_Practicos/Evaluables/              |
+| Trabajos de Investigacion Grupal | Entregas                    | `tig_<nro>_<nombre>.<pdf>`                   | ISW_2026_4K3_G7/03_Trabajos_Practicos/Investigacion_Grupal/    |
+| Trabajos Prácticos No Evaluables | Trabajo en Clase            | `tp_<nro>_<nombre>.<ext4>`                   | ISW_2026_4K3_G7/03_Trabajos_Practicos/No_Evaluables/           |
+| Plan de Gestión de Configuración | Gestión de proyecto         | `README.md`                 |ISW_2026_4K3_G7            |
 
 Aclaraciones sobre las reglas de nombrado:
 - El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
@@ -116,7 +115,7 @@ Aclaraciones sobre las reglas de nombrado:
 
 ## Convención de Nombrado de Commits
 
-Para mantener la consistencia en el historial del repositorio, todos los mensajes de confirmación (commits) deberán redactarse 100% en español y seguir la siguiente estructura:
+Para mantener la consistencia en el historial del repositorio, todos los mensajes de confirmación (commits) deberán redactarse en español y seguir la siguiente estructura:
 
 `[PREFIJO] Descripción breve del cambio en presente.`
 
@@ -128,20 +127,22 @@ Para mantener la consistencia en el historial del repositorio, todos los mensaje
 
 ## Criterio de Línea Base
 
-Establecemos como criterio que la línea base se creará tras la entrega y revisión de cada Trabajo Práctico (TP) evaluable y los Tabajos Practicos de Investigación, cuando los ítems de configuración asociados estén completos y estables. Esto asegura que el repositorio se encuentre actualizado y con información validada por todos los integrantes.
+Se establece como criterio que la línea base se creará luego de la entrega y revisión de cada Trabajo Práctico Evaluable (TP) y de los Trabajos Prácticos de Investigación, una vez que los ítems de configuración asociados se encuentren completos, revisados y estables. Esto ocurrirá después de la corrección y validación realizada por el profesor.
 
-Las líneas base se identificarán con la siguiente etiqueta: `linea_base_<nro>_nombreTP`.
+De esta manera, se garantiza que el repositorio contenga una versión actualizada, revisada y validada del trabajo, sobre la cual se podrán gestionar y controlar los cambios posteriores. Asimismo, la creación de la línea base permitirá asegurar que la información incorporada haya sido revisada y aceptada por las autoridades de la materia.
+
+Las líneas base se identificarán con la siguiente etiqueta: `linea_base_<nro>_<nombreTP>`. El nombre del TP se escribe en formato snake_case, sin espacios ni tildes.
 
 ### Implementación técnica:
-Las líneas base se marcarán utilizando etiquetas (Tags) en el motor de Git.
+Las líneas base se marcarán utilizando etiquetas (tags) en el motor de Git.
 
 **Ejemplo de uso:**
 ```bash
-git tag -a linea_base_1 -m "Línea base 1 tras corrección del TP evaluable 1"
+git tag -a linea_base_1_herramientas_scm -m "Línea Base 1 tras corrección del TP evaluable 1"
 ```
 
 ### Historial de Línea Base
 
 | Etiqueta | Fecha | Descripción |
 | --- | --- | --- |
-| `linea_base_1_Herramientas_SCM` | DD/MM/AAAA | *(Ejemplo: Entrega y revisión del TP N°4 de SCM)* |
+| `linea_base_0_ejemplo` | DD/MM/AAAA | Ejemplo: Entrega y revisión del trabajo practico |
