@@ -89,7 +89,7 @@ ISW_2026_4K3_G/
 |---|---|---|---|---|
 | Bibliografía | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | `.pdf`| `ISW_2026_4K3_G7/01_Recursos_Catedra/Bibliografia/` |
 | Guías | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | `.pdf` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Guias/` |
-| Planificación | Planificación | Se mantiene el nombre oficial de la cátedra. | `.doc`, `.xls` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/` |
+| Planificación | Planificación | Se mantiene el nombre oficial de la cátedra. | `.pdf`, `.xls` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/` |
 | Presentaciones | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | `.pdf` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Presentaciones/` |
 | Templates | Material de Estudio | Se mantiene el nombre oficial de la cátedra. | `.doc`, `.xls` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Templates/` |
 | Registro de Clases | Material de Estudio Grupal | `<AAAA-MM-DD>_<autor>` | `.doc`, `.pdf`, `.md` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Registro_Clases/` |
