@@ -30,6 +30,8 @@
 
 **Curso:** 4K3
 
+**Grupo:** 7
+
 ## **Documento de Gestión de Configuración**
 
 **Enlace al repositorio público:** [_Repositorio_](https://github.com/fterreno/ISW_2026_4K3_G7)
