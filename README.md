@@ -145,3 +145,4 @@ git tag -a linea_base_1_herramientas_scm -m "Línea Base 1 tras corrección del 
 | Etiqueta | Fecha | Descripción |
 | --- | --- | --- |
 | *`linea_base_0_ejemplo`* | *DD/MM/AAAA* | *Ejemplo: Entrega y revisión del trabajo practico* |
+| *`linea_base_1_herramientas_scm`* | *24/09/2026* | *Linea base 1 tras corrección del trabajo practico evaluable 4* |
