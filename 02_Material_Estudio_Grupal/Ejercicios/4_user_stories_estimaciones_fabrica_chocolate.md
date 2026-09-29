@@ -44,13 +44,14 @@ Luego del tratamiento comienza la elaboración del chocolate. Lo primero que hay
 
 ### US01: Registrar Torrefaccion
 
-estimacion: no sabemos como comunicarnos con la maquina para pasarle los poarametros a la maquina
+estimacion: 8 story point. tiene una alta insertidumbre ya que se desconoce como sincronizar el sistema con la maquina de torrefaccion. al no conocer las especificaciones de la misma, a pesar que dentro del sistema el funcionalidad no es compleja, requiere su esfuerzo la comunicacion entre la maquina y el sistema.
 
 Como responsable de tratamiento quiero controlar la intensidad en la torrefaccion a producir para que el grano de cafe desarrolle el sabor especifico del chocolate.
 
 Criterios de Aceptacion:
 
 - Se debe seleccionar la intensidad del sabor.
+- se debe seleccionar tipo de chocolate
 
 Criterios de Prueba de Usuario:
 
@@ -58,8 +59,11 @@ Criterios de Prueba de Usuario:
 - Probar registrar una intensidad de sabor. (falla)
 - Probar seleccionar una intensidad de sabor y automaticamente te aparecen el tiempo que tarda el proceso. (pasa)
 - Probar seleccionar una intensidad de sabor y automaticamente te aparecen temperatura del proceso. (pasa)
+- probar seleccionar el tipo de chocolate y automaticamente te aparecen la cantidad de ingreientes que se utilizan y si hay stock de los mismos. (pasa)
 
 ### US02: Registrar Intensidad de Sabor
+
+estimacion:  2 story points. la complejidad y 
 
 Como genernte de produccion quiero estandarizar la intensidad del sabor en mis productos para que la marca de mis productos sea homogenea.
 
@@ -71,6 +75,7 @@ Criterios de Aceptacion:
 
 Crierios de Prueba de Usuario:
 
+- probar cargar un nombre ya existente. (falla)
 - Probar grabar un registro que tenga nombre, temperatura y tiempo. (pasa)
 - Probar grabar un registro que tenga nombre y tiempo. (falla)
 - Probar grabar un registro que tenga nombre y temperatura. (falla)
@@ -93,7 +98,8 @@ Criterios de Aceptacion:
 
 Criterios de Prueba de Usuario:
 
-- Probar cargar la temperatura en Farenheith. (falla)
+- probar cargar un nombre ya existente. (falla)
+- Probar cargar la temperatura en Farenheith o kelvin. (falla)
 - Probar cargar la cantidad de ingredientes en kilogramos. (falla)
 - Probar cargar un caracter en la cantidad del ingrediente especificado. (falla)
 - Probar grabar nombre, temperatura y los ingredientes donde cada ingrediente tiene especificada la cantidad. (pasa)
@@ -106,7 +112,6 @@ Como generte de produccion quiero tener un registro de que ingredientes tengo en
 Crierios de Aceptacion:
 
 - Se debe seleccionar el nombre del ingrediente.
-- Se debe generar un numero identificador por lote ingresado. ??
 - Se debe cargar la cantidad del lote ingresado en litros o gramos.
 - Se debe cargar la fecha de vencimiento del lote ingresado.
 
@@ -115,9 +120,12 @@ Criterios de Pruebas de Usuario:
 - Probar cargar el nombre del ingrediete sin cantidad disponible y el registro se graba con cantidad disponible cero. (pasa)
 - Probar cargar la cantidad disponible con caracteres. (falla)
 - Probar modificar la cantidad disponible de un registro ya creado. (pasa)
-- Probar modificar el numero identificador del lote. (falla)
 
 ### US05: Registrar Ingrediente de Mezcla
+
+estimacion: 1 story point.
+
+**user story canonica**: se presenta como canonica ya que su complejidad, esfuerzo e insertidumbre son minimas, es el desarrollo de un formulario con unicamente tres validaciones.
 
 Como gerente de produccion quiero tener un registro de que ingredientes son necesarios para saber que tipos de chocolate puedo producir.
 
@@ -128,6 +136,7 @@ Criterios de Aceptacion:
 
 Criterios de Prueba de Usuario:
 
+- probar registrar un nombre ya existente. (fala)
 - Probar seleccionar litros o gramos. (pasa)
 - Probar registrar unicamente el nombre del ingrediente. (falla)
 
@@ -254,11 +263,54 @@ Como responsable de elaboracion quiero indicar la cantidad de moldes que deseo t
 
 Criterios de Aceptacion:
 
+- se debe generar un identificador unico del lote de moldes.
+- se debe seleccionar el molde.
+- se debe ingresar la temperatura.
+- se debe ingresar la cantidad de moldes.
+- se debe visualizar que el proceso tarda 120 minutos.
+
+criterios de prueba de usuario:
+
+- probar modificar el identificador del lote de moldes. (falla)
+- probar seleccionar un molde. (pasa)
+- probar ingresar la temperatura que no se encuentra dentro del intervalo en el tipo de molde. (falla)
+- probar seleccionar un molde, la temperatura y la cantidad. (pasa)
+- probar ingresar un caracter en la cantidad de moldes. (falla)
+- probar ingresar la cantidad de moldes y aparece la cantidad de mezcla que se necesita para cumplir el pedido. (pasa)
+- probar modificar la cantidad de minutos. (falla)
 
 
 ### US13: Registrar Tipos de Moldeo
 
-### US14: Generar Reporte Embalaje
+como gerente de produccion quiero registrar los diferentes tipos de moldes disponibles para que el reponsable de elaboracion no tenga que andar calculando cuanta mezcla debe ir en la cantidad de moldes.
+
+criterio de aceptacion:
+
+- se debe cargar el nombre del molde.
+- se debe cargar la cantidad de mezcla que entra en el molde especificado.
+- se debe cargar el intervalo de temperatura que soporta ese molde especificado.
+- se debe dar de baja el molde.
+
+criterio de prueba de usuario
+
+- probar cargar el mismo nombre que otro molde. (falla)
+- probar cargar la cantidad de mezcla en litros o gramos. (pasa)
+- probar cargar la temperatura del molde en kelvin o fahrenheit. (falla)
+- probar dar de baja el molde y no aparece como posible seleccion en otros procesos. (pasa)
+
+### us14: notificar moldeo
+
+como responsable de elaboracion quiero ser notificado en el momento que un lote de chocolates termina de ser enfriado para continuar con el proceso de embalaje.
+
+criterios de aceptacion
+
+- se debe notificar al momento de terminal el proceso de enfriado de un lote de moldes.
+- se debe visualizar en la notificacion la cantidad de moldes y unidades disponibles de cada uno.
+
+criterio de prueba de usuario:
+
+- probar finalizar un proceso de moldeo y se envia la notificacion. (pasa)
+- probar consultar la notificacion y aparece el identificador del modeo, la cantidad de moldes y unidades disponibles de cada uno.
 
 ## Minimum Viable Product
 
