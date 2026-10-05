@@ -2,8 +2,7 @@
 
 ## Consigna
 
-Aplicar los conceptos teóricos desarrollados en clase sobre user stories y estimaciones ágiles. Para
-ello los estudiantes realizarán preguntas con el objetivo de acordar juntos el alcance del
+Aplicar los conceptos teóricos desarrollados en clase sobre user stories y Estimaciones ágiles. Para ello los estudiantes realizarán preguntas con el objetivo de acordar juntos el alcance del
 proyecto, y determinar:
 
 - Los roles principales
@@ -36,7 +35,7 @@ Luego del tratamiento comienza la elaboración del chocolate. Lo primero que hay
 
 ## Roles Principales
 
-- Gerente de Produccion ??
+- Gerente de Produccion
 - Responsable de Tratamiento
 - Responsable de Elaboracion
 
@@ -44,7 +43,7 @@ Luego del tratamiento comienza la elaboración del chocolate. Lo primero que hay
 
 ### US01: Registrar Torrefaccion
 
-estimacion: 8 story point. tiene una alta insertidumbre ya que se desconoce como sincronizar el sistema con la maquina de torrefaccion. al no conocer las especificaciones de la misma, a pesar que dentro del sistema el funcionalidad no es compleja, requiere su esfuerzo la comunicacion entre la maquina y el sistema.
+Estimacion: 8 story point. tiene una alta insertidumbre ya que se desconoce como sincronizar el sistema con la maquina de torrefaccion. al no conocer las especificaciones de la misma, a pesar que dentro del sistema el funcionalidad no es compleja, requiere su esfuerzo la comunicacion entre la maquina y el sistema.
 
 Como responsable de tratamiento quiero controlar la intensidad en la torrefaccion a producir para que el grano de cafe desarrolle el sabor especifico del chocolate.
 
@@ -63,7 +62,7 @@ Criterios de Prueba de Usuario:
 
 ### US02: Registrar Intensidad de Sabor
 
-estimacion:  2 story points. la complejidad y 
+Estimacion:  2 story points. La complejidad y esfuerzo es minimo, con una ligera insertidumbre ya que no se conoce como funciona la "intensidad" del sabor.
 
 Como genernte de produccion quiero estandarizar la intensidad del sabor en mis productos para que la marca de mis productos sea homogenea.
 
@@ -86,6 +85,8 @@ Crierios de Prueba de Usuario:
 - Probar registrar el tiempo de tostado con un formato de hh:mm:ss. (pasa)
 
 ### US03: Registar Tipos de Chocolate
+
+Estimacion: 2 Story Point. Existe una ligera complejidad ya que hay muchas validaciones.
 
 Como generte de produccion quiero estandarizar los diferentes tipos de chocolate para que mis clientes sepan que esperar del chocolate cuando ven el nombre en la etiqueta.
 
@@ -112,6 +113,7 @@ Como generte de produccion quiero tener un registro de que ingredientes tengo en
 Crierios de Aceptacion:
 
 - Se debe seleccionar el nombre del ingrediente.
+- Se debe generar un numero identificador por lote ingresado. ??
 - Se debe cargar la cantidad del lote ingresado en litros o gramos.
 - Se debe cargar la fecha de vencimiento del lote ingresado.
 
@@ -120,10 +122,11 @@ Criterios de Pruebas de Usuario:
 - Probar cargar el nombre del ingrediete sin cantidad disponible y el registro se graba con cantidad disponible cero. (pasa)
 - Probar cargar la cantidad disponible con caracteres. (falla)
 - Probar modificar la cantidad disponible de un registro ya creado. (pasa)
+- Probar modificar el numero identificador del lote. (falla)
 
 ### US05: Registrar Ingrediente de Mezcla
 
-estimacion: 1 story point.
+Estimacion: 1 story point.
 
 **user story canonica**: se presenta como canonica ya que su complejidad, esfuerzo e insertidumbre son minimas, es el desarrollo de un formulario con unicamente tres validaciones.
 
@@ -142,7 +145,7 @@ Criterios de Prueba de Usuario:
 
 ### US06: Manipular Refinacion
 
-estimacion: no sabemos como comunicarnos con la maquina para pasarle los poarametros
+Estimacion: no sabemos como comunicarnos con la maquina para pasarle los poarametros
 
 Como responsable de tratamiento quiero regular la fuerza de la maquina de rodillos y la cantidad del mismo para evitar tener que manipular la maquina manualmente. 
 
@@ -269,7 +272,7 @@ Criterios de Aceptacion:
 - se debe ingresar la cantidad de moldes.
 - se debe visualizar que el proceso tarda 120 minutos.
 
-criterios de prueba de usuario:
+Criterios de Prueba de Usuario:
 
 - probar modificar el identificador del lote de moldes. (falla)
 - probar seleccionar un molde. (pasa)
@@ -291,7 +294,7 @@ criterio de aceptacion:
 - se debe cargar el intervalo de temperatura que soporta ese molde especificado.
 - se debe dar de baja el molde.
 
-criterio de prueba de usuario
+Criterios de Prueba de Usuario
 
 - probar cargar el mismo nombre que otro molde. (falla)
 - probar cargar la cantidad de mezcla en litros o gramos. (pasa)
