@@ -55,6 +55,6 @@ def validar_tipo_pase(valor) -> TipoPase:
 def validar_forma_pago(valor) -> FormaPago:
     raise NotImplementedError
 
-
+# aca se ocupa que los datos esten validados al momento de apretar el boton de "comprar entradas"
 def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: datetime, horario: HorarioParque) -> FormularioEntrada:
     raise NotImplementedError
