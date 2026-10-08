@@ -1,69 +1,100 @@
-# Tp6Tdd app
+# Trabajo Practico 6: Test Driven Development
 
-## Run the app
+## Detalles Tecnicos
 
-### uv
+### Requisitos previos
 
-Run as a desktop app:
+- [Python](https://www.python.org/downloads/) 3.10 o superior.
+- [uv](https://docs.astral.sh/uv/) como gestor de dependencias y entornos virtuales.
+
+Si no tenés `uv` instalado:
+
+Windows (PowerShell):
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Linux / macOS:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+También se puede instalar con pip: `pip install uv`.
+
+Verificá la instalación con:
+
+```bash
+uv --version
+```
+
+### Dependencias
+
+Para descargar las dependencias del proyecto, desde la carpeta del proyecto (`tp_6_tdd`), ejecutá:
+
+```bash
+uv sync
+```
+
+Este comando:
+
+- Crea el entorno virtual en la carpeta `.venv` (si no existe).
+- Instala las dependencias del proyecto (`flet`) y las de desarrollo (`flet-cli`, `flet-desktop`, `flet-web` y `flet[test]` con `pytest`), usando las versiones fijadas en `uv.lock`.
+
+> Opcional: para activar el entorno virtual manualmente
+>
+> - Windows (PowerShell): `.venv\Scripts\Activate.ps1`
+> - Linux / macOS: `source .venv/bin/activate`
+>
+> No es necesario si usás `uv run`, que ejecuta los comandos dentro del entorno automáticamente.
+
+### Inicializar el proyecto
+
+Ejecutar como aplicación de escritorio:
 
 ```bash
 uv run flet run
 ```
 
-Run as a web app:
+Ejecutar como aplicación web:
 
 ```bash
 uv run flet run --web
 ```
 
-For more details on running the app, refer to the [Getting Started Guide](https://flet.dev/docs/).
+### Ejecutar como Aplicación Mobile
 
-## Build the app
+Para probar la app en un celular durante el desarrollo:
 
-### Android
+1. Instalá la app **Flet** en el celular.
+2. Conectá la computadora y el celular a la **misma red Wi-Fi**.
+3. Ejecutá el comando según el sistema del dispositivo:
 
-```bash
-flet build apk -v
-```
+   Android:
 
-For more details on building and signing `.apk` or `.aab`, refer to the [Android Packaging Guide](https://flet.dev/docs/publish/android/).
+   ```bash
+   uv run flet run --android
+   ```
 
-### iOS
+   iOS:
 
-```bash
-flet build ipa -v
-```
+   ```bash
+   uv run flet run --ios
+   ```
 
-For more details on building and signing `.ipa`, refer to the [iOS Packaging Guide](https://flet.dev/docs/publish/ios/).
+4. En la terminal se mostrará un **código QR** (y una URL). Escanealo desde la app Flet del celular para abrir la aplicación.
 
-### macOS
+Los cambios en el código se recargan automáticamente en el dispositivo (hot reload).
 
-```bash
-flet build macos -v
-```
+>Si el celular no logra conectarse, verificá que el firewall de la computadora permita conexiones entrantes al puerto que muestra la terminal.
 
-For more details on building macOS package, refer to the [macOS Packaging Guide](https://flet.dev/docs/publish/macos/).
+El punto de entrada de la aplicación es `src/main.py`.
 
-### Linux
-
-```bash
-flet build linux -v
-```
-
-For more details on building Linux package, refer to the [Linux Packaging Guide](https://flet.dev/docs/publish/linux/).
-
-### Windows
+### Ejecutar los tests
 
 ```bash
-flet build windows -v
+python -m pytest -q
 ```
 
-For more details on building Windows package, refer to the [Windows Packaging Guide](https://flet.dev/docs/publish/windows/).
-
-### Web
-
-```bash
-flet build web -v
-```
-
-For more details on building Web app, refer to the [Web Packaging Guide](https://flet.dev/docs/publish/web/).
+Los tests se encuentran en la carpeta `tests/`.
