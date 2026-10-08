@@ -81,7 +81,11 @@ def validar_edades(edades, cantidad: int) -> list[int]:
 
 
 def validar_tipo_pase(valor) -> TipoPase:
-    raise NotImplementedError
+    if valor == "VIP":
+        return TipoPase.VIP
+    if valor == "Regular":
+        return TipoPase.REGULAR
+    raise ErrorValidacion("El tipo de pase debe ser VIP o Regular.")
 
 
 def validar_forma_pago(valor) -> FormaPago:
