@@ -31,6 +31,13 @@ class FormularioEntrada:
     forma_pago: FormaPago
 
 
+def validar_fecha_visita(fecha: date, hoy: date) -> date:
+    """Valida hoy o futuro; el formato de ingreso y la apertura se resuelven aparte."""
+    if fecha < hoy:
+        raise ErrorValidacion("La fecha de visita no puede ser anterior a la fecha actual.")
+    return fecha
+
+
 def validar_fecha(texto, ahora: datetime, horario: HorarioParque) -> date:
     """Recibe la fecha en formato dd/mm/aaaa y devuelve el date si es válida."""
     raise NotImplementedError
