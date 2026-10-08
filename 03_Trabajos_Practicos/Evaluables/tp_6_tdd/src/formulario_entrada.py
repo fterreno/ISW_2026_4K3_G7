@@ -37,7 +37,19 @@ def validar_fecha(texto, ahora: datetime, horario: HorarioParque) -> date:
 
 
 def validar_cantidad(valor) -> int:
-    raise NotImplementedError
+    if isinstance(valor, bool):
+        raise ErrorValidacion("La cantidad debe ser un número entero.")
+    try:
+        cantidad = int(valor)
+    except (ValueError, TypeError):
+        raise ErrorValidacion("La cantidad debe ser un número entero")
+
+    if isinstance(valor, float) and valor != cantidad:
+        raise ErrorValidacion("La cantidad debe ser un número entero.")
+    
+    if cantidad < 1 or cantidad > 10:
+        raise ErrorValidacion("La cantidad debe estar entre 1 y 10")
+    return cantidad
 
 
 def validar_edad(valor) -> int:
