@@ -53,11 +53,31 @@ def validar_cantidad(valor) -> int:
 
 
 def validar_edad(valor) -> int:
-    raise NotImplementedError
+    if isinstance(valor, bool):
+        raise ErrorValidacion("La edad debe ser un número entero")
+    try:
+        edad = int(valor)
+    except (ValueError, TypeError):
+        raise ErrorValidacion("La edad debe ser un número entero")
 
+    if isinstance(valor, float) and valor != edad:
+        raise ErrorValidacion("La edad debe ser un número entero")
+
+    if edad < 0:
+        raise ErrorValidacion("La edad debe ser un número positivo.")
+
+    return edad
 
 def validar_edades(edades, cantidad: int) -> list[int]:
-    raise NotImplementedError
+    cant = 0
+    for i in edades:
+        if validar_edad(i):
+            cant += 1
+            
+    if cant != cantidad:
+        raise ErrorValidacion("Las cantidades de edades y la cantidad de entradas no coincide.")
+    return edades
+
 
 
 def validar_tipo_pase(valor) -> TipoPase:
