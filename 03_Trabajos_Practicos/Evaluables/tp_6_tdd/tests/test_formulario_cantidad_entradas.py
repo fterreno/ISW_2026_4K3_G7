@@ -40,6 +40,11 @@ def test_cantidad_decimal(valor):
         validar_cantidad(valor)
 
 
+def test_cantidad_flotante_sin_decimales_es_invalida():
+    with pytest.raises(ErrorValidacion):
+        validar_cantidad(2.0)
+
+
 # 2.7 Probar una cantidad no numérica. FALLA
 @pytest.mark.parametrize("valor", ["tres", "", None, True])
 def test_cantidad_no_numerica(valor):
