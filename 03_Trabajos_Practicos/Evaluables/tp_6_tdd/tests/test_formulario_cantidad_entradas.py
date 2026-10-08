@@ -1,5 +1,5 @@
 import pytest
-from formulario_entrada import ErrorValidacion, crear_formulario, validar_cantidad, validar_edades
+from formulario_entrada import ErrorValidacion, registrar_formulario, validar_cantidad, validar_edades
 
 
 # 2.1 Probar una cantidad de entradas entre 1 y 10. PASA
@@ -54,5 +54,5 @@ def test_cantidad_igual_a_cantidad_de_edades():
 
 # 2.9 Probar que se cargó la cantidad de entradas en el formulario. PASA
 def test_formulario_tiene_cantidad_cargada(datos_validos):
-    formulario = crear_formulario(**datos_validos)
+    formulario = registrar_formulario(**datos_validos)
     assert formulario.cantidad == 2

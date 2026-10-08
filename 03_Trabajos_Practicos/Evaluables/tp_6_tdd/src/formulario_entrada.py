@@ -9,7 +9,7 @@ class ErrorValidacion(Exception):
 
 @dataclass
 class HorarioParque:
-    dias_abiertos: set[int]  # 0 = lunes ... 6 = domingo
+    dias_abiertos: set[int]  # 0 es lunes ... 6 es domingo
     hora_apertura: time
     hora_cierre: time
 
@@ -56,7 +56,5 @@ def validar_forma_pago(valor) -> FormaPago:
     raise NotImplementedError
 
 
-def crear_formulario(
-    fecha, cantidad, edades, tipo_pase, forma_pago, ahora: datetime, horario: HorarioParque
-) -> FormularioEntrada:
+def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: datetime, horario: HorarioParque) -> FormularioEntrada:
     raise NotImplementedError
