@@ -32,13 +32,15 @@ class ResultadoCompra:
     mensaje: str
 
 
-def armar_mail_confirmacion(formulario: FormularioEntrada, destinatario: str) -> Mail:
+def generar_mail(formulario: FormularioEntrada, destinatario: str) -> Mail:
     raise NotImplementedError
 
 
 def enviar_mail(mail: Mail, servicio_mail) -> None:
     raise NotImplementedError
 
-
-def confirmar_compra(formulario: FormularioEntrada, destinatario: str, pasarela, servicio_mail) -> ResultadoCompra:
+# aca simplemente se encargar de generar el mail y enviarlo y llamar a la pasarela de mercado pago de ser necesario
+def registrar_compra(formulario: FormularioEntrada, destinatario: str, pasarela, servicio_mail) -> ResultadoCompra:
     raise NotImplementedError
+
+# abria que fijarse de crear una funcion extra para mercado pago prob
