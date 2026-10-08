@@ -40,9 +40,19 @@ def test_edad_decimal(valor):
         validar_edad(valor)
 
 
+def test_edad_flotante_sin_decimales_es_invalida():
+    with pytest.raises(ErrorValidacion):
+        validar_edad(8.0)
+
+
 # 3.7 Probar cargar correctamente la edad de todos los visitantes. PASA
 def test_edades_de_todos_los_visitantes():
     assert validar_edades([30, 28, 5], cantidad=3) == [30, 28, 5]
+
+
+def test_edades_con_cero_cuenta_todos_los_visitantes():
+    # Coherencia con el test existente que acepta edad 0; no define un rango oficial.
+    assert validar_edades([30, 0], cantidad=2) == [30, 0]
 
 
 # 3.8 Probar cargar la edad de todos los visitantes y que una de ellas sea inválida. FALLA
