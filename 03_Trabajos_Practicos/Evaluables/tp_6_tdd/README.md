@@ -194,3 +194,55 @@ No implementé Mercado Pago ni mail en este avance. El usuario registrado sigue 
 - Revisar con el grupo los casos de flotantes como `2.0` en cantidad y edad, y el conteo de edad `0` en `validar_edades`. Los señalé para coordinar; no modifiqué esas funciones en este avance.
 
 Todavía no registré nuevas aclaraciones de la cátedra que resuelvan estos pendientes.
+
+## Registro de las tres pruebas RED de cantidad y edades — 08/10/2026
+
+Después del avance anterior revisé los casos de cantidad y edades. Agregué tres pruebas independientes en los archivos existentes, sin cambiar las pruebas del grupo ni la implementación de Caterina.
+
+### Qué comprobé y por qué agregué las pruebas
+
+| Prueba | Regla o antecedente | Comportamiento actual | RED observado |
+|---|---|---|---|
+| `test_cantidad_flotante_sin_decimales_es_invalida` | La cantidad debe ser entera; el grupo definió que los valores flotantes se rechazan | `validar_cantidad(2.0)` devuelve `2` | `DID NOT RAISE ErrorValidacion` |
+| `test_edad_flotante_sin_decimales_es_invalida` | La edad debe ser entera; el grupo definió que los valores flotantes se rechazan | `validar_edad(8.0)` devuelve `8` | `DID NOT RAISE ErrorValidacion` |
+| `test_edades_con_cero_cuenta_todos_los_visitantes` | Ya existe una prueba que acepta edad `0`; el conteo debe ser coherente con esa validación | `validar_edades([30, 0], cantidad=2)` informa que falta una edad | Lanza `ErrorValidacion` en vez de devolver `[30, 0]` |
+
+Aunque `2.0` y `8.0` no tengan una parte decimal distinta de cero, en Python son valores de tipo `float`. Estas pruebas cubren ese caso que las pruebas de decimales anteriores no detectaban.
+
+La prueba con cero no establece una edad mínima oficial. Comprueba la coherencia entre la validación individual existente y la validación de todas las edades. El rango de edad sigue pendiente de la cátedra.
+
+### Resultado después de cada prueba
+
+| Paso | Aprobadas | Fallidas | Total |
+|---|---:|---:|---:|
+| Antes de agregar estas pruebas | 48 | 26 | 74 |
+| Agregué el rechazo de cantidad `2.0` | 48 | 27 | 75 |
+| Agregué el rechazo de edad `8.0` | 48 | 28 | 76 |
+| Agregué el conteo con edad `0` | 48 | 29 | 77 |
+
+Ejecuté la suite completa después de cada prueba. El resultado final corresponde a la revisión `fbfbe85`: **48 aprobadas y 29 fallidas**. Las 29 fallidas son los 26 casos anteriores que fallan por funciones pendientes de implementación, más las tres pruebas nuevas en RED. Las 48 que pasaban siguen pasando.
+
+Para repetir solamente las tres pruebas nuevas, desde `tp_6_tdd`:
+
+```bash
+python -m pytest -q tests/test_formulario_cantidad_entradas.py::test_cantidad_flotante_sin_decimales_es_invalida tests/test_formulario_edad.py::test_edad_flotante_sin_decimales_es_invalida tests/test_formulario_edad.py::test_edades_con_cero_cuenta_todos_los_visitantes
+```
+
+Para repetir toda la suite:
+
+```bash
+python -m pytest -q
+```
+
+### Evidencia publicada y siguiente paso
+
+| Commit | Cambio |
+|---|---|
+| `2db0699` | Agregué la prueba RED de cantidad flotante `2.0` |
+| `fbfbe85` | Agregué las pruebas RED de edad flotante `8.0` y conteo con edad `0` |
+
+Dejé el GREEN pendiente de coordinar con Caterina, que está trabajando cantidad y edades. Todavía no agregué código mínimo ni hice un refactor para estas tres pruebas. El ciclo queda abierto en RED; no lo presento como terminado.
+
+Cuando se haga el GREEN, corresponde registrar el cambio mínimo, ejecutar las tres pruebas y toda la suite, y comparar el resultado con esta revisión. Después se evaluará si hace falta un refactor y se volverán a ejecutar las pruebas si se modifica el diseño.
+
+Este registro deja la evidencia disponible para el PDF del grupo. No cambia los criterios de aceptación ni resuelve los pendientes de la cátedra.
