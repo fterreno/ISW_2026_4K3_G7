@@ -1,17 +1,17 @@
 import pytest
-from compra_entradas import ErrorMail, Mail, armar_mail_confirmacion, confirmar_compra, enviar_mail
+from compra_entradas import ErrorMail, Mail, generar_mail, registrar_compra, enviar_mail
 
 
 # 7.1 Probar que una compra confirmada envíe el mail de confirmación. PASA
 def test_compra_confirmada_envia_mail(formulario, destinatario, pasarela_aprobada, servicio_mail):
-    confirmar_compra(formulario, destinatario, pasarela_aprobada, servicio_mail)
+    registrar_compra(formulario, destinatario, pasarela_aprobada, servicio_mail)
     assert len(servicio_mail.enviados) == 1
     assert servicio_mail.enviados[0].destinatario == destinatario
 
 
 # 7.2 Probar que el mail enviado tenga el contenido y formato esperado. PASA
 def test_mail_tiene_contenido_formato_esperado(formulario, destinatario):
-    mail = armar_mail_confirmacion(formulario, destinatario)
+    mail = generar_mail(formulario, destinatario)
     assert mail.destinatario == "visitante@mail.com"
     assert mail.asunto == "Confirmación de compra - EcoHarmony Park"
     assert "Fecha de visita: 09/10/2026" in mail.cuerpo
