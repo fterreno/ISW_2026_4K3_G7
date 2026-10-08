@@ -1,6 +1,6 @@
 import pytest
 from datetime import date, datetime
-from formulario_entrada import ErrorValidacion, crear_formulario, validar_fecha
+from formulario_entrada import ErrorValidacion, registrar_formulario, validar_fecha
 
 
 # 1.1 Probar que la fecha de visita sea la fecha actual. PASA
@@ -44,7 +44,7 @@ def test_fecha_en_dia_cerrado(ahora, horario):
 
 # 1.8 Probar que se cargó la fecha de visita en el formulario. PASA
 def test_formulario_tiene_fecha_cargada(datos_validos):
-    formulario = crear_formulario(**datos_validos)
+    formulario = registrar_formulario(**datos_validos)
     assert formulario.fecha == date(2026, 10, 9)
 
 
