@@ -9,10 +9,11 @@ sys.path.insert(0, str(RAIZ))
 import flet as ft
 
 from boundaries.pantalla_inicio import PantallaInicio
+from entities.parque import Parque
 
 
 def main(page: ft.Page):
-    page.title = "EcoHarmony Park"
+    page.title = Parque.nombre
     page.scroll = ft.ScrollMode.AUTO
     PantallaInicio(page).mostrar()
 

@@ -38,6 +38,8 @@ class ControllerComprarEntrada:
         return self.entrada
 
     def enviar_mail(self) -> None:
+        if self.entrada is None:
+            raise ErrorMail("No hay una entrada para enviar el mail de confirmación.")
         mail_enviado = self.servicio_mail.enviar(self.generar_mail())
         if not mail_enviado:
             raise ErrorMail("No se pudo enviar el mail de confirmación.")
@@ -45,7 +47,7 @@ class ControllerComprarEntrada:
     def generar_mail(self) -> EmailMessage:
         cuerpo_pago = ''
         mensaje = EmailMessage()
-        mensaje['Subject'] = 'EcoHarmony Park: Compra Confirmada'
+        mensaje['Subject'] = f'{self.parque.nombre}: Compra Confirmada'
         mensaje['To'] = self.usuario.mail
 
         if self.entrada.forma_pago == FormaPago.EFECTIVO:
@@ -54,9 +56,9 @@ class ControllerComprarEntrada:
         cuerpo_html = f"""
         <html>
         <body>
-            <h1 style="text-align: center;">¡Gracias por comprar en EcoHarmony Park!</h1>
-            <p>Buenos días {self.usuario.apellido} {self.usuario.nombre}, gracias por comprar en EcoHarmony Park.</p>
-            <p>Gracias por su compra. En el archivo adjunto se encuentra generado un pdf con las entradas que se le solicitaran a la entrada de EcoHarmony Park.</p>
+            <h1 style="text-align: center;">¡Gracias por comprar en {self.parque.nombre}!</h1>
+            <p>Buenos días {self.usuario.apellido} {self.usuario.nombre}, gracias por comprar en {self.parque.nombre}.</p>
+            <p>Gracias por su compra. En el archivo adjunto se encuentra generado un pdf con las entradas que se le solicitaran a la entrada de {self.parque.nombre}.</p>
             <br>
             <p style="margin-left: 40px;"> Fecha de visita: {self.entrada.fecha_entrada:%d/%m/%Y}</p>
             <p style="margin-left: 40px;"> Tipo de pase: {self.entrada.tipo_pase.value}</p>
@@ -64,7 +66,7 @@ class ControllerComprarEntrada:
             <p style="margin-left: 40px;"> Forma de Pago: {self.entrada.forma_pago.value}</p>
             <p style="margin-left: 40px;"> Total: $ {self.entrada.monto_total}</p>
             <br>
-            <p>Saludos desde EcoHarmony Park.</p>
+            <p>Saludos desde {self.parque.nombre}.</p>
             <br>
             {cuerpo_pago}
         </body>

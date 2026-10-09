@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from entities.entrada import Entrada
 from entities.errores import ErrorPago
+from entities.parque import Parque
 
 load_dotenv()
 MP_ACCESS_TOKEN = os.getenv('MP_ACCESS_TOKEN')
@@ -68,7 +69,7 @@ class PasarelaMercadoPago:
         """Crea la preferencia de pago y devuelve la URL del checkout."""
         preferencia = {
             'items': [{
-                'title': f'EcoHarmony Park - {entrada.cantidad} entradas {entrada.tipo_pase.value} para el {entrada.fecha_entrada:%d/%m/%Y}',
+                'title': f'{Parque.nombre} - {entrada.cantidad} entradas {entrada.tipo_pase.value} para el {entrada.fecha_entrada:%d/%m/%Y}',
                 'quantity': 1,
                 'currency_id': 'ARS',
                 'unit_price': float(entrada.monto_total),
@@ -94,7 +95,7 @@ class PasarelaMercadoPago:
             'sort': 'date_created',
             'criteria': 'desc',
         })
-        if respuesta['status'] != 50:
+        if respuesta['status'] != 200:
             raise ErrorPago(f"No se pudo consultar el pago en Mercado Pago: {respuesta['response']}")
         resultados = respuesta['response'].get('results', [])
         return resultados[0] if resultados else None

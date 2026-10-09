@@ -1,5 +1,14 @@
 import pytest
-from formulario_entrada import ErrorValidacion, FormaPago, registrar_formulario, validar_forma_pago
+from entities.entrada import Entrada
+from entities.errores import ErrorValidacion
+from entities.forma_pago import FormaPago
+from conftest import crear_entrada
+
+
+def validar_forma_pago(valor):
+    entrada = crear_entrada(forma_pago=valor)
+    entrada.validar_forma_pago()
+    return entrada.forma_pago
 
 
 # 5.1 Probar seleccionar pago en efectivo. PASA
@@ -14,9 +23,9 @@ def test_pago_con_tarjeta():
 
 # 5.3 Probar realizar la compra sin seleccionar una forma de pago. FALLA
 @pytest.mark.parametrize("valor", [None, ""])
-def test_compra_sin_forma_de_pago(datos_validos, valor):
+def test_compra_sin_forma_de_pago(datos_validos, parque, ahora, valor):
     with pytest.raises(ErrorValidacion):
-        registrar_formulario(**{**datos_validos, "forma_pago": valor})
+        Entrada(**{**datos_validos, "forma_pago": valor}).registrar(parque, ahora)
 
 
 # 5.4 Probar una forma de pago distinta de efectivo o tarjeta. FALLA

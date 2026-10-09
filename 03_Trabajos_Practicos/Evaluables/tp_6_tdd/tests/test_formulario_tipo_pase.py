@@ -1,5 +1,13 @@
 import pytest
-from formulario_entrada import ErrorValidacion, TipoPase, validar_tipo_pase
+from entities.errores import ErrorValidacion
+from entities.tipo_pase import TipoPase
+from conftest import crear_entrada
+
+
+def validar_tipo_pase(valor):
+    entrada = crear_entrada(tipo_pase=valor)
+    entrada.validar_tipo_pase()
+    return entrada.tipo_pase
 
 
 # 4.1 Probar seleccionar pase VIP. PASA
