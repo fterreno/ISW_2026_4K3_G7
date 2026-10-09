@@ -55,13 +55,13 @@ Este comando:
 Ejecutar como aplicación de escritorio:
 
 ```bash
-uv run flet run
+ python -m uv run flet run
 ```
 
 Ejecutar como aplicación web:
 
 ```bash
-uv run flet run --web
+python -m uv run flet run --web
 ```
 
 ### Ejecutar como Aplicación Mobile
@@ -75,13 +75,13 @@ Para probar la app en un celular durante el desarrollo:
    Android:
 
    ```bash
-   uv run flet run --android
+   python -m v run flet run --android
    ```
 
    iOS:
 
    ```bash
-   uv run flet run --ios
+   python -m uv run flet run --ios
    ```
 
 4. En la terminal se mostrará un **código QR** (y una URL). Escanealo desde la app Flet del celular para abrir la aplicación.
@@ -107,3 +107,21 @@ Para correr los test de "envio mail" con el servidor de gmail real (y no un mock
 ```bash
 $env:ENVIAR_MAIL_REAL="1"; python -m pytest -q -k mail_real -s
 ```
+
+#### Ejecutar el pago real con Mercado Pago
+
+La compra con tarjeta usa `PasarelaMercadoPago` (`src/pasarela_mercado_pago.py`), que se integra con **Checkout Pro**: crea la preferencia de pago, abre el checkout en el navegador y consulta a Mercado Pago hasta que el pago se aprueba o se rechaza. Los tests de `tests/test_compra_mercado_pago.py` (6.1, 6.2 y 6.3) corren contra tres pasarelas: `falsa` (doble de prueba), `simulada` (`PasarelaMercadoPago` con un SDK simulado, sin conexión) y `real` (Mercado Pago de verdad, solo con `MP_PAGO_REAL=1`). Para probar contra Mercado Pago:
+
+1. Entrar a [Tus integraciones](https://www.mercadopago.com.ar/developers/panel/app), crear una aplicación (producto *Checkout Pro*) y, en **Cuentas de prueba**, crear un usuario **vendedor** y uno **comprador**.
+2. Copiar el *Access Token* de la cuenta vendedora de prueba en el `.env` como `MP_ACCESS_TOKEN` (ver `.env.example`).
+3. Crear una preferencia real (no cobra nada):
+
+   ```bash
+   python -m pytest -q -k preferencia_real -s
+   ```
+
+4. Hacer el pago completo. Cada test imprime un link: abrirlo en incógnito, iniciar sesión con el **usuario comprador de prueba** y pagar con una [tarjeta de prueba](https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/additional-content/your-integrations/test/cards). El nombre del titular define el resultado: `APRO` aprueba el pago y `FUND` lo rechaza por saldo insuficiente; el test indica cuál usar (6.1 usa `APRO`, 6.2 y 6.3 usan `FUND`).
+
+   ```bash
+   $env:MP_PAGO_REAL="1"; python -m pytest -q tests/test_compra_mercado_pago.py -k real -s
+   ```
