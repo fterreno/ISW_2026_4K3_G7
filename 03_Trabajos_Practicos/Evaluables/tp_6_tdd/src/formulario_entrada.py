@@ -40,7 +40,22 @@ def validar_fecha_visita(fecha: date, hoy: date) -> date:
 
 def validar_fecha(texto, ahora: datetime, horario: HorarioParque) -> date:
     """Recibe la fecha en formato dd/mm/aaaa y devuelve el date si es válida."""
-    raise NotImplementedError
+    try:
+        fecha = datetime.strptime(texto, "%d/%m/%Y").date()
+    except (TypeError, ValueError):
+        raise ErrorValidacion("La fecha debe tener el formato dd/mm/aaaa.")
+
+    validar_fecha_visita(fecha, ahora.date())
+
+    if fecha.weekday() not in horario.dias_abiertos:
+        raise ErrorValidacion("El parque está cerrado ese día.")
+
+    if fecha == ahora.date() and not (
+        horario.hora_apertura <= ahora.time() <= horario.hora_cierre
+    ):
+        raise ErrorValidacion("La hora actual está fuera del horario de apertura.")
+
+    return fecha
 
 
 def validar_cantidad(valor) -> int:
@@ -51,7 +66,7 @@ def validar_cantidad(valor) -> int:
     except (ValueError, TypeError):
         raise ErrorValidacion("La cantidad debe ser un número entero")
 
-    if isinstance(valor, float) and valor != cantidad:
+    if isinstance(valor, float):
         raise ErrorValidacion("La cantidad debe ser un número entero.")
     
     if cantidad < 1 or cantidad > 10:
@@ -67,7 +82,7 @@ def validar_edad(valor) -> int:
     except (ValueError, TypeError):
         raise ErrorValidacion("La edad debe ser un número entero")
 
-    if isinstance(valor, float) and valor != edad:
+    if isinstance(valor, float):
         raise ErrorValidacion("La edad debe ser un número entero")
 
     if edad < 0:
@@ -76,14 +91,10 @@ def validar_edad(valor) -> int:
     return edad
 
 def validar_edades(edades, cantidad: int) -> list[int]:
-    cant = 0
-    for i in edades:
-        if validar_edad(i):
-            cant += 1
-            
-    if cant != cantidad:
+    edades_validadas = [validar_edad(edad) for edad in edades]
+    if len(edades_validadas) != cantidad:
         raise ErrorValidacion("Las cantidades de edades y la cantidad de entradas no coincide.")
-    return edades
+    return edades_validadas
 
 
 
@@ -104,4 +115,11 @@ def validar_forma_pago(valor) -> FormaPago:
 
 # aca se ocupa que los datos esten validados al momento de apretar el boton de "comprar entradas"
 def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: datetime, horario: HorarioParque) -> FormularioEntrada:
-    raise NotImplementedError
+    cantidad_validada = validar_cantidad(cantidad)
+    return FormularioEntrada(
+        fecha=validar_fecha(fecha, ahora, horario),
+        cantidad=cantidad_validada,
+        edades=validar_edades(edades, cantidad_validada),
+        tipo_pase=validar_tipo_pase(tipo_pase),
+        forma_pago=validar_forma_pago(forma_pago),
+    )
