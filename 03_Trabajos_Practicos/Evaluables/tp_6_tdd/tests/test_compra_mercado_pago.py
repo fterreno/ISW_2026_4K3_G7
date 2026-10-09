@@ -1,5 +1,5 @@
 import pytest
-from compra_entradas import ErrorPago, registrar_compra
+from formulario_entrada import ErrorPago, registrar_compra
 
 
 # 6.1 Probar que al confirmar una compra con tarjeta se redirija a Mercado Pago. PASA
