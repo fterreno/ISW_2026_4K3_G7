@@ -75,7 +75,7 @@ Para probar la app en un celular durante el desarrollo:
    Android:
 
    ```bash
-   python -m v run flet run --android
+   python -m uv run flet run --android
    ```
 
    iOS:
@@ -90,7 +90,14 @@ Los cambios en el código se recargan automáticamente en el dispositivo (hot re
 
 >Si el celular no logra conectarse, verificá que el firewall de la computadora permita conexiones entrantes al puerto que muestra la terminal.
 
-El punto de entrada de la aplicación es `src/main.py`.
+El punto de entrada de la aplicación es `main.py`, en la raíz del proyecto. Desde ahí se abre la pantalla de inicio (`boundaries/pantalla_inicio.py`).
+También se puede ejecutar directamente con `python -m uv run python main.py`.
+
+El proyecto está organizado en capas:
+
+- `boundaries/`: pantallas de la aplicación (inicio, formulario de compra y resultado del pago).
+- `controllers/`: `ControllerComprarEntrada`, que coordina la compra.
+- `entities/`: entidades del dominio (`Usuario`, `Entrada`, `Parque`, `TipoPase`), la pasarela de Mercado Pago y el adaptador de mail.
 
 ### Ejecutar los tests
 
