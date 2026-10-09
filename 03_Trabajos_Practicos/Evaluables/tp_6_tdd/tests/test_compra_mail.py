@@ -2,19 +2,18 @@ import os
 from unittest.mock import MagicMock
 
 import pytest
-import compra_entradas
-from compra_entradas import ErrorFormularioVacio, enviar_mail
-from formulario_entrada import FormaPago, Usuario
+import formulario_entrada
+from formulario_entrada import FormaPago, Usuario, ErrorFormularioVacio, enviar_mail
 
 
 # Es para utilizar un servidor falso al correr cada test. Para hacer una prueba con el test real mirar README
 @pytest.fixture
 def servidor_smtp(monkeypatch):
     """Reemplaza a smtplib.SMTP_SSL: no se conecta a Gmail, solo registra las llamadas."""
-    monkeypatch.setattr(compra_entradas, "MAIL_ECOHARMONY", "ecoharmony@gmail.com")
-    monkeypatch.setattr(compra_entradas, "MAIL_CONTRASENA_ECOHARMONY", "clave-de-prueba")
+    monkeypatch.setattr(formulario_entrada, "MAIL_ECOHARMONY", "ecoharmony@gmail.com")
+    monkeypatch.setattr(formulario_entrada, "MAIL_CONTRASENA_ECOHARMONY", "clave-de-prueba")
     smtp_ssl = MagicMock()
-    monkeypatch.setattr(compra_entradas.smtplib, "SMTP_SSL", smtp_ssl)
+    monkeypatch.setattr(formulario_entrada.smtplib, "SMTP_SSL", smtp_ssl)
     # El servidor que se obtiene con "with smtplib.SMTP_SSL(...) as servidor"
     servidor = smtp_ssl.return_value.__enter__.return_value
     return smtp_ssl, servidor

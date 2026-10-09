@@ -1,5 +1,5 @@
 from datetime import date
-from compra_entradas import registrar_compra
+from formulario_entrada import registrar_compra
 
 
 # 8.1 Probar que al finalizar una compra correcta se informe la cantidad de entradas compradas y la fecha de visita. PASA
