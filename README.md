@@ -9,7 +9,7 @@
 **Integrantes:**
 
 - 95028 Alvaretto Caterina
-- 94309 Arce Sayago Camila 
+- 94309 Arce Sayago Camila
 - 431124 Cardozo Soledad Sofía
 - 84037 Ficarra Carla Valentina
 - 88440 Garcia Pintos Valentin
@@ -38,11 +38,13 @@
 
 ## Herramientas SCM y Flujo de Trabajo
 
-### Herramientas a utilizar:
+### Herramientas a utilizar
+
 - **Git:** Como motor de control de versiones mediante línea de comandos.
 - **GitHub:** Como plataforma de alojamiento y gestión del repositorio remoto (proporciona accesibilidad y facilita el trabajo colaborativo).
 
-### Flujo de comandos básico:
+### Flujo de comandos básico
+
 Para evitar conflictos y mantener el repositorio sincronizado, todos los integrantes deberán seguir este flujo de trabajo al interactuar con el repositorio:
 
 1. **Actualizar el repositorio local antes de empezar a trabajar:**
@@ -102,8 +104,8 @@ ISW_2026_4K3_G/
 | Trabajos Prácticos No Evaluables | Trabajo en Clase | `tp_<nro>_<nombre>` | `.pdf`, `.doc`, `.png`, `.jpeg`, `.md` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/No_Evaluables/` |
 | Plan de Gestión de Configuración | Gestión de Proyecto | `README` | `.md` | `ISW_2026_4K3_G7/` |
 
-
 Aclaraciones sobre las reglas de nombrado:
+
 - El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
 - El contenido encerrado con "<>" será remplazado con el siguiente criterio:
   - "AAAA-MM-DD": es fecha de la clase a la que corresponden las notas.
@@ -132,7 +134,8 @@ De esta manera, se garantiza que el repositorio contenga una versión actualizad
 
 Las líneas base se identificarán con la siguiente etiqueta: `linea_base_<nro>_<nombre_TP>`. El nombre del TP se escribe en formato snake_case, sin espacios ni tildes.
 
-### Implementación técnica:
+### Implementación técnica
+
 Las líneas base se marcarán utilizando etiquetas (tags) en el motor de Git.
 
 **Ejemplo de uso:**
