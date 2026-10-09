@@ -12,14 +12,14 @@ def test_edad_numerica_entera(valor, esperado):
 @pytest.mark.parametrize("valor", [65, 90])
 def test_edad_visitante_mayor(valor):
     n = 5
-    assert validar_edad(valor) == n
+    assert validar_edad(valor) > n
 
 
 # 3.3 Probar cargar la edad de un visitante menor a m años. PASA
 @pytest.mark.parametrize("valor", [0, 3])
 def test_edad_visitante_menor(valor):
     m = 70
-    assert validar_edad(valor) == m
+    assert validar_edad(valor) < m
 
 
 # 3.4 Probar cargar una edad negativa. FALLA
