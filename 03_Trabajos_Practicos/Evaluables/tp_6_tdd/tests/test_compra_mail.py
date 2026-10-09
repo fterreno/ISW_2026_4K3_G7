@@ -21,8 +21,7 @@ def test_mail_tiene_contenido_formato_esperado(formulario, destinatario):
 
 
 # 7.3 Probar el envío de un mail de confirmación vacío. FALLA
-@pytest.mark.parametrize("asunto, cuerpo", [("", ""), ("Confirmación de compra - EcoHarmony Park", ""), ("", "Fecha de visita: 09/10/2026")],
-)
+@pytest.mark.parametrize("asunto, cuerpo", [("", ""), ("Confirmación de compra - EcoHarmony Park", ""), ("", "Fecha de visita: 09/10/2026")],)
 def test_mail_vacio_no_se_envia(destinatario, servicio_mail, asunto, cuerpo):
     with pytest.raises(ErrorMail):
         enviar_mail(Mail(destinatario, asunto, cuerpo), servicio_mail)

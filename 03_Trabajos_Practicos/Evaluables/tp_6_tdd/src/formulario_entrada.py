@@ -113,6 +113,7 @@ def validar_forma_pago(valor) -> FormaPago:
         return FormaPago.TARJETA
     raise ErrorValidacion("La forma de pago debe ser Efectivo o Tarjeta.")
 
+
 # aca se ocupa que los datos esten validados al momento de apretar el boton de "comprar entradas"
 def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: datetime, horario: HorarioParque) -> FormularioEntrada:
     cantidad_validada = validar_cantidad(cantidad)
