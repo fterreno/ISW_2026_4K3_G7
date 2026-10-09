@@ -1,30 +1,6 @@
 import pytest
 from datetime import date, datetime, time
-from formulario_entrada import FormaPago, FormularioEntrada, HorarioParque, TipoPase
-from compra_entradas import ResultadoPago
-
-
-class PasarelaFalsa:
-    """Reemplaza a Mercado Pago en los tests: no cobra nada, devuelve el resultado
-    que le indiquemos y registra cada pago que se le pidió."""
-
-    def __init__(self, resultado: ResultadoPago):
-        self.resultado = resultado
-        self.pagos = []
-
-    def pagar(self, formulario):
-        self.pagos.append(formulario)
-        return self.resultado
-
-
-class ServicioMailFalso:
-    """Reemplaza al servidor de mail: no envía nada, solo guarda los mails."""
-
-    def __init__(self):
-        self.enviados = []
-
-    def enviar(self, mail):
-        self.enviados.append(mail)
+from formulario_entrada import DetalleCompra, FormaPago, FormularioEntrada, HorarioParque, TipoPase, Usuario
 
 
 @pytest.fixture
@@ -62,25 +38,6 @@ def formulario():
         edades=[30, 8],
         tipo_pase=TipoPase.REGULAR,
         forma_pago=FormaPago.TARJETA,
+        detalle_compra=DetalleCompra(monto_total=1.0, fecha_compra=date(2026, 10, 8)),
+        usuario=Usuario(mail="terrenoflorencia13@gmail.com", nombre="Ana", apellido="Pérez"),
     )
-
-
-@pytest.fixture
-def destinatario():
-    # Mail con el que se registró el visitante
-    return "visitante@mail.com"
-
-
-@pytest.fixture
-def pasarela_aprobada():
-    return PasarelaFalsa(ResultadoPago(aprobado=True))
-
-
-@pytest.fixture
-def pasarela_sin_saldo():
-    return PasarelaFalsa(ResultadoPago(aprobado=False, motivo="Saldo insuficiente"))
-
-
-@pytest.fixture
-def servicio_mail():
-    return ServicioMailFalso()
