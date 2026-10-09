@@ -13,7 +13,6 @@ class HorarioParque:
     hora_apertura: time
     hora_cierre: time
 
-
 class TipoPase(Enum):
     REGULAR = "Regular"
     VIP = "VIP"
@@ -23,12 +22,25 @@ class FormaPago(Enum):
     TARJETA = "Tarjeta"
 
 @dataclass
+class Usuario:
+    mail: str
+    nombre: str
+    apellido: str
+
+@dataclass
+class DetalleCompra:
+    monto_total: float
+    fecha_compra: date
+
+@dataclass
 class FormularioEntrada:
     fecha: date
     cantidad: int
     edades: list[int]
     tipo_pase: TipoPase
     forma_pago: FormaPago
+    detalle_compra: DetalleCompra
+    usuario: Usuario
 
 
 def validar_fecha_visita(fecha: date, hoy: date) -> date:
@@ -97,7 +109,6 @@ def validar_edades(edades, cantidad: int) -> list[int]:
     return edades_validadas
 
 
-
 def validar_tipo_pase(valor) -> TipoPase:
     if valor == "VIP":
         return TipoPase.VIP
@@ -117,6 +128,7 @@ def validar_forma_pago(valor) -> FormaPago:
 # aca se ocupa que los datos esten validados al momento de apretar el boton de "comprar entradas"
 def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: datetime, horario: HorarioParque) -> FormularioEntrada:
     cantidad_validada = validar_cantidad(cantidad)
+
     return FormularioEntrada(
         fecha=validar_fecha(fecha, ahora, horario),
         cantidad=cantidad_validada,
@@ -124,3 +136,7 @@ def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: 
         tipo_pase=validar_tipo_pase(tipo_pase),
         forma_pago=validar_forma_pago(forma_pago),
     )
+
+def generar_monto_total() -> float:
+    # generamos el monto total de las entradas teniendo en cuenta que cada entrada vale 0.5 pesos
+    return 0.5
