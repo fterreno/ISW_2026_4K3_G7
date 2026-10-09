@@ -1,6 +1,6 @@
 import pytest
 from datetime import date, datetime, time
-from formulario_entrada import DetalleCompra, FormaPago, FormularioEntrada, HorarioParque, TipoPase, Usuario
+from formulario_entrada import DetalleCompra, ErrorPago, FormaPago, FormularioEntrada, HorarioParque, TipoPase, Usuario
 
 
 @pytest.fixture
@@ -41,3 +41,80 @@ def formulario():
         detalle_compra=DetalleCompra(monto_total=1.0, fecha_compra=date(2026, 10, 8)),
         usuario=Usuario(mail="terrenoflorencia13@gmail.com", nombre="Ana", apellido="Pérez"),
     )
+
+
+# Dobles de prueba para no cobrar ni mandar mails en cada ejecución.
+# La pasarela real es PasarelaMercadoPago (ver test_mercado_pago_real.py)
+class PasarelaFalsa:
+    def __init__(self, error: str | None = None):
+        self.error = error
+        self.pagos = []
+
+    def cobrar(self, formulario):
+        if self.error:
+            raise ErrorPago(self.error)
+        self.pagos.append(formulario)
+        return {"status": "approved"}
+
+
+class ServicioMailFalso:
+    def __init__(self):
+        self.enviados = []
+
+    def enviar(self, formulario):
+        self.enviados.append(formulario)
+        return True
+
+
+@pytest.fixture
+def destinatario():
+    return Usuario(mail="terrenoflorencia13@gmail.com", nombre="Ana", apellido="Pérez")
+
+
+@pytest.fixture
+def pasarela_aprobada():
+    return PasarelaFalsa()
+
+
+@pytest.fixture
+def pasarela_sin_saldo():
+    return PasarelaFalsa(error="Saldo insuficiente")
+
+
+@pytest.fixture
+def servicio_mail():
+    return ServicioMailFalso()
+
+
+class PasarelaEspia:
+    """Envuelve una pasarela de verdad y guarda los formularios cobrados, igual que PasarelaFalsa."""
+
+    def __init__(self, pasarela):
+        self.pasarela = pasarela
+        self.pagos = []
+
+    def cobrar(self, formulario):
+        pago = self.pasarela.cobrar(formulario)
+        self.pagos.append(formulario)
+        return pago
+
+
+class SDKMercadoPagoSimulado:
+    """Imita las respuestas del SDK de Mercado Pago para usar PasarelaMercadoPago sin conexión.
+    El mismo objeto responde a sdk.preference().create(...) y a sdk.payment().search(...)."""
+
+    def __init__(self, pago: dict):
+        self.pago = pago
+
+    def preference(self):
+        return self
+
+    def payment(self):
+        return self
+
+    def create(self, preferencia):
+        url = "https://www.mercadopago.com.ar/checkout/simulado"
+        return {"status": 201, "response": {"init_point": url, "sandbox_init_point": url}}
+
+    def search(self, filtros):
+        return {"status": 200, "response": {"results": [self.pago]}}

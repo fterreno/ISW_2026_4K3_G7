@@ -158,7 +158,7 @@ def registrar_formulario(fecha, cantidad, edades, tipo_pase, forma_pago, ahora: 
 
 def generar_monto_total() -> float:
     # generamos el monto total de las entradas teniendo en cuenta que cada entrada vale 0.5 pesos
-    return 0.5
+    return 1000.0
 
 def generar_mail(formulario: FormularioEntrada) -> EmailMessage:
     cuerpo_pago = ''
@@ -206,11 +206,20 @@ def enviar_mail(formulario: FormularioEntrada) -> bool:
         return False
     
 
-# aca simplemente se encargar de generar el mail y enviarlo y llamar a la pasarela de mercado pago de ser necesario
-def registrar_compra(formulario: FormularioEntrada) -> None:
-    mail_enviado = enviar_mail(formulario)
-    if not mail_enviado:
-        # avisar al usuario que no se envio el mail
-        raise NotImplementedError
+class ServicioMailGmail:
+    """Envía el mail de confirmación con la cuenta de Gmail del parque."""
 
-# abria que fijarse de crear una funcion extra para mercado pago prob
+    def enviar(self, formulario: FormularioEntrada) -> bool:
+        return enviar_mail(formulario)
+
+
+# aca simplemente se encargar de generar el mail y enviarlo y llamar a la pasarela de mercado pago de ser necesario
+def registrar_compra(formulario: FormularioEntrada, destinatario: Usuario, pasarela, servicio_mail) -> None:
+    # si el pago con tarjeta es rechazado, cobrar lanza ErrorPago y no se envía el mail
+    if formulario.forma_pago == FormaPago.TARJETA:
+        pasarela.cobrar(formulario)
+
+    formulario.usuario = destinatario
+    mail_enviado = servicio_mail.enviar(formulario)
+    if not mail_enviado:
+        raise ErrorMail("No se pudo enviar el mail de confirmación.")
