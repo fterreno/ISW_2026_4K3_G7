@@ -1,6 +1,7 @@
 import flet as ft
 
 from boundaries.pantalla_formulario_entrada import PantallaFormularioEntrada
+from entities.parque import Parque
 from entities.usuario import Usuario
 from entities.errores import ErrorValidacion
 
@@ -29,7 +30,7 @@ class PantallaInicio:
                         spacing=16,
                         controls=[
                             ft.Icon(ft.Icons.PARK, size=64, color=ft.Colors.GREEN),
-                            ft.Text("EcoHarmony Park", size=32, weight=ft.FontWeight.BOLD),
+                            ft.Text(Parque.nombre, size=32, weight=ft.FontWeight.BOLD),
                             ft.Text("Ingresá tus datos para comprar tus entradas"),
                             self.campo_nombre,
                             self.campo_apellido,

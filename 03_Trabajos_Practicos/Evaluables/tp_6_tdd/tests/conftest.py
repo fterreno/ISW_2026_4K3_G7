@@ -1,6 +1,11 @@
 import pytest
 from datetime import date, datetime, time
-from formulario_entrada import DetalleCompra, ErrorPago, FormaPago, FormularioEntrada, HorarioParque, TipoPase, Usuario
+from entities.entrada import Entrada
+from entities.errores import ErrorPago
+from entities.forma_pago import FormaPago
+from entities.parque import Parque
+from entities.tipo_pase import TipoPase
+from entities.usuario import Usuario
 
 
 @pytest.fixture
@@ -11,35 +16,33 @@ def ahora():
 
 
 @pytest.fixture
-def horario():
+def parque():
     # Supuesto: el parque abre de martes a domingo (cierra los lunes) de 9 a 18 hs
-    return HorarioParque(dias_abiertos={1, 2, 3, 4, 5, 6}, hora_apertura=time(9, 0), hora_cierre=time(18, 0))
+    return Parque(dias_abiertos={1, 2, 3, 4, 5, 6}, hora_apertura=time(9, 0), hora_cierre=time(18, 0))
 
 
 @pytest.fixture
-def datos_validos(ahora, horario):
+def datos_validos():
     return dict(
-        fecha="09/10/2026",
+        fecha_entrada="09/10/2026",
         cantidad=2,
-        edades=[30, 8],
+        edades=[30, 15],
         tipo_pase="Regular",
         forma_pago="Tarjeta",
-        ahora=ahora,
-        horario=horario,
     )
 
 
 @pytest.fixture
-def formulario():
-    # Formulario ya validado: 2 entradas para el viernes 09/10/2026, pago con tarjeta
-    return FormularioEntrada(
-        fecha=date(2026, 10, 9),
+def entrada():
+    # Entrada ya validada: 2 entradas para el viernes 09/10/2026, pago con tarjeta
+    return Entrada(
+        fecha_entrada=date(2026, 10, 9),
         cantidad=2,
-        edades=[30, 8],
+        edades=[30, 15],
         tipo_pase=TipoPase.REGULAR,
         forma_pago=FormaPago.TARJETA,
-        detalle_compra=DetalleCompra(monto_total=1.0, fecha_compra=date(2026, 10, 8)),
-        usuario=Usuario(mail="terrenoflorencia13@gmail.com", nombre="Ana", apellido="Pérez"),
+        monto_total=1.0,
+        fecha_compra=date(2026, 10, 8),
     )
 
 
@@ -50,10 +53,10 @@ class PasarelaFalsa:
         self.error = error
         self.pagos = []
 
-    def cobrar(self, formulario):
+    def cobrar(self, entrada):
         if self.error:
             raise ErrorPago(self.error)
-        self.pagos.append(formulario)
+        self.pagos.append(entrada)
         return {"status": "approved"}
 
 
@@ -61,14 +64,14 @@ class ServicioMailFalso:
     def __init__(self):
         self.enviados = []
 
-    def enviar(self, formulario):
-        self.enviados.append(formulario)
+    def enviar(self, mensaje):
+        self.enviados.append(mensaje)
         return True
 
 
 @pytest.fixture
 def destinatario():
-    return Usuario(mail="terrenoflorencia13@gmail.com", nombre="Ana", apellido="Pérez")
+    return Usuario(nombre="Ana", apellido="Pérez", mail="terrenoflorencia13@gmail.com")
 
 
 @pytest.fixture
@@ -87,15 +90,15 @@ def servicio_mail():
 
 
 class PasarelaEspia:
-    """Envuelve una pasarela de verdad y guarda los formularios cobrados, igual que PasarelaFalsa."""
+    """Envuelve una pasarela de verdad y guarda las entradas cobradas, igual que PasarelaFalsa."""
 
     def __init__(self, pasarela):
         self.pasarela = pasarela
         self.pagos = []
 
-    def cobrar(self, formulario):
-        pago = self.pasarela.cobrar(formulario)
-        self.pagos.append(formulario)
+    def cobrar(self, entrada):
+        pago = self.pasarela.cobrar(entrada)
+        self.pagos.append(entrada)
         return pago
 
 
@@ -118,3 +121,8 @@ class SDKMercadoPagoSimulado:
 
     def search(self, filtros):
         return {"status": 200, "response": {"results": [self.pago]}}
+
+
+def crear_entrada(fecha_entrada=None, cantidad=None, edades=None, tipo_pase=None, forma_pago=None):
+    """Crea una entrada sin validar con solo los datos que necesita cada test."""
+    return Entrada(fecha_entrada, cantidad, edades if edades is not None else [], tipo_pase, forma_pago)

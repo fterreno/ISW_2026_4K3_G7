@@ -101,34 +101,36 @@ El proyecto está organizado en capas:
 
 ### Ejecutar los tests
 
+Desde la carpeta del proyecto (`tp_6_tdd`):
+
 ```bash
-python -m pytest -q
+python -m uv run pytest -v -rs
 ```
 
-Los tests se encuentran en la carpeta `tests/`.
+> Los tests se tienen que correr con el entorno virtual del proyecto (`uv run` o con el `.venv` activado). Si se corren con el Python global (`python -m pytest` sin el entorno), falla la importación con `ModuleNotFoundError: No module named 'mercadopago'`.
 
 #### Ejecutar el envio de mail real
 
 Para correr los test de "envio mail" con el servidor de gmail real (y no un mockup) hay que crear un archivo ".env". Analizar el archivo ".env.example" para realizar la carga de datos correspondientes respecto al mail destino (creado especificamente para este trabajo practico). Luego hay que ejecutar el siguiente comando:
 
 ```bash
-$env:ENVIAR_MAIL_REAL="1"; python -m pytest -q -k mail_real -s
+$env:ENVIAR_MAIL_REAL="1"; python -m uv run pytest -v -k mail_real -s
 ```
 
 #### Ejecutar el pago real con Mercado Pago
 
-La compra con tarjeta usa `PasarelaMercadoPago` (`src/pasarela_mercado_pago.py`), que se integra con **Checkout Pro**: crea la preferencia de pago, abre el checkout en el navegador y consulta a Mercado Pago hasta que el pago se aprueba o se rechaza. Los tests de `tests/test_compra_mercado_pago.py` (6.1, 6.2 y 6.3) corren contra tres pasarelas: `falsa` (doble de prueba), `simulada` (`PasarelaMercadoPago` con un SDK simulado, sin conexión) y `real` (Mercado Pago de verdad, solo con `MP_PAGO_REAL=1`). Para probar contra Mercado Pago:
+La compra con tarjeta usa `PasarelaMercadoPago` (`entities/mercado_pago.py`), que se integra con **Checkout Pro**: crea la preferencia de pago, abre el checkout en el navegador y consulta a Mercado Pago hasta que el pago se aprueba o se rechaza. Es un singleton: toda la aplicación usa la misma instancia, y los tests la reinician con `PasarelaMercadoPago.reiniciar()` para crearla con otra configuración. Los tests de `tests/test_compra_mercado_pago.py` (6.1, 6.2 y 6.3) corren contra tres pasarelas: `falsa` (doble de prueba), `simulada` (`PasarelaMercadoPago` con un SDK simulado, sin conexión) y `real` (Mercado Pago de verdad, solo con `MP_PAGO_REAL=1`). Para probar contra Mercado Pago:
 
 1. Entrar a [Tus integraciones](https://www.mercadopago.com.ar/developers/panel/app), crear una aplicación (producto *Checkout Pro*) y, en **Cuentas de prueba**, crear un usuario **vendedor** y uno **comprador**.
 2. Copiar el *Access Token* de la cuenta vendedora de prueba en el `.env` como `MP_ACCESS_TOKEN` (ver `.env.example`).
 3. Crear una preferencia real (no cobra nada):
 
    ```bash
-   python -m pytest -q -k preferencia_real -s
+   python -m uv run pytest -v -k preferencia_real -s
    ```
 
 4. Hacer el pago completo. Cada test imprime un link: abrirlo en incógnito, iniciar sesión con el **usuario comprador de prueba** y pagar con una [tarjeta de prueba](https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/additional-content/your-integrations/test/cards). El nombre del titular define el resultado: `APRO` aprueba el pago y `FUND` lo rechaza por saldo insuficiente; el test indica cuál usar (6.1 usa `APRO`, 6.2 y 6.3 usan `FUND`).
 
    ```bash
-   $env:MP_PAGO_REAL="1"; python -m pytest -q tests/test_compra_mercado_pago.py -k real -s
+   $env:MP_PAGO_REAL="1"; python -m uv run pytest -v tests/test_compra_mercado_pago.py -k real -s
    ```

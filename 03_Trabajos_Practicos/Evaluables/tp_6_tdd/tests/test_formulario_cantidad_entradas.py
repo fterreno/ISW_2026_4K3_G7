@@ -1,5 +1,20 @@
 import pytest
-from formulario_entrada import ErrorValidacion, registrar_formulario, validar_cantidad, validar_edades
+from entities.entrada import Entrada
+from entities.errores import ErrorValidacion
+from conftest import crear_entrada
+
+
+def validar_cantidad(valor):
+    entrada = crear_entrada(cantidad=valor)
+    entrada.validar_cantidad_entradas()
+    return entrada.cantidad
+
+
+def validar_edades(edades, cantidad):
+    entrada = crear_entrada(cantidad=cantidad, edades=edades)
+    entrada.validar_edades()
+    entrada.validar_cantidad_edad_entradas()
+    return entrada.edades
 
 
 # 2.1 Probar una cantidad de entradas entre 1 y 10. PASA
@@ -48,10 +63,11 @@ def test_cantidad_no_numerica(valor):
 
 # 2.8 Probar que la cantidad de entradas sea la misma cantidad de edades a cargar. PASA
 def test_cantidad_igual_a_cantidad_de_edades():
-    assert validar_edades([30, 8, 65], cantidad=3) == [30, 8, 65]
+    assert validar_edades([30, 15, 65], cantidad=3) == [30, 15, 65]
 
 
 # 2.9 Probar que se cargó la cantidad de entradas en el formulario. PASA
-def test_formulario_tiene_cantidad_cargada(datos_validos):
-    formulario = registrar_formulario(**datos_validos)
-    assert formulario.cantidad == 2
+def test_formulario_tiene_cantidad_cargada(datos_validos, parque, ahora):
+    entrada = Entrada(**datos_validos)
+    entrada.registrar(parque, ahora)
+    assert entrada.cantidad == 2
