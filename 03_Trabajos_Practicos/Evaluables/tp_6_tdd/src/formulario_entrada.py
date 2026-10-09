@@ -39,8 +39,9 @@ class FormularioEntrada:
     edades: list[int]
     tipo_pase: TipoPase
     forma_pago: FormaPago
-    detalle_compra: DetalleCompra
-    usuario: Usuario
+    # se completan despues de validar el formulario, al momento de la compra
+    detalle_compra: DetalleCompra | None = None
+    usuario: Usuario | None = None
 
 
 def validar_fecha_visita(fecha: date, hoy: date) -> date:

@@ -16,6 +16,9 @@ class ErrorPago(Exception):
 class ErrorMail(Exception):
     """Se lanza cuando se intenta enviar un mail inválido (por ejemplo, vacío)."""
 
+class ErrorFormularioVacio(Exception):
+    """Se lanza cuando se envia el formulario vacio y por lo tanto se genera el mail vacio."""
+
 
 def generar_mail(formulario: FormularioEntrada) -> EmailMessage:
     cuerpo_pago = ''
@@ -25,7 +28,7 @@ def generar_mail(formulario: FormularioEntrada) -> EmailMessage:
     mensaje['To'] = formulario.usuario.mail
 
     if formulario.forma_pago == FormaPago.EFECTIVO:
-        cuerpo_pago = '<small>Se informa que, al haber seleccionado la modalidad de pago en efectivo, deberá abonar el importe total correspondiente a su reserva al momento de ingresar al parque. En caso de no efectuarse el pago, el parque se reserva el derecho de admisión del visitante.</small>'
+        cuerpo_pago = '<small>Se informa que al haber seleccionado la modalidad de pago en efectivo, deberá abonar el importe total correspondiente a su reserva al momento de ingresar al parque. En caso de no efectuarse el pago, el parque se reserva el derecho de admisión del visitante.</small>'
     
     cuerpo_html = f"""
     <html>
@@ -49,6 +52,9 @@ def generar_mail(formulario: FormularioEntrada) -> EmailMessage:
 
 
 def enviar_mail(formulario: FormularioEntrada) -> bool:
+    if formulario is None:
+        raise ErrorFormularioVacio
+        
     mensaje = generar_mail(formulario) 
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as servidor:

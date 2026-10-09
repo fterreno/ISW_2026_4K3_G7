@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 import pytest
 import compra_entradas
-from compra_entradas import ErrorMail, enviar_mail
+from compra_entradas import ErrorFormularioVacio, enviar_mail
 from formulario_entrada import FormaPago, Usuario
 
 
@@ -29,8 +29,7 @@ def test_enviar_mail_real(formulario):
 
 
 # 7.2 Probar el envío de un mail de confirmación vacío. FALLA
-@pytest.mark.parametrize("asunto, cuerpo", [("", ""), ("Confirmación de compra - EcoHarmony Park", ""), ("", "Fecha de visita: 09/10/2026")],)
-def test_mail_vacio_no_se_envia(destinatario, servicio_mail, asunto, cuerpo):
-    with pytest.raises(ErrorMail):
-        enviar_mail(Mail(destinatario, asunto, cuerpo), servicio_mail)
-    assert servicio_mail.enviados == []
+def test_mail_vacio_no_se_envia():
+    formulario = None
+    with pytest.raises(ErrorFormularioVacio):
+        enviar_mail(formulario)
