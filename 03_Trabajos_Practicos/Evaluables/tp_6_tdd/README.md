@@ -246,3 +246,81 @@ Dejé el GREEN pendiente de coordinar con Caterina, que está trabajando cantida
 Cuando se haga el GREEN, corresponde registrar el cambio mínimo, ejecutar las tres pruebas y toda la suite, y comparar el resultado con esta revisión. Después se evaluará si hace falta un refactor y se volverán a ejecutar las pruebas si se modifica el diseño.
 
 Este registro deja la evidencia disponible para el PDF del grupo. No cambia los criterios de aceptación ni resuelve los pendientes de la cátedra.
+
+## Registro de mi revisión del GREEN del formulario — 09/10/2026
+
+Revisé el commit `d59d844`, publicado por Ulises en `trabajo-practico-tdd-green-formulario`. Creé este registro en `docs-tp6-evidencia-green`, que parte de ese mismo commit, para documentar la revisión sin modificar su implementación. Los registros anteriores describen los resultados de sus respectivas revisiones y se conservan como evidencia histórica.
+
+### Qué cambió Ulises
+
+El commit modifica únicamente `src/formulario_entrada.py`. Además de implementar `registrar_formulario`, implementa `validar_fecha`, corrige el rechazo de flotantes en cantidad y edad, y cambia la validación de la lista de edades. No cambia los tests.
+
+`registrar_formulario` valida primero la cantidad y luego construye `FormularioEntrada` con la fecha, las edades, el tipo de pase y la forma de pago validados. Mantiene las funciones, enums y `ErrorValidacion` existentes.
+
+### De las tres pruebas RED al GREEN
+
+| Prueba que agregué antes | RED observado en `fbfbe85` | Cambio de Ulises en `d59d844` | Resultado actual |
+|---|---|---|---|
+| `test_cantidad_flotante_sin_decimales_es_invalida` | No se lanzaba `ErrorValidacion` para `2.0` | Rechaza cualquier valor de tipo `float` en `validar_cantidad` | Pasa |
+| `test_edad_flotante_sin_decimales_es_invalida` | No se lanzaba `ErrorValidacion` para `8.0` | Rechaza cualquier valor de tipo `float` en `validar_edad` | Pasa |
+| `test_edades_con_cero_cuenta_todos_los_visitantes` | Se informaba que faltaba una edad para `[30, 0]` | Valida cada edad y compara la longitud de la lista con la cantidad | Pasa |
+
+El cambio mínimo que permite rechazar los flotantes consiste en comprobar `isinstance(valor, float)`, sin aceptar un float por coincidir numéricamente con su conversión a entero.
+
+Para las edades, Ulises reemplazó el conteo basado en el valor verdadero o falso de cada edad por:
+
+```python
+edades_validadas = [validar_edad(edad) for edad in edades]
+if len(edades_validadas) != cantidad:
+    raise ErrorValidacion("Las cantidades de edades y la cantidad de entradas no coincide.")
+return edades_validadas
+```
+
+Así, cero cuenta como una edad cargada y la función devuelve los enteros que produjo `validar_edad`, en coherencia con `list[int]`. Esto mantiene la prueba existente que acepta cero; no establece una edad mínima oficial.
+
+El GREEN de estos casos pertenece a Ulises. Mi aporte fue agregar las tres pruebas RED anteriores y registrar esta verificación. No hice un refactor ni registré como propio el código de otro integrante. Tampoco observé la ejecución intermedia del ciclo de Ulises: verifiqué la revisión publicada y la comparé con la evidencia RED previa.
+
+### Resultado de la verificación
+
+Ejecuté la suite del commit `d59d844` con Python 3.12.14 y pytest 9.1.1: **77 casos, 68 aprobados y 9 fallidos**. Frente a `fbfbe85`, pasaron 20 casos adicionales y se mantuvieron las 48 pruebas que ya pasaban.
+
+| Revisión | Aprobadas | Fallidas | Total |
+|---|---:|---:|---:|
+| `fbfbe85`, después de las tres pruebas RED | 48 | 29 | 77 |
+| `d59d844`, GREEN publicado por Ulises | 68 | 9 | 77 |
+
+Los nueve fallos restantes se deben a `NotImplementedError` en `registrar_compra`, `generar_mail` o `enviar_mail`:
+
+| Archivo | Casos fallidos |
+|---|---:|
+| `tests/test_compra_finalizacion.py` | 1 |
+| `tests/test_compra_mail.py` | 5 |
+| `tests/test_compra_pago.py` | 3 |
+
+Desde `tp_6_tdd`, puedo repetir la suite con:
+
+```bash
+python -m pytest -q
+```
+
+Este resultado acredita las pruebas de Python ejecutadas. No demuestra la compra completa, la integración real con Mercado Pago, la entrega real de mail ni el funcionamiento responsive de Flet.
+
+### Decisiones que todavía requieren confirmación
+
+En `validar_fecha`, el commit recibe texto y lo interpreta con `dd/mm/aaaa`. El grupo tiene pruebas para esa entrada, pero sigue pendiente confirmar si la interfaz usará ingreso manual o calendario. No doy por aprobada la entrada manual como decisión final de la cátedra.
+
+La función también impide comprar para hoy cuando la hora actual está fuera del horario configurado. Esa restricción no figura en los criterios oficiales que registramos. Tener una prueba que acepta comprar dentro del horario no alcanza para justificar el rechazo fuera de él. La dejo pendiente de consulta antes de considerarla una regla definitiva.
+
+Los días y horarios se reciben mediante `HorarioParque`; no están fijados dentro de la función. La fixture usa martes a domingo de 9 a 18 como supuesto. Los días exactos, los horarios si corresponden y el rango de edades siguen pendientes de la cátedra.
+
+En mail, revisé que `test_mail_vacio_no_se_envia` prueba asunto y cuerpo vacíos, no el email del usuario registrado. Debemos distinguir esos casos al explicarlos: no hay que presentarlo como una validación del registro del usuario.
+
+### Qué sigue
+
+- Coordinar con el grupo las decisiones pendientes de fecha y horario antes de modificar ese comportamiento.
+- Coordinar con Flor el flujo de compra, Mercado Pago real y mail. Una pasarela falsa en los tests no acredita la integración real exigida.
+- Completar la confirmación de compra y el mensaje final con cantidad y fecha; un pago no confirmado no debe provocar el envío del mail.
+- Conectar la lógica al formulario Flet y probar el recorrido en web y celular.
+- Seguir registrando RED, GREEN y refactors reales, con resultados y commits, para el PDF.
+
+Este avance modifica solamente la documentación del TP6 en `docs-tp6-evidencia-green`. No modifica `main`, no hace merge y no reescribe el historial del grupo.
