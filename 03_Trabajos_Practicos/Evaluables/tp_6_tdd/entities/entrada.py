@@ -4,7 +4,7 @@ from email.message import EmailMessage
 
 from entities.parque import Parque
 from entities.tipo_pase import TipoPase
-from entities.errores import ErrorValidacion
+from entities.errores import ErrorValidacion, ErroresValidacion, validar_campo
 from entities.forma_pago import FormaPago
 
 
@@ -19,12 +19,18 @@ class Entrada:
     fecha_compra: date | None = None
 
     def registrar(self, parque: Parque, ahora: datetime | None = None) -> None:
-        self.validar_fecha(parque, ahora)
-        self.validar_cantidad_entradas()
-        self.validar_edades()
-        self.validar_cantidad_edad_entradas()
-        self.validar_tipo_pase()
-        self.validar_forma_pago()
+        """Valida todos los datos y, si hay errores, los informa todos juntos."""
+        errores: list[ErrorValidacion] = []
+        validar_campo("fecha", lambda: self.validar_fecha(parque, ahora), errores)
+        cantidad_valida = validar_campo("cantidad", self.validar_cantidad_entradas, errores)
+        edades_validas = validar_campo("edades", self.validar_edades, errores)
+        # solo se comparan si las dos son válidas; si no, ya se informó el error de la que falló
+        if cantidad_valida and edades_validas:
+            validar_campo("edades", self.validar_cantidad_edad_entradas, errores)
+        validar_campo("tipo_pase", self.validar_tipo_pase, errores)
+        validar_campo("forma_pago", self.validar_forma_pago, errores)
+        if errores:
+            raise ErroresValidacion(errores)
         self.generar_monto_total()
 
     def validar_fecha(self, parque: Parque, ahora: datetime | None = None) -> None:
@@ -46,24 +52,36 @@ class Entrada:
             raise ErrorValidacion("La cantidad debe estar entre 1 y 10")
 
     def validar_edades(self) -> None:
+        """Valida todas las edades e informa juntas las inválidas, cada una con la posición de su visitante."""
+        edades_validadas = []
+        errores = []
+        for indice, edad in enumerate(self.edades):
+            try:
+                edades_validadas.append(self.validar_edad(edad))
+            except ErrorValidacion as error:
+                error.indice = indice
+                errores.append(error)
+        if errores:
+            raise ErroresValidacion(errores)
+        self.edades = edades_validadas
+
+    @staticmethod
+    def validar_edad(edad) -> int:
         edad_minima = 12
         edad_maxima = 70
-        edades_validadas = []
-        for edad in self.edades:
-            if isinstance(edad, (bool, float)):
-                raise ErrorValidacion("La edad debe ser un número entero")
-            try:
-                edad = int(edad)
-            except (ValueError, TypeError):
-                raise ErrorValidacion("La edad debe ser un número entero")
-            if edad < 0:
-                raise ErrorValidacion("La edad debe ser un número positivo.")
-            if edad < edad_minima:
-                raise ErrorValidacion(f"No se permite el ingreso de una persona menor a {edad_minima} años.")
-            if edad > edad_maxima:
-                raise ErrorValidacion(f"No se permite el ingreso de una persona mayor a {edad_maxima} años.")
-            edades_validadas.append(edad)
-        self.edades = edades_validadas
+        if isinstance(edad, (bool, float)):
+            raise ErrorValidacion("La edad debe ser un número entero")
+        try:
+            edad = int(edad)
+        except (ValueError, TypeError):
+            raise ErrorValidacion("La edad debe ser un número entero")
+        if edad < 0:
+            raise ErrorValidacion("La edad debe ser un número positivo.")
+        if edad < edad_minima:
+            raise ErrorValidacion(f"No se permite el ingreso de una persona menor a {edad_minima} años.")
+        if edad > edad_maxima:
+            raise ErrorValidacion(f"No se permite el ingreso de una persona mayor a {edad_maxima} años.")
+        return edad
 
     def validar_cantidad_edad_entradas(self) -> None:
         if len(self.edades) != self.cantidad:
@@ -82,5 +100,5 @@ class Entrada:
             raise ErrorValidacion("La forma de pago debe ser Efectivo o Tarjeta.")
 
     def generar_monto_total(self) -> None:
-    # generamos el monto total de las entradas teniendo en cuenta que cada entrada vale 1000 pesos
-        self.monto_total = self.cantidad * 1000.00
+        # el monto total es el precio del tipo de pase. vip sel 1000 y regular sale 500 por la cantidad de entradas
+        self.monto_total = self.tipo_pase.monto_entrada() * self.cantidad

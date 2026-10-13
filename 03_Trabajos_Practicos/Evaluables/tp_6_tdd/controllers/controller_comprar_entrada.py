@@ -17,8 +17,8 @@ class ControllerComprarEntrada:
     usuario: Usuario
     parque: Parque = field(default_factory=Parque)
     entrada: Entrada | None = field(default=None, init=False)  # la crea el controller en comprar_entrada
-    pasarela: PasarelaMercadoPago = field(default_factory=PasarelaMercadoPago)  # siempre la instancia única
-    servicio_mail: ServicioMail = field(default_factory=AdaptadorMailGmail)  # adaptador de smtplib para Gmail
+    pasarela: PasarelaMercadoPago | None = None  # si no viene, se crea como instancia única recién al pagar con tarjeta
+    servicio_mail: ServicioMail = field(default_factory=AdaptadorMailGmail)
 
     def comprar_entrada(self, fecha_entrada: date | str, cantidad: int, edades: list[int], tipo_pase: TipoPase | str, forma_pago: FormaPago | str, ahora: datetime | None = None) -> Entrada:
         if ahora is None:  # si viene cargada es porque viene por el test
@@ -30,6 +30,8 @@ class ControllerComprarEntrada:
 
         # si el pago con tarjeta es rechazado, cobrar lanza ErrorPago y no se guarda la entrada ni se envía el mail
         if self.entrada.forma_pago == FormaPago.TARJETA:
+            if self.pasarela is None:
+                self.pasarela = PasarelaMercadoPago()
             self.pasarela.cobrar(self.entrada)
 
         self.entrada.fecha_compra = ahora.date()
@@ -58,12 +60,12 @@ class ControllerComprarEntrada:
         <body>
             <h1 style="text-align: center;">¡Gracias por comprar en {self.parque.nombre}!</h1>
             <p>Buenos días {self.usuario.apellido} {self.usuario.nombre}, gracias por comprar en {self.parque.nombre}.</p>
-            <p>Gracias por su compra. En el archivo adjunto se encuentra generado un pdf con las entradas que se le solicitaran a la entrada de {self.parque.nombre}.</p>
+            <p>Gracias por su compra. A continuación se listan los datos de la entrada del visitante {self.usuario.nombre} {self.usuario.apellido}.</p>
             <br>
             <p style="margin-left: 40px;"> Fecha de visita: {self.entrada.fecha_entrada:%d/%m/%Y}</p>
             <p style="margin-left: 40px;"> Tipo de pase: {self.entrada.tipo_pase.value}</p>
             <p style="margin-left: 40px;"> Cantidad de entradas compradas: {self.entrada.cantidad}</p>
-            <p style="margin-left: 40px;"> Forma de Pago: {self.entrada.forma_pago.value}</p>
+            <p style="margin-left: 40px;"> Forma de pago: {self.entrada.forma_pago.value}</p>
             <p style="margin-left: 40px;"> Total: $ {self.entrada.monto_total}</p>
             <br>
             <p>Saludos desde {self.parque.nombre}.</p>
