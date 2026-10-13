@@ -3,7 +3,7 @@ import flet as ft
 from boundaries.pantalla_formulario_entrada import PantallaFormularioEntrada
 from entities.parque import Parque
 from entities.usuario import Usuario
-from entities.errores import ErrorValidacion
+from entities.errores import ErrorValidacion, ErroresValidacion
 
 
 class PantallaInicio:
@@ -15,7 +15,7 @@ class PantallaInicio:
         self.campo_nombre = ft.TextField(label="Nombre", prefix_icon=ft.Icons.PERSON, width=350)
         self.campo_apellido = ft.TextField(label="Apellido", prefix_icon=ft.Icons.PERSON_OUTLINE, width=350)
         self.campo_mail = ft.TextField(label="Mail", prefix_icon=ft.Icons.EMAIL, keyboard_type=ft.KeyboardType.EMAIL, width=350)
-        self.texto_error = ft.Text(color=ft.Colors.RED, text_align=ft.TextAlign.CENTER)
+        self.texto_error = ft.Text(color=ft.Colors.RED, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo
 
     def mostrar(self) -> None:
         self.page.clean()
@@ -48,12 +48,27 @@ class PantallaInicio:
         try:
             usuario.registrar()
         except ErrorValidacion as error:
-            self.texto_error.value = str(error)
+            self.mostrar_errores(error)
             self.page.update()
             return
 
         # si es el mismo usuario que ya compró, se conservan sus entradas
         if self.usuario is None or self.usuario.mail != usuario.mail:
             self.usuario = usuario
-        self.texto_error.value = ""
+        self.mostrar_errores(None)
         PantallaFormularioEntrada(self.page, self.usuario, al_volver=self.mostrar).mostrar()
+
+    def mostrar_errores(self, error: ErrorValidacion | None) -> None:
+        """Muestra todos los errores juntos, cada uno debajo del campo que lo produjo; con None los borra."""
+        errores = [] if error is None else error.errores if isinstance(error, ErroresValidacion) else [error]
+        mensajes: dict[str | None, list[str]] = {}
+        for encontrado in errores:
+            mensajes.setdefault(encontrado.campo, []).append(str(encontrado))
+
+        def mensaje(campo: str | None) -> str | None:
+            return "\n".join(mensajes[campo]) if campo in mensajes else None
+
+        self.campo_nombre.error = mensaje("nombre")
+        self.campo_apellido.error = mensaje("apellido")
+        self.campo_mail.error = mensaje("mail")
+        self.texto_error.value = mensaje(None) or ""

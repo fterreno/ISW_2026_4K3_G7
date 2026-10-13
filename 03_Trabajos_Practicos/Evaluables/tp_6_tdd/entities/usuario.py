@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from entities.entrada import Entrada
-from entities.errores import ErrorValidacion
+from entities.errores import ErrorValidacion, ErroresValidacion, validar_campo
 
 
 @dataclass
@@ -12,9 +12,13 @@ class Usuario:
     entradas: list[Entrada] = field(default_factory=list)  # entradas que compró el usuario
 
     def registrar(self) -> None:
-        self.validar_nombre()
-        self.validar_apellido()
-        self.validar_mail()
+        """Valida todos los datos y, si hay errores, los informa todos juntos."""
+        errores: list[ErrorValidacion] = []
+        validar_campo("nombre", self.validar_nombre, errores)
+        validar_campo("apellido", self.validar_apellido, errores)
+        validar_campo("mail", self.validar_mail, errores)
+        if errores:
+            raise ErroresValidacion(errores)
 
     def validar_nombre(self) -> None:
         if not isinstance(self.nombre, str) or not self.nombre.strip():
