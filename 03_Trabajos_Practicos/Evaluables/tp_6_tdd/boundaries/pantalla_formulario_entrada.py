@@ -3,6 +3,7 @@ from typing import Callable
 
 import flet as ft
 
+from assets.style import tema
 from boundaries.pantalla_resultado_pago import PantallaResultadoPago
 from controllers.controller_comprar_entrada import ControllerComprarEntrada
 from entities.mercado_pago import PasarelaMercadoPago
@@ -36,7 +37,7 @@ class PantallaFormularioEntrada:
             label="Forma de pago", width=350,
             options=[ft.DropdownOption(key="Efectivo", text="Efectivo"), ft.DropdownOption(key="Tarjeta", text="Tarjeta (Mercado Pago)")],
         )
-        self.texto_error = ft.Text(color=ft.Colors.RED, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo del formulario
+        self.texto_error = ft.Text(color=tema.ROJO, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo del formulario
         self.procesando = ft.Row(
             visible=False, tight=True,
             controls=[ft.ProgressRing(width=20, height=20), ft.Text("Procesando la compra...")],
@@ -57,9 +58,9 @@ class PantallaFormularioEntrada:
         self.indicador_edades = ft.Text()
         self.boton_edad_anterior = ft.IconButton(icon=ft.Icons.CHEVRON_LEFT, on_click=self.ir_edad_anterior)
         self.boton_edad_siguiente = ft.IconButton(icon=ft.Icons.CHEVRON_RIGHT, on_click=self.ir_edad_siguiente)
-        self.aviso_edades = ft.Text("Ingresá la cantidad de entradas para cargar las edades", italic=True, color=ft.Colors.GREY)
+        self.aviso_edades = ft.Text("Ingresá la cantidad de entradas para cargar las edades", italic=True, color=tema.VERDE)
         # errores de las edades en general
-        self.error_edades = ft.Text(color=ft.Colors.RED, size=12, text_align=ft.TextAlign.CENTER, visible=False)
+        self.error_edades = ft.Text(color=tema.ROJO, size=12, text_align=ft.TextAlign.CENTER, visible=False)
         self.navegacion_edades = ft.Row(
             tight=True, visible=False,
             controls=[self.boton_edad_anterior, self.indicador_edades, self.boton_edad_siguiente],
@@ -88,7 +89,8 @@ class PantallaFormularioEntrada:
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                         spacing=16,
                         controls=[
-                            ft.Text("Comprar entradas", size=28, weight=ft.FontWeight.BOLD),
+                            ft.Image(src=tema.LOGO, width=64, fit=ft.BoxFit.CONTAIN, color=tema.VERDE_OSCURO, color_blend_mode=ft.BlendMode.SRC_IN),
+                            ft.Text("Comprar entradas", size=28, font_family=tema.FUENTE_TITULOS),
                             ft.Text(f"{self.usuario.nombre} {self.usuario.apellido} · {self.usuario.mail}"),
                             self.campo_fecha,
                             self.campo_cantidad,
@@ -148,7 +150,7 @@ class PantallaFormularioEntrada:
                     content=ft.Column(
                         tight=True, spacing=12,
                         controls=[
-                            ft.Text(f"Visitante {indice + 1} de {len(self.campos_edad)}", weight=ft.FontWeight.BOLD),
+                            ft.Text(f"Visitante {indice + 1} de {len(self.campos_edad)}", font_family=tema.FUENTE_TITULOS),
                             campo,
                         ],
                     ),

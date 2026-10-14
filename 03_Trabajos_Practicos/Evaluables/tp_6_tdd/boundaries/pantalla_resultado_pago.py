@@ -2,6 +2,7 @@ from typing import Callable
 
 import flet as ft
 
+from assets.style import tema
 from entities.entrada import Entrada
 from entities.forma_pago import FormaPago
 
@@ -56,17 +57,17 @@ class PantallaResultadoPago:
                         else "No pudimos enviarte el mail de confirmación; guardá estos datos.")
 
         return [
-            ft.Icon(ft.Icons.CHECK_CIRCLE, size=72, color=ft.Colors.GREEN),
-            ft.Text(titulo, size=28, weight=ft.FontWeight.BOLD),
+            ft.Icon(ft.Icons.CHECK_CIRCLE, size=72, color=tema.VERDE),
+            ft.Text(titulo, size=28, font_family=tema.FUENTE_TITULOS),
             ft.Text(aviso, text_align=ft.TextAlign.CENTER),
             ft.Card(content=ft.Container(padding=20, content=ft.Column(tight=True, controls=[ft.Text(linea) for linea in detalle]))),
-            ft.Text(mensaje_mail, color=None if self.mail_enviado else ft.Colors.ORANGE, text_align=ft.TextAlign.CENTER),
+            ft.Text(mensaje_mail, color=None if self.mail_enviado else tema.ROJO, text_align=ft.TextAlign.CENTER),
         ]
 
     def contenido_rechazado(self) -> list[ft.Control]:
         return [
-            ft.Icon(ft.Icons.CANCEL, size=72, color=ft.Colors.RED),
-            ft.Text("No se ha realizado el pago", size=28, weight=ft.FontWeight.BOLD),
+            ft.Icon(ft.Icons.CANCEL, size=72, color=tema.ROJO),
+            ft.Text("No se ha realizado el pago", size=28, font_family=tema.FUENTE_TITULOS),
             ft.Text(f"Motivo: {self.motivo_rechazo}", text_align=ft.TextAlign.CENTER),
             ft.Text("La entrada no fue comprada. Podés intentarlo de nuevo.", text_align=ft.TextAlign.CENTER),
         ]

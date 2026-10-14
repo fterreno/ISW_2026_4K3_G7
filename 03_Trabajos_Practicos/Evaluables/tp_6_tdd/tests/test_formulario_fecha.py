@@ -62,3 +62,24 @@ def test_formulario_tiene_fecha_cargada(datos_validos, parque, ahora):
 def test_fecha_actual_dentro_del_horario_abierto(parque):
     ahora = datetime(2026, 10, 8, 17, 0)
     assert validar_fecha("08/10/2026", ahora, parque) == date(2026, 10, 8)
+
+
+# 1.10 Probar una fecha anterior a que pase un mes desde la fecha actual PASA
+
+# 1.11 Probar una fecha posterior a que pase un mes desde la fecha actual FALLA
+
+# 1.12 Probar para la fecha actual en un horario anterior a las 17:30 PASA
+
+# 1.13 Probar para la fecha actual en el horario 17:30 PASA
+
+# 1.14 Probar para la fecha actual en un horario posterior a las 17:30 FALLA
+
+# 1.15 Probar una fecha correspondiente a un domingo PASA
+def test_fecha_en_domingo_es_valida(ahora, parque):
+    assert validar_fecha("11/10/2026", ahora, parque) == date(2026, 10, 11)  # domingo
+
+# 1.16 Probar una fecha correspondiente a un día festivo FALLA
+@pytest.mark.parametrize("texto", ["25/12/2026", "01/01/2027"])
+def test_fecha_en_dia_festivo_informa_error(ahora, parque, texto):
+    with pytest.raises(ErrorValidacion, match="cerrado"):
+        validar_fecha(texto, ahora, parque)

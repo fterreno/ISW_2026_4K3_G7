@@ -1,5 +1,5 @@
 import pytest
-from datetime import date, datetime, time
+from datetime import date, datetime
 from entities.entrada import Entrada
 from entities.errores import ErrorPago
 from entities.forma_pago import FormaPago
@@ -17,8 +17,8 @@ def ahora():
 
 @pytest.fixture
 def parque():
-    # Supuesto: el parque abre de martes a domingo (cierra los lunes) de 9 a 18 hs
-    return Parque(dias_abiertos={1, 2, 3, 4, 5, 6}, hora_apertura=time(9, 0), hora_cierre=time(18, 0))
+    # el parque real: abre de martes a domingo (cierra los lunes y los feriados) de 8:30 a 19 hs
+    return Parque()
 
 
 @pytest.fixture

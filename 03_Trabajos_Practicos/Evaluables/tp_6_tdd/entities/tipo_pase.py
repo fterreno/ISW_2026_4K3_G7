@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class TipoPase(Enum):
-    REGULAR = "Regular"
-    VIP = "VIP"
+    REGULAR = "Regular" # $ 10000
+    VIP = "VIP" # $ 20000
 
     def monto_entrada(self) -> float:
-        return 1000.00 if self is TipoPase.VIP else 500.00
+        return 20000.00 if self is TipoPase.VIP else 10000.00
