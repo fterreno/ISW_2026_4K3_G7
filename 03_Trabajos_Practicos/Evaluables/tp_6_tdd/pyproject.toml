@@ -9,6 +9,7 @@ authors = [
 ]
 dependencies = [
     "flet>=1.0.3",
+    "fpdf2>=2.8",
     "mercadopago>=3.6.0",
 ]
 

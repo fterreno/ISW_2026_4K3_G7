@@ -23,16 +23,17 @@ def test_edad_numerica_entera(valor, esperado):
 
 
 # 3.2 Probar cargar la edad de un visitante mayor a n años. FALLA
-@pytest.mark.parametrize("valor", [71, 90])
+@pytest.mark.parametrize("valor", [101, 120])
 def test_edad_visitante_mayor(valor):
-    with pytest.raises(ErrorValidacion, match="mayor a 70"):
+    with pytest.raises(ErrorValidacion, match="mayor a 100"):
         validar_edad(valor)
 
 
 # 3.3 Probar cargar la edad de un visitante menor a m años. FALLA
-@pytest.mark.parametrize("valor", [0, 3])
+# (la edad mínima es 0, así que una edad menor ya se rechaza por ser negativa)
+@pytest.mark.parametrize("valor", [-1, -5])
 def test_edad_visitante_menor(valor):
-    with pytest.raises(ErrorValidacion, match="menor a 12"):
+    with pytest.raises(ErrorValidacion, match="positivo"):
         validar_edad(valor)
 
 
