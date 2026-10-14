@@ -1,4 +1,5 @@
 import pytest
+from controllers.controller_comprar_entrada import ControllerComprarEntrada
 from entities.entrada import Entrada
 from entities.errores import ErrorValidacion
 from conftest import crear_entrada
@@ -74,5 +75,16 @@ def test_formulario_tiene_cantidad_cargada(datos_validos, parque, ahora):
 
 # (Solo puede comprar 10 entradas para una fecha específica, ya sea en una o varias transacciones)
 # 2.10 Probar cargar 10 o menos entradas en varias transacciones PASA
+def test_10_entradas_en_varias_transacciones(ahora, parque, destinatario, pasarela_aprobada, servicio_mail):
+    controller = ControllerComprarEntrada(destinatario, parque, pasarela=pasarela_aprobada, servicio_mail=servicio_mail)
+    controller.comprar_entrada("09/10/2026", 4, [30] * 4, "Regular", "Efectivo", ahora=ahora)
+    controller.comprar_entrada("09/10/2026", 6, [30] * 6, "Regular", "Efectivo", ahora=ahora)
+    assert sum(entrada.cantidad for entrada in destinatario.entradas) == 10
+
 
 # 2.11 Probar cargar más de 10 entradas en varias transacciones FALLA
+def test_mas_de_10_entradas_en_varias_transacciones(ahora, parque, destinatario, pasarela_aprobada, servicio_mail):
+    controller = ControllerComprarEntrada(destinatario, parque, pasarela=pasarela_aprobada, servicio_mail=servicio_mail)
+    controller.comprar_entrada("09/10/2026", 6, [30] * 6, "Regular", "Efectivo", ahora=ahora)
+    with pytest.raises(ErrorValidacion):
+        controller.comprar_entrada("09/10/2026", 5, [30] * 5, "Regular", "Efectivo", ahora=ahora)

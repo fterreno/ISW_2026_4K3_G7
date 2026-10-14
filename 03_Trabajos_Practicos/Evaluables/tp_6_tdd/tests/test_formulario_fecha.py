@@ -65,14 +65,34 @@ def test_fecha_actual_dentro_del_horario_abierto(parque):
 
 
 # 1.10 Probar una fecha anterior a que pase un mes desde la fecha actual PASA
+def test_fecha_antes_de_un_mes_es_valida(ahora, parque):
+    assert validar_fecha("07/11/2026", ahora, parque) == date(2026, 11, 7)  # sábado
+
 
 # 1.11 Probar una fecha posterior a que pase un mes desde la fecha actual FALLA
+def test_fecha_despues_de_un_mes_informa_error(ahora, parque):
+    with pytest.raises(ErrorValidacion, match="mes"):
+        validar_fecha("10/11/2026", ahora, parque)  # martes
+
 
 # 1.12 Probar para la fecha actual en un horario anterior a las 17:30 PASA
+def test_fecha_actual_antes_de_las_17_30(parque):
+    ahora = datetime(2026, 10, 8, 17, 29)
+    assert validar_fecha("08/10/2026", ahora, parque) == date(2026, 10, 8)
+
 
 # 1.13 Probar para la fecha actual en el horario 17:30 PASA
+def test_fecha_actual_a_las_17_30(parque):
+    ahora = datetime(2026, 10, 8, 17, 30)
+    assert validar_fecha("08/10/2026", ahora, parque) == date(2026, 10, 8)
+
 
 # 1.14 Probar para la fecha actual en un horario posterior a las 17:30 FALLA
+def test_fecha_actual_despues_de_las_17_30_informa_error(parque):
+    ahora = datetime(2026, 10, 8, 17, 31)
+    with pytest.raises(ErrorValidacion):
+        validar_fecha("08/10/2026", ahora, parque)
+
 
 # 1.15 Probar una fecha correspondiente a un domingo PASA
 def test_fecha_en_domingo_es_valida(ahora, parque):
