@@ -1,4 +1,6 @@
 import asyncio
+import calendar
+from datetime import date, datetime
 from typing import Callable
 
 import flet as ft
@@ -7,6 +9,7 @@ from assets.style import tema
 from boundaries.pantalla_resultado_pago import PantallaResultadoPago
 from controllers.controller_comprar_entrada import ControllerComprarEntrada
 from entities.mercado_pago import PasarelaMercadoPago
+from entities.parque import Parque
 from entities.usuario import Usuario
 from entities.errores import ErrorMail, ErrorPago, ErrorValidacion, ErroresValidacion
 
@@ -23,11 +26,23 @@ class PantallaFormularioEntrada:
     DISTANCIA_DESLIZAR = 60  # píxeles que hay que arrastrar el dedo para cambiar de card
     VELOCIDAD_DESLIZAR = 300  # o un deslizamiento rápido, en píxeles por segundo
 
+    TAMANO_DIA = 40  # tamaño de cada día del calendario
+    MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+             "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    DIAS_SEMANA = ["L", "M", "M", "J", "V", "S", "D"]
+
     def __init__(self, page: ft.Page, usuario: Usuario, al_volver: Callable[[], None]):
         self.page = page
         self.usuario = usuario
         self.al_volver = al_volver
-        self.campo_fecha = ft.TextField(label="Fecha de visita", hint_text="dd/mm/aaaa", prefix_icon=ft.Icons.CALENDAR_MONTH, width=350)
+        self.parque = Parque()
+        self.fecha_elegida: date | None = None
+        # la fecha no se escribe: al tocar el campo se abre el calendario con los días no disponibles deshabilitados
+        self.campo_fecha = ft.TextField(
+            label="Fecha de visita", hint_text="Elegí la fecha", prefix_icon=ft.Icons.CALENDAR_MONTH, width=350,
+            read_only=True, mouse_cursor=ft.MouseCursor.CLICK, on_click=self.abrir_calendario,
+        )
+        self.armar_calendario()
         self.campo_cantidad = ft.TextField(
             label="Cantidad de entradas", keyboard_type=ft.KeyboardType.NUMBER, prefix_icon=ft.Icons.CONFIRMATION_NUMBER, width=350,
             on_change=lambda e: self.cambiar_cantidad_edades(self.campo_cantidad.value),
@@ -52,6 +67,91 @@ class PantallaFormularioEntrada:
         )
         self.boton_confirmar = ft.FilledButton(content="Confirmar compra", icon=ft.Icons.CHECK, on_click=self.confirmar_compra)
         self.modo_checkout: ft.LaunchMode | None = None  # cómo se abrió el checkout de Mercado Pago, para poder cerrarlo
+
+    # calendario de la fecha de visita: solo se pueden tocar los días en que el parque está disponible.
+
+    def armar_calendario(self) -> None:
+        self.ahora_calendario = datetime.now()
+        self.mes_calendario = date.today().replace(day=1)
+        self.titulo_mes = ft.Text(size=16, font_family=tema.FUENTE_TITULOS)
+        self.boton_mes_anterior = ft.IconButton(icon=ft.Icons.CHEVRON_LEFT, on_click=lambda e: self.cambiar_mes(-1))
+        self.boton_mes_siguiente = ft.IconButton(icon=ft.Icons.CHEVRON_RIGHT, on_click=lambda e: self.cambiar_mes(1))
+        self.semanas_calendario = ft.Column(tight=True, spacing=4)
+        self.dialogo_calendario = ft.AlertDialog(
+            title=ft.Text("Fecha de visita", font_family=tema.FUENTE_TITULOS),
+            content=ft.Column(
+                tight=True, spacing=4, width=7 * self.TAMANO_DIA + 6 * 4,
+                controls=[
+                    ft.Row(alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                           controls=[self.boton_mes_anterior, self.titulo_mes, self.boton_mes_siguiente]),
+                    ft.Row(spacing=4, controls=[self.celda_dia(ft.Text(dia, font_family=tema.FUENTE_TITULOS)) for dia in self.DIAS_SEMANA]),
+                    self.semanas_calendario,
+                    ft.Text("Los días deshabilitados son días en que el parque está cerrado o que no se pueden reservar.",
+                            size=12, italic=True),
+                ],
+            ),
+            actions=[ft.TextButton(content="Cancelar", on_click=lambda e: self.page.pop_dialog())],
+        )
+
+    def abrir_calendario(self, e=None) -> None:
+        # la disponibilidad se calcula al abrirlo, por si ya pasó el horario de compra de hoy
+        self.ahora_calendario = datetime.now()
+        self.mes_calendario = (self.fecha_elegida or self.ahora_calendario.date()).replace(day=1)
+        self.dibujar_mes()
+        self.page.show_dialog(self.dialogo_calendario)
+
+    def dia_disponible(self, dia: date) -> bool:
+        try:
+            self.parque.validar_disponibilidad(dia, self.ahora_calendario)
+        except ErrorValidacion:
+            return False
+        return True
+
+    def cambiar_mes(self, paso: int) -> None:
+        mes = self.mes_calendario.month - 1 + paso
+        self.mes_calendario = date(self.mes_calendario.year + mes // 12, mes % 12 + 1, 1)
+        self.dibujar_mes()
+        self.page.update()
+
+    def dibujar_mes(self) -> None:
+        hoy = self.ahora_calendario.date()
+        # solo se puede ir del mes actual al de dentro de un mes, que son los que tienen días para reservar
+        self.titulo_mes.value = f"{self.MESES[self.mes_calendario.month - 1]} {self.mes_calendario.year}"
+        self.boton_mes_anterior.disabled = self.mes_calendario <= hoy.replace(day=1)
+        self.boton_mes_siguiente.disabled = self.mes_calendario >= self.parque.sumar_un_mes(hoy).replace(day=1)
+        semanas = calendar.Calendar(firstweekday=calendar.MONDAY).monthdatescalendar(self.mes_calendario.year, self.mes_calendario.month)
+        self.semanas_calendario.controls = [
+            ft.Row(spacing=4, controls=[self.dibujar_dia(dia) for dia in semana])
+            for semana in semanas
+        ]
+
+    def dibujar_dia(self, dia: date) -> ft.Container:
+        if dia.month != self.mes_calendario.month:
+            return self.celda_dia(None)  # días del mes anterior o siguiente: lugar vacío
+        disponible = self.dia_disponible(dia)
+        seleccionado = dia == self.fecha_elegida
+        es_hoy = dia == self.ahora_calendario.date()
+        return self.celda_dia(
+            ft.Text(str(dia.day), color=tema.CREMA if seleccionado else tema.TEXTO,
+                    font_family=tema.FUENTE_TITULOS if es_hoy or seleccionado else tema.FUENTE),
+            bgcolor=tema.VERDE_OSCURO if seleccionado else None,
+            border=ft.Border.all(1, tema.VERDE_OSCURO) if es_hoy and not seleccionado else None,
+            opacity=1 if disponible else 0.3,
+            on_click=(lambda e, elegido=dia: self.elegir_fecha(elegido)) if disponible else None,
+            disabled=not disponible,
+        )
+
+    def celda_dia(self, contenido: ft.Control | None, **estilo) -> ft.Container:
+        return ft.Container(width=self.TAMANO_DIA, height=self.TAMANO_DIA, alignment=ft.Alignment.CENTER,
+                            border_radius=self.TAMANO_DIA / 2, content=contenido, **estilo)
+
+    def elegir_fecha(self, fecha: date) -> None:
+        self.fecha_elegida = fecha
+        self.page.pop_dialog()
+        # el controller recibe la fecha como texto dd/mm/aaaa, igual que antes
+        self.campo_fecha.value = f"{fecha:%d/%m/%Y}"
+        self.campo_fecha.error = None
+        self.page.update()
 
     def armar_carrusel_edades(self) -> None:
         self.campos_edad: list[ft.TextField] = []
@@ -263,7 +363,7 @@ class PantallaFormularioEntrada:
                 # en efectivo no se accede a Mercado Pago se tiene en cuenta donde se usa la app
                 pasarela = PasarelaMercadoPago()
                 pasarela.configurar_apertura(self.abrir_checkout)
-            controller = ControllerComprarEntrada(self.usuario, pasarela=pasarela)
+            controller = ControllerComprarEntrada(self.usuario, self.parque, pasarela=pasarela)
             # la compra con tarjeta espera a que Mercado Pago confirme el pago
             entrada = await asyncio.to_thread(
                 controller.comprar_entrada,
