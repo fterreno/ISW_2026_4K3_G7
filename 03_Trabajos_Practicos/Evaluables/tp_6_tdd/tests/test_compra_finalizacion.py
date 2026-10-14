@@ -10,5 +10,7 @@ def test_compra_finalizada_informa_cantidad_fecha(datos_validos, ahora, parque, 
     assert resultado.fecha_entrada == date(2026, 10, 9)
     # el mensaje que se le informa al usuario es el mail de confirmación
     mensaje = servicio_mail.enviados[0].get_body(preferencelist=("html",)).get_content()
-    assert "Cantidad de entradas compradas: 2" in mensaje
-    assert "Fecha de visita: 09/10/2026" in mensaje
+    # la tabla de entradas y la factura tienen una fila por visitante con la fecha de visita
+    assert "09/10/2026" in mensaje
+    assert "Visitante 2" in mensaje
+    assert "Visitante 3" not in mensaje

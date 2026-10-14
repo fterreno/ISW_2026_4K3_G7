@@ -60,7 +60,7 @@ class PantallaResultadoPago:
             ft.Icon(ft.Icons.CHECK_CIRCLE, size=72, color=tema.VERDE),
             ft.Text(titulo, size=28, font_family=tema.FUENTE_TITULOS),
             ft.Text(aviso, text_align=ft.TextAlign.CENTER),
-            ft.Card(content=ft.Container(padding=20, content=ft.Column(tight=True, controls=[ft.Text(linea) for linea in detalle]))),
+            ft.Container(padding=20, content=ft.Column(tight=True, controls=[ft.Text(linea) for linea in detalle])),
             ft.Text(mensaje_mail, color=None if self.mail_enviado else tema.ROJO, text_align=ft.TextAlign.CENTER),
         ]
 

@@ -67,8 +67,8 @@ class Entrada:
 
     @staticmethod
     def validar_edad(edad) -> int:
-        edad_minima = 12
-        edad_maxima = 70
+        edad_minima = 0
+        edad_maxima = 100
         if isinstance(edad, (bool, float)):
             raise ErrorValidacion("La edad debe ser un número entero")
         try:
@@ -100,5 +100,22 @@ class Entrada:
             raise ErrorValidacion("La forma de pago debe ser Efectivo o Tarjeta.")
 
     def generar_monto_total(self) -> None:
-        # el monto total es el precio del tipo de pase. vip sel 1000 y regular sale 500 por la cantidad de entradas
-        self.monto_total = self.tipo_pase.monto_entrada() * self.cantidad
+        # el monto total es la suma de lo que paga cada visitante según el tipo de pase y su edad
+        self.monto_total = sum(self.monto_por_edad(edad) for edad in self.edades)
+
+    def monto_por_edad(self, edad: int) -> float:
+        """Lo que paga el visitante: el precio del pase menos el descuento de su categoría de edad."""
+        _, descuento = self.categoria_por_edad(edad)
+        return self.tipo_pase.monto_entrada() * (1 - descuento)
+
+    @staticmethod
+    def categoria_por_edad(edad: int) -> tuple[str, float]:
+        """Devuelve la categoría del visitante y su descuento (1 es 100%): hasta 3 años no paga;
+        hasta 15 años y desde 60 años paga la mitad del pase."""
+        if edad <= 3:
+            return "Hasta 3 años", 1.0
+        if edad <= 15:
+            return "Hasta 15 años", 0.5
+        if edad >= 60:
+            return "Desde 60 años", 0.5
+        return "General", 0.0
