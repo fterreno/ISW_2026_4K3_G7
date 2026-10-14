@@ -71,3 +71,8 @@ def test_formulario_tiene_cantidad_cargada(datos_validos, parque, ahora):
     entrada = Entrada(**datos_validos)
     entrada.registrar(parque, ahora)
     assert entrada.cantidad == 2
+
+# (Solo puede comprar 10 entradas para una fecha específica, ya sea en una o varias transacciones)
+# 2.10 Probar cargar 10 o menos entradas en varias transacciones PASA
+
+# 2.11 Probar cargar más de 10 entradas en varias transacciones FALLA

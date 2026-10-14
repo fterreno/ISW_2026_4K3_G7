@@ -1,5 +1,6 @@
 import flet as ft
 
+from assets.style import tema
 from boundaries.pantalla_formulario_entrada import PantallaFormularioEntrada
 from entities.parque import Parque
 from entities.usuario import Usuario
@@ -15,7 +16,7 @@ class PantallaInicio:
         self.campo_nombre = ft.TextField(label="Nombre", prefix_icon=ft.Icons.PERSON, width=350)
         self.campo_apellido = ft.TextField(label="Apellido", prefix_icon=ft.Icons.PERSON_OUTLINE, width=350)
         self.campo_mail = ft.TextField(label="Mail", prefix_icon=ft.Icons.EMAIL, keyboard_type=ft.KeyboardType.EMAIL, width=350)
-        self.texto_error = ft.Text(color=ft.Colors.RED, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo
+        self.texto_error = ft.Text(color=tema.ROJO, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo
 
     def mostrar(self) -> None:
         self.page.clean()
@@ -29,8 +30,8 @@ class PantallaInicio:
                         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                         spacing=16,
                         controls=[
-                            ft.Icon(ft.Icons.PARK, size=64, color=ft.Colors.GREEN),
-                            ft.Text(Parque.nombre, size=32, weight=ft.FontWeight.BOLD),
+                            ft.Image(src=tema.LOGO, width=120, fit=ft.BoxFit.CONTAIN, color=tema.VERDE_OSCURO, color_blend_mode=ft.BlendMode.SRC_IN),
+                            ft.Text(Parque.nombre, size=32, font_family=tema.FUENTE_TITULOS, color=tema.VERDE_OSCURO),
                             ft.Text("Ingresá tus datos para comprar tus entradas"),
                             self.campo_nombre,
                             self.campo_apellido,
