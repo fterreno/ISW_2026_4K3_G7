@@ -14,10 +14,14 @@ from entities.errores import ErrorMail, ErrorPago, ErrorValidacion, ErroresValid
 class PantallaFormularioEntrada:
     """Formulario con los datos de la entrada; al confirmar le pide al controller que haga la compra."""
 
-    # se crea una card por visitante, cuando se escribe la edad se desliza a la izquierda y aparece la siguiente
+    # se crea una card por visitante, cuando se escribe la edad se desliza a la izquierda y aparece la siguiente;
+    # deslizando con el dedo a la derecha se vuelve a la anterior (y a la izquierda se avanza)
     ANCHO_CARD = 350
     ALTO_CARD = 160
     MAXIMO_CARDS = 10
+    ESPERA_AVANCE = 1.2  # segundos sin escribir para pasar solo a la card siguiente
+    DISTANCIA_DESLIZAR = 60  # píxeles que hay que arrastrar el dedo para cambiar de card
+    VELOCIDAD_DESLIZAR = 300  # o un deslizamiento rápido, en píxeles por segundo
 
     def __init__(self, page: ft.Page, usuario: Usuario, al_volver: Callable[[], None]):
         self.page = page
@@ -54,25 +58,27 @@ class PantallaFormularioEntrada:
         self.edades_guardadas: list[str] = []
         self.cards_edad: list[ft.Container] = []
         self.card_actual = 0
-        self.pila_edades = ft.Stack(width=self.ANCHO_CARD, height=self.ALTO_CARD, clip_behavior=ft.ClipBehavior.HARD_EDGE, visible=False)
-        self.indicador_edades = ft.Text()
-        self.boton_edad_anterior = ft.IconButton(icon=ft.Icons.CHEVRON_LEFT, on_click=self.ir_edad_anterior)
-        self.boton_edad_siguiente = ft.IconButton(icon=ft.Icons.CHEVRON_RIGHT, on_click=self.ir_edad_siguiente)
+        self.arrastre = 0.0  # cuánto se movió el dedo en el deslizamiento actual
+        self.pila_edades = ft.Stack(width=self.ANCHO_CARD, height=self.ALTO_CARD, clip_behavior=ft.ClipBehavior.HARD_EDGE)
+        # el detector de gestos envuelve las cards para poder cambiarlas deslizando el dedo
+        self.deslizador_edades = ft.GestureDetector(
+            content=self.pila_edades, visible=False,
+            on_horizontal_drag_start=self.empezar_deslizamiento,
+            on_horizontal_drag_update=self.seguir_deslizamiento,
+            on_horizontal_drag_end=self.terminar_deslizamiento,
+        )
         self.aviso_edades = ft.Text("Ingresá la cantidad de entradas para cargar las edades", italic=True, color=tema.VERDE)
+        self.ayuda_deslizar = ft.Text("Deslizá a la derecha para volver al visitante anterior", italic=True, size=12, visible=False)
         # errores de las edades en general
         self.error_edades = ft.Text(color=tema.ROJO, size=12, text_align=ft.TextAlign.CENTER, visible=False)
-        self.navegacion_edades = ft.Row(
-            tight=True, visible=False,
-            controls=[self.boton_edad_anterior, self.indicador_edades, self.boton_edad_siguiente],
-        )
         self.carrusel_edades = ft.Column(
             tight=True, spacing=4,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
                 ft.Row(tight=True, controls=[ft.Icon(ft.Icons.GROUP), ft.Text("Edades de los visitantes")]),
                 self.aviso_edades,
-                self.pila_edades,
-                self.navegacion_edades,
+                self.deslizador_edades,
+                self.ayuda_deslizar,
                 self.error_edades,
             ],
         )
@@ -127,6 +133,7 @@ class PantallaFormularioEntrada:
             ft.TextField(
                 label="Edad", value=self.edades_guardadas[i] if i < len(self.edades_guardadas) else "",
                 keyboard_type=ft.KeyboardType.NUMBER, prefix_icon=ft.Icons.PERSON,
+                on_change=self.avanzar_al_terminar_de_escribir,
                 on_submit=self.ir_edad_siguiente,
             )
             for i in range(cantidad)
@@ -136,35 +143,52 @@ class PantallaFormularioEntrada:
         self.card_actual = min(self.card_actual, max(cantidad - 1, 0))
 
         self.aviso_edades.visible = cantidad == 0
-        self.pila_edades.visible = cantidad > 0
-        self.navegacion_edades.visible = cantidad > 0
+        self.deslizador_edades.visible = cantidad > 0
+        self.ayuda_deslizar.visible = cantidad > 1
         self.ubicar_cards_edad()
 
     def armar_card_edad(self, indice: int, campo: ft.TextField) -> ft.Container:
+        # sin card ni color de fondo: el visitante se ve sobre el mismo fondo crema de la pantalla
         return ft.Container(
-            width=self.ANCHO_CARD, height=self.ALTO_CARD, top=0,
+            width=self.ANCHO_CARD, height=self.ALTO_CARD, top=0, padding=16,
             animate_position=ft.Animation(duration=300, curve=ft.AnimationCurve.EASE_OUT),
-            content=ft.Card(
-                content=ft.Container(
-                    padding=16,
-                    content=ft.Column(
-                        tight=True, spacing=12,
-                        controls=[
-                            ft.Text(f"Visitante {indice + 1} de {len(self.campos_edad)}", font_family=tema.FUENTE_TITULOS),
-                            campo,
-                        ],
-                    ),
-                ),
+            content=ft.Column(
+                tight=True, spacing=12,
+                controls=[
+                    ft.Text(f"Visitante {indice + 1} de {len(self.campos_edad)}", font_family=tema.FUENTE_TITULOS),
+                    campo,
+                ],
             ),
         )
 
     def ubicar_cards_edad(self) -> None:
         for i, card in enumerate(self.cards_edad):
             card.left = (i - self.card_actual) * self.ANCHO_CARD
-        self.indicador_edades.value = f"{self.card_actual + 1} / {len(self.cards_edad)}"
-        self.boton_edad_anterior.disabled = self.card_actual == 0
-        self.boton_edad_siguiente.disabled = self.card_actual >= len(self.cards_edad) - 1
         self.page.update()
+
+    async def avanzar_al_terminar_de_escribir(self, e) -> None:
+        """Cuando la persona deja de escribir una edad válida, la card se desliza sola a la siguiente."""
+        campo = e.control
+        valor = campo.value
+        await asyncio.sleep(self.ESPERA_AVANCE)
+        sigue_igual = campo.value == valor and campo in self.campos_edad
+        if sigue_igual and (valor or "").strip().isdigit() and self.campos_edad.index(campo) == self.card_actual:
+            await self.ir_edad_siguiente()
+
+    def empezar_deslizamiento(self, e=None) -> None:
+        self.arrastre = 0.0
+
+    def seguir_deslizamiento(self, e: ft.DragUpdateEvent) -> None:
+        self.arrastre += e.primary_delta or 0
+
+    async def terminar_deslizamiento(self, e: ft.DragEndEvent) -> None:
+        """Deslizar a la derecha vuelve al visitante anterior; a la izquierda pasa al siguiente."""
+        velocidad = e.primary_velocity or 0
+        if self.arrastre > self.DISTANCIA_DESLIZAR or velocidad > self.VELOCIDAD_DESLIZAR:
+            await self.ir_edad_anterior()
+        elif self.arrastre < -self.DISTANCIA_DESLIZAR or velocidad < -self.VELOCIDAD_DESLIZAR:
+            await self.ir_edad_siguiente()
+        self.arrastre = 0.0
 
     async def mover_a_card_edad(self, indice: int) -> None:
         if not 0 <= indice < len(self.cards_edad):
