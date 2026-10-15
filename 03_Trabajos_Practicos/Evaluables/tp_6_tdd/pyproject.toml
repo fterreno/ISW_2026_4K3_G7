@@ -5,7 +5,7 @@ description = ""
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "Flet developer", email = "you@example.com" }
+    { name = "Grupo 7 - ISW 2026 - UTN FRC" }
 ]
 dependencies = [
     "flet>=1.0.3",
@@ -30,10 +30,10 @@ pythonpath = [".", "src"]
 
 [tool.flet]
 desktop_flavor = "light"    # Change to "full" to use flet-audio and flet-video
-org = "com.mycompany"
-product = "tp-6-tdd"
-company = "Flet"
-copyright = "Copyright (C) 2023-2026 by Flet"
+org = "ar.edu.utn.frc.g7"
+product = "EcoHarmony Park"
+company = "Grupo 7 - UTN FRC"
+copyright = "Copyright (C) 2026 Grupo 7 - UTN FRC"
 
 # assets/icon.png is the icon for every platform. Keep it transparent and
 # filling the whole canvas: web, Windows and Linux show it as-is, and Flet
