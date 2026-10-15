@@ -327,6 +327,7 @@ class PantallaFormularioEntrada:
 
     async def avanzar_al_terminar_de_escribir(self, e) -> None:
         """Cuando la persona deja de escribir una edad válida, la card se desliza sola a la siguiente."""
+        self.actualizar_importes()
         campo = e.control
         es_valida = self.validar_campo_edad(campo)
         self.actualizar_importes()
