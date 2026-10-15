@@ -6,8 +6,10 @@ from typing import Callable
 import flet as ft
 
 from assets.style import tema
+from assets.style.formato_moneda_peso import formatear_monto
 from boundaries.pantalla_resultado_pago import PantallaResultadoPago
 from controllers.controller_comprar_entrada import ControllerComprarEntrada
+from entities.entrada import Entrada
 from entities.mercado_pago import PasarelaMercadoPago
 from entities.parque import Parque
 from entities.usuario import Usuario
@@ -51,10 +53,22 @@ class PantallaFormularioEntrada:
         self.campo_tipo_pase = ft.Dropdown(
             label="Tipo de pase", width=350,
             options=[ft.DropdownOption(key="Regular", text="Regular"), ft.DropdownOption(key="VIP", text="VIP")],
+            on_select=self.actualizar_importes,
         )
         self.campo_forma_pago = ft.Dropdown(
             label="Forma de pago", width=350,
             options=[ft.DropdownOption(key="Efectivo", text="Efectivo"), ft.DropdownOption(key="Tarjeta", text="Tarjeta (Mercado Pago)")],
+        )
+        self.texto_subtotal = ft.Text("Subtotal: -")
+        self.texto_descuentos = ft.Text("Descuentos por edad: -")
+        self.texto_total = ft.Text("Total: -", font_family=tema.FUENTE_TITULOS, size=20)
+        self.aviso_importes = ft.Text(
+            "Completá cantidad, edades y tipo de pase para ver el importe.",
+            size=12, italic=True, text_align=ft.TextAlign.CENTER,
+        )
+        self.resumen_importes = ft.Column(
+            tight=True, spacing=4, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[self.texto_subtotal, self.texto_descuentos, self.texto_total, self.aviso_importes],
         )
         self.texto_error = ft.Text(color=tema.ROJO, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo del formulario
         self.procesando = ft.Row(
@@ -203,6 +217,7 @@ class PantallaFormularioEntrada:
                             self.carrusel_edades,
                             self.campo_tipo_pase,
                             self.campo_forma_pago,
+                            self.resumen_importes,
                             self.texto_error,
                             self.procesando,
                             self.aviso_checkout,
@@ -245,7 +260,30 @@ class PantallaFormularioEntrada:
         self.aviso_edades.visible = cantidad == 0
         self.deslizador_edades.visible = cantidad > 0
         self.ayuda_deslizar.visible = cantidad > 1
+        self.actualizar_importes()
         self.ubicar_cards_edad()
+
+    def actualizar_importes(self, e=None) -> None:
+        """Muestra los importes con las reglas de Entrada, sin confirmar ni guardar la compra."""
+        entrada = Entrada(None, self.campo_cantidad.value, self.leer_edades(), self.campo_tipo_pase.value, None)
+        try:
+            entrada.validar_cantidad_entradas()
+            entrada.validar_edades()
+            entrada.validar_cantidad_edad_entradas()
+            entrada.validar_tipo_pase()
+        except ErrorValidacion:
+            self.texto_subtotal.value = "Subtotal: -"
+            self.texto_descuentos.value = "Descuentos por edad: -"
+            self.texto_total.value = "Total: -"
+            self.aviso_importes.visible = True
+        else:
+            entrada.generar_monto_total()
+            subtotal = entrada.tipo_pase.monto_entrada() * entrada.cantidad
+            self.texto_subtotal.value = f"Subtotal: {formatear_monto(subtotal)}"
+            self.texto_descuentos.value = f"Descuentos por edad: {formatear_monto(subtotal - entrada.monto_total)}"
+            self.texto_total.value = f"Total: {formatear_monto(entrada.monto_total)}"
+            self.aviso_importes.visible = False
+        self.page.update()
 
     def armar_card_edad(self, indice: int, campo: ft.TextField) -> ft.Container:
         # sin card ni color de fondo: el visitante se ve sobre el mismo fondo crema de la pantalla
@@ -268,6 +306,7 @@ class PantallaFormularioEntrada:
 
     async def avanzar_al_terminar_de_escribir(self, e) -> None:
         """Cuando la persona deja de escribir una edad válida, la card se desliza sola a la siguiente."""
+        self.actualizar_importes()
         campo = e.control
         valor = campo.value
         await asyncio.sleep(self.ESPERA_AVANCE)
