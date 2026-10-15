@@ -12,6 +12,7 @@ from controllers.controller_comprar_entrada import ControllerComprarEntrada
 from entities.entrada import Entrada
 from entities.mercado_pago import PasarelaMercadoPago
 from entities.parque import Parque
+from entities.tipo_pase import TipoPase
 from entities.usuario import Usuario
 from entities.errores import ErrorMail, ErrorPago, ErrorValidacion, ErroresValidacion
 
@@ -22,7 +23,7 @@ class PantallaFormularioEntrada:
     # se crea una card por visitante, cuando se escribe la edad se desliza a la izquierda y aparece la siguiente;
     # deslizando con el dedo a la derecha se vuelve a la anterior (y a la izquierda se avanza)
     ANCHO_CARD = 350
-    ALTO_CARD = 160
+    ALTO_CARD = 120  # alcanza para el título, la edad y el error debajo de la edad
     MAXIMO_CARDS = 10
     ESPERA_AVANCE = 1.2  # segundos sin escribir para pasar solo a la card siguiente
     DISTANCIA_DESLIZAR = 60  # píxeles que hay que arrastrar el dedo para cambiar de card
@@ -52,16 +53,18 @@ class PantallaFormularioEntrada:
         self.armar_carrusel_edades()
         self.campo_tipo_pase = ft.Dropdown(
             label="Tipo de pase", width=350,
-            options=[ft.DropdownOption(key="Regular", text="Regular"), ft.DropdownOption(key="VIP", text="VIP")],
+            # cada opción muestra el precio por entrada, sacado del tipo de pase
+            options=[ft.DropdownOption(key=tipo.value, text=f"{tipo.value} {formatear_monto(tipo.monto_entrada())}") for tipo in TipoPase],
             on_select=self.actualizar_importes,
         )
         self.campo_forma_pago = ft.Dropdown(
             label="Forma de pago", width=350,
             options=[ft.DropdownOption(key="Efectivo", text="Efectivo"), ft.DropdownOption(key="Tarjeta", text="Tarjeta (Mercado Pago)")],
         )
-        self.texto_subtotal = ft.Text("Subtotal: -")
-        self.texto_descuentos = ft.Text("Descuentos por edad: -")
-        self.texto_total = ft.Text("Total: -", font_family=tema.FUENTE_TITULOS, size=20)
+        # los importes se muestran recién cuando cantidad, edades y tipo de pase están completos
+        self.texto_subtotal = ft.Text(visible=False)
+        self.texto_descuentos = ft.Text(visible=False)
+        self.texto_total = ft.Text(font_family=tema.FUENTE_TITULOS, size=20, visible=False)
         self.aviso_importes = ft.Text(
             "Completá cantidad, edades y tipo de pase para ver el importe.",
             size=12, italic=True, text_align=ft.TextAlign.CENTER,
@@ -279,23 +282,23 @@ class PantallaFormularioEntrada:
             entrada.validar_cantidad_edad_entradas()
             entrada.validar_tipo_pase()
         except ErrorValidacion:
-            self.texto_subtotal.value = "Subtotal: -"
-            self.texto_descuentos.value = "Descuentos por edad: -"
-            self.texto_total.value = "Total: -"
-            self.aviso_importes.visible = True
+            completo = False
         else:
+            completo = True
             entrada.generar_monto_total()
             subtotal = entrada.tipo_pase.monto_entrada() * entrada.cantidad
             self.texto_subtotal.value = f"Subtotal: {formatear_monto(subtotal)}"
             self.texto_descuentos.value = f"Descuentos por edad: {formatear_monto(subtotal - entrada.monto_total)}"
             self.texto_total.value = f"Total: {formatear_monto(entrada.monto_total)}"
-            self.aviso_importes.visible = False
+        for texto in (self.texto_subtotal, self.texto_descuentos, self.texto_total):
+            texto.visible = completo
+        self.aviso_importes.visible = not completo
         self.page.update()
 
     def armar_card_edad(self, indice: int, campo: ft.TextField) -> ft.Container:
         # sin card ni color de fondo: el visitante se ve sobre el mismo fondo crema de la pantalla
         return ft.Container(
-            width=self.ANCHO_CARD, height=self.ALTO_CARD, top=0, padding=16,
+            width=self.ANCHO_CARD, height=self.ALTO_CARD, top=0, padding=ft.Padding.symmetric(horizontal=16, vertical=4),
             animate_position=ft.Animation(duration=300, curve=ft.AnimationCurve.EASE_OUT),
             content=ft.Column(
                 tight=True, spacing=12,

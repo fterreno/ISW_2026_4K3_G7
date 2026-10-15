@@ -28,7 +28,6 @@ class Parque:
             raise ErrorValidacion("El parque está cerrado ese día por ser feriado.")
         if fecha > self.sumar_un_mes(ahora.date()):
             raise ErrorValidacion("La fecha de visita no puede ser posterior a un mes desde la fecha actual.")
-        # La compra para hoy tiene un horario límite, pero no exige que el parque ya haya abierto (FAQ, punto 26).
         if fecha == ahora.date() and ahora.time() > self.hora_limite_compra:
             raise ErrorValidacion(f"Para la fecha actual solo se puede comprar hasta las {self.hora_limite_compra:%H:%M}.")
 
