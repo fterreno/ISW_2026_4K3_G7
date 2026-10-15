@@ -103,3 +103,9 @@ def test_fecha_en_domingo_es_valida(ahora, parque):
 def test_fecha_en_dia_festivo_informa_error(ahora, parque, texto):
     with pytest.raises(ErrorValidacion, match="cerrado"):
         validar_fecha(texto, ahora, parque)
+
+
+# 1.17 La FAQ (punto 26) limita la compra para hoy hasta las 17:30, sin exigir que el parque ya haya abierto. PASA
+def test_fecha_actual_antes_de_la_apertura_es_valida(parque):
+    ahora = datetime(2026, 10, 8, 8, 29)
+    assert validar_fecha("08/10/2026", ahora, parque) == date(2026, 10, 8)
