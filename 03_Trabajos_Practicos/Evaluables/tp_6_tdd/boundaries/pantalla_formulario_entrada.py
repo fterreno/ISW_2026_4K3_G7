@@ -236,12 +236,19 @@ class PantallaFormularioEntrada:
 
     def cambiar_cantidad_edades(self, texto: str | None) -> None:
         """arma una card por entrada. las edades ya cargadas se mantienen."""
-        try:
-            cantidad = int(texto or "")
-        except ValueError:
-            cantidad = 0
-        if cantidad < 1 or cantidad > self.MAXIMO_CARDS:
-            cantidad = 0
+        texto_limpio = (texto or "").strip()
+        cantidad = 0
+        if not texto_limpio:
+            self.campo_cantidad.error = None
+        else:
+            entrada_temp = Entrada(None, texto_limpio, [], None, None)
+            try:
+                entrada_temp.validar_cantidad_entradas()
+                self.campo_cantidad.error = None
+                cantidad = entrada_temp.cantidad
+            except ErrorValidacion as error:
+                self.campo_cantidad.error = str(error)
+                cantidad = 0
 
         self.edades_guardadas = [campo.value for campo in self.campos_edad] + self.edades_guardadas[len(self.campos_edad):]
         self.campos_edad = [
@@ -304,14 +311,29 @@ class PantallaFormularioEntrada:
             card.left = (i - self.card_actual) * self.ANCHO_CARD
         self.page.update()
 
+    def validar_campo_edad(self, campo: ft.TextField) -> bool:
+        """Valida la edad ingresada en el campo; muestra el error si es inválida o lo limpia si es válida."""
+        texto_limpio = (campo.value or "").strip()
+        if not texto_limpio:
+            campo.error = None
+            return False
+        try:
+            Entrada.validar_edad(texto_limpio)
+            campo.error = None
+            return True
+        except ErrorValidacion as error:
+            campo.error = str(error)
+            return False
+
     async def avanzar_al_terminar_de_escribir(self, e) -> None:
         """Cuando la persona deja de escribir una edad válida, la card se desliza sola a la siguiente."""
-        self.actualizar_importes()
         campo = e.control
+        es_valida = self.validar_campo_edad(campo)
+        self.actualizar_importes()
         valor = campo.value
         await asyncio.sleep(self.ESPERA_AVANCE)
         sigue_igual = campo.value == valor and campo in self.campos_edad
-        if sigue_igual and (valor or "").strip().isdigit() and self.campos_edad.index(campo) == self.card_actual:
+        if sigue_igual and es_valida and self.campos_edad.index(campo) == self.card_actual:
             await self.ir_edad_siguiente()
 
     def empezar_deslizamiento(self, e=None) -> None:
