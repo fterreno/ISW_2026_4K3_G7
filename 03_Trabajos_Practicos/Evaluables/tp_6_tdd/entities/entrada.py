@@ -78,9 +78,9 @@ class Entrada:
         if edad < 0:
             raise ErrorValidacion("La edad debe ser un número positivo.")
         if edad < edad_minima:
-            raise ErrorValidacion(f"No se permite el ingreso de una persona menor a {edad_minima} años.")
+            raise ErrorValidacion(f"La edad minima permitida es de {edad_minima} años.")
         if edad > edad_maxima:
-            raise ErrorValidacion(f"No se permite el ingreso de una persona mayor a {edad_maxima} años.")
+            raise ErrorValidacion(f"La edad maxima permitida es de {edad_maxima} años.")
         return edad
 
     def validar_cantidad_edad_entradas(self) -> None:
@@ -91,13 +91,13 @@ class Entrada:
         try:
             self.tipo_pase = TipoPase(self.tipo_pase)
         except ValueError:
-            raise ErrorValidacion("El tipo de pase debe ser VIP o Regular.")
+            raise ErrorValidacion("Debe seleccionar una opcion.")
 
     def validar_forma_pago(self) -> None:
         try:
             self.forma_pago = FormaPago(self.forma_pago)
         except ValueError:
-            raise ErrorValidacion("La forma de pago debe ser Efectivo o Tarjeta.")
+            raise ErrorValidacion("Debe seleccionar una opcion.")
 
     def generar_monto_total(self) -> None:
         # el monto total es la suma de lo que paga cada visitante según el tipo de pase y su edad
