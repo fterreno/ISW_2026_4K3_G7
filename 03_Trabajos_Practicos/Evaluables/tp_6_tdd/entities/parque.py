@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 import calendar
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 
 from entities.errores import ErrorValidacion
 
@@ -13,7 +13,13 @@ class Parque:
     dias_festivos: set[tuple[int, int]] = field(default_factory=lambda: {(12, 25), (1, 1)})  # (mes, día): 25/12 y 1/1
     hora_apertura: time = time(8, 30)
     hora_cierre: time = time(19, 0)
-    hora_limite_compra: time = time(17, 30)  # para la fecha actual solo se puede comprar hasta las 17:30
+    anticipacion_limite_compra: timedelta = timedelta(hours=1, minutes=30)  # para hoy se compra hasta 1:30 antes del cierre
+
+    @property
+    def hora_limite_compra(self) -> time:
+        """Hasta qué hora se puede comprar para la fecha actual: el cierre menos la anticipación (19:00 - 1:30 = 17:30)."""
+        # a un time no se le puede restar un timedelta, por eso se arma un datetime con cualquier fecha
+        return (datetime.combine(date.today(), self.hora_cierre) - self.anticipacion_limite_compra).time()
 
     def validar_disponibilidad(self, fecha: date, ahora: datetime | None = None) -> None:
         """Confirma que el parque está disponible en la fecha pedida; si no, lanza ErrorValidacion con el motivo."""

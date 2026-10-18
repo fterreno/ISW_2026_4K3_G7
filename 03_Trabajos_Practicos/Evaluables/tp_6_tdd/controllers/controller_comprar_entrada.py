@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from email.message import EmailMessage
-
 from boundaries.mail_confirmacion import MailConfirmacion
 from entities.mail import AdaptadorMailGmail, ServicioMail
 from entities.entrada import Entrada

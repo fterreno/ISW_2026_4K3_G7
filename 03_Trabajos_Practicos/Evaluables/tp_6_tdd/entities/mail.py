@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from email.message import EmailMessage
 import os
 import smtplib
-
 from dotenv import load_dotenv
 
 load_dotenv()

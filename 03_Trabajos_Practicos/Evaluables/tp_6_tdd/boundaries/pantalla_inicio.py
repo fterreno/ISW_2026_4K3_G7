@@ -13,9 +13,9 @@ class PantallaInicio:
     def __init__(self, page: ft.Page):
         self.page = page
         self.usuario: Usuario | None = None  # se conserva para no volver a pedir los datos al volver al inicio
-        self.campo_nombre = ft.TextField(label="Nombre", prefix_icon=ft.Icons.PERSON, width=350)
-        self.campo_apellido = ft.TextField(label="Apellido", prefix_icon=ft.Icons.PERSON_OUTLINE, width=350)
-        self.campo_mail = ft.TextField(label="Mail", prefix_icon=ft.Icons.EMAIL, keyboard_type=ft.KeyboardType.EMAIL, width=350)
+        self.campo_nombre = ft.TextField(label="Nombre", prefix_icon=ft.Icons.PERSON, width=350, error_max_lines=3)
+        self.campo_apellido = ft.TextField(label="Apellido", prefix_icon=ft.Icons.PERSON_OUTLINE, width=350, error_max_lines=3)
+        self.campo_mail = ft.TextField(label="Mail", prefix_icon=ft.Icons.EMAIL, keyboard_type=ft.KeyboardType.EMAIL, width=350, error_max_lines=3)
         self.texto_error = ft.Text(color=tema.ROJO, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo
 
     def mostrar(self) -> None:
@@ -52,8 +52,6 @@ class PantallaInicio:
             self.mostrar_errores(error)
             self.page.update()
             return
-
-        # si es el mismo usuario que ya compró, se conservan sus entradas
         if self.usuario is None or self.usuario.mail != usuario.mail:
             self.usuario = usuario
         self.mostrar_errores(None)

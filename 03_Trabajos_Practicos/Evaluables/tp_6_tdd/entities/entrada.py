@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-from email.message import EmailMessage
 
 from entities.parque import Parque
 from entities.tipo_pase import TipoPase
@@ -24,7 +23,7 @@ class Entrada:
         validar_campo("fecha", lambda: self.validar_fecha(parque, ahora), errores)
         cantidad_valida = validar_campo("cantidad", self.validar_cantidad_entradas, errores)
         edades_validas = validar_campo("edades", self.validar_edades, errores)
-        # solo se comparan si las dos son válidas; si no, ya se informó el error de la que falló
+        # solo se comparan si las dos son válidas
         if cantidad_valida and edades_validas:
             validar_campo("edades", self.validar_cantidad_edad_entradas, errores)
         validar_campo("tipo_pase", self.validar_tipo_pase, errores)
@@ -38,7 +37,7 @@ class Entrada:
         try:
             self.fecha_entrada = datetime.strptime(self.fecha_entrada, "%d/%m/%Y").date()
         except (TypeError, ValueError):
-            raise ErrorValidacion("La fecha debe tener el formato dd/mm/aaaa.")
+            raise ErrorValidacion("Ingresar una fecha correcta.")
         parque.validar_disponibilidad(self.fecha_entrada, ahora)
 
     def validar_cantidad_entradas(self) -> None:
@@ -77,8 +76,6 @@ class Entrada:
             raise ErrorValidacion("La edad debe ser un número entero")
         if edad < 0:
             raise ErrorValidacion("La edad debe ser un número positivo.")
-        if edad < edad_minima:
-            raise ErrorValidacion(f"La edad minima permitida es de {edad_minima} años.")
         if edad > edad_maxima:
             raise ErrorValidacion(f"La edad maxima permitida es de {edad_maxima} años.")
         return edad

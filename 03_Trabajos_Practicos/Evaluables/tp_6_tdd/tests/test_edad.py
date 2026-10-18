@@ -25,51 +25,43 @@ def test_edad_numerica_entera(valor, esperado):
 # 3.2 Probar cargar la edad de un visitante mayor a n años. FALLA
 @pytest.mark.parametrize("valor", [101, 120])
 def test_edad_visitante_mayor(valor):
-    with pytest.raises(ErrorValidacion, match="mayor a 100"):
+    with pytest.raises(ErrorValidacion, match="maxima permitida es de 100"):
         validar_edad(valor)
 
 
-# 3.3 Probar cargar la edad de un visitante menor a m años. FALLA
-# (la edad mínima es 0, así que una edad menor ya se rechaza por ser negativa)
-@pytest.mark.parametrize("valor", [-1, -5])
-def test_edad_visitante_menor(valor):
-    with pytest.raises(ErrorValidacion, match="positivo"):
-        validar_edad(valor)
-
-
-# 3.4 Probar cargar una edad negativa. FALLA
+# 3.3 Probar cargar una edad negativa. FALLA
 def test_edad_negativa():
     with pytest.raises(ErrorValidacion):
         validar_edad(-1)
 
 
-# 3.5 Probar cargar una edad no numérica. FALLA
+# 3.4 Probar cargar una edad no numérica. FALLA
 @pytest.mark.parametrize("valor", ["treinta", "", None, True])
 def test_edad_no_numerica(valor):
     with pytest.raises(ErrorValidacion):
         validar_edad(valor)
 
 
-# 3.6 Probar cargar una edad decimal. FALLA
+# 3.5 Probar cargar una edad decimal. FALLA
 @pytest.mark.parametrize("valor", [8.5, "8.5"])
 def test_edad_decimal(valor):
     with pytest.raises(ErrorValidacion):
         validar_edad(valor)
 
 
-# 3.7 Probar cargar correctamente la edad de todos los visitantes. PASA
+# 3.6 Probar cargar correctamente la edad de todos los visitantes. PASA
 def test_edades_de_todos_los_visitantes():
     assert validar_edades([30, 28, 15], cantidad=3) == [30, 28, 15]
 
 
-# 3.8 Probar cargar la edad de todos los visitantes y que una de ellas sea inválida. FALLA
+# 3.7 Probar cargar la edad de todos los visitantes y que una de ellas sea inválida. FALLA
 @pytest.mark.parametrize("edades", [[30, -2, 5], [30, "abc", 5], [30, 7.5, 5]])
 def test_una_edad_invalida(edades):
     with pytest.raises(ErrorValidacion):
         validar_edades(edades, cantidad=3)
 
 
-# 3.9 Probar no cargar la edad de alguno de los visitantes. FALLA
+# 3.8 Probar no cargar la edad de alguno de los visitantes. FALLA
 @pytest.mark.parametrize("edades", [[30, 15], []])
 def test_falta_la_edad_de_un_visitante(edades):
     with pytest.raises(ErrorValidacion, match="no coincide"):

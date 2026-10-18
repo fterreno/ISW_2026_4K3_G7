@@ -1,19 +1,15 @@
 import flet as ft
 
-# paleta de colores: https://coolors.co/palette/386641-6a994e-a7c957-f2e8cf-bc4749
+# Paleta de colores: https://coolors.co/palette/386641-6a994e-a7c957-f2e8cf-bc4749
 VERDE_OSCURO = "#386641"
 VERDE = "#6A994E"
 VERDE_CLARO = "#A7C957"
 CREMA = "#F2E8CF"
 ROJO = "#BC4749"
-TEXTO = "#1F3324"  # verde casi negro para que el texto se lea bien sobre el crema
-CREMA_CLARO = "#FAF6EA"  # fondo de las cards y los campos, un poco más claro que el fondo
-
-# fuente Lato, los archivos están en assets/fonts
+TEXTO = "#1F3324"
+CREMA_CLARO = "#FAF6EA" 
 FUENTE = "Lato"
 FUENTE_TITULOS = "Lato Bold"
-
-# logo del parque, en assets/images (líneas negras con fondo transparente, se tiñe con el verde oscuro)
 LOGO = "images/image.png"
 
 

@@ -47,7 +47,7 @@ def entrada():
 
 
 # Dobles de prueba para no cobrar ni mandar mails en cada ejecución.
-# La pasarela real es PasarelaMercadoPago (ver test_mercado_pago_real.py)
+# La pasarela real es PasarelaMercadoPago (ver test_mercado_pago.py)
 class PasarelaFalsa:
     def __init__(self, error: str | None = None):
         self.error = error
