@@ -1,10 +1,8 @@
 import asyncio
 import calendar
+import flet as ft
 from datetime import date, datetime
 from typing import Callable
-
-import flet as ft
-
 from assets.style import tema
 from assets.style.formato_moneda_peso import formatear_monto
 from boundaries.pantalla_resultado_pago import PantallaResultadoPago
@@ -19,19 +17,13 @@ from entities.errores import ErrorMail, ErrorPago, ErrorValidacion, ErroresValid
 
 class PantallaFormularioEntrada:
     """Formulario con los datos de la entrada; al confirmar le pide al controller que haga la compra."""
-
-    # se crea una card por visitante, cuando se escribe la edad se desliza a la izquierda y aparece la siguiente;
-    # deslizando con el dedo a la derecha se vuelve a la anterior (y a la izquierda se avanza)
     ANCHO_CARD = 350
-    ALTO_CARD = 120  # alcanza para el título, la edad y el error debajo de la edad
-    MAXIMO_CARDS = 10
-    ESPERA_AVANCE = 1.2  # segundos sin escribir para pasar solo a la card siguiente
-    DISTANCIA_DESLIZAR = 60  # píxeles que hay que arrastrar el dedo para cambiar de card
-    VELOCIDAD_DESLIZAR = 300  # o un deslizamiento rápido, en píxeles por segundo
-
-    TAMANO_DIA = 40  # tamaño de cada día del calendario
-    MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
-             "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    ALTO_CARD = 100
+    ESPERA_AVANCE = 1.2
+    DISTANCIA_DESLIZAR = 60
+    VELOCIDAD_DESLIZAR = 300
+    TAMANO_DIA = 40
+    MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     DIAS_SEMANA = ["L", "M", "M", "J", "V", "S", "D"]
 
     def __init__(self, page: ft.Page, usuario: Usuario, al_volver: Callable[[], None]):
@@ -40,40 +32,50 @@ class PantallaFormularioEntrada:
         self.al_volver = al_volver
         self.parque = Parque()
         self.fecha_elegida: date | None = None
-        # la fecha no se escribe: al tocar el campo se abre el calendario con los días no disponibles deshabilitados
         self.campo_fecha = ft.TextField(
             label="Fecha de visita", hint_text="Elegí la fecha", prefix_icon=ft.Icons.CALENDAR_MONTH, width=350,
-            read_only=True, mouse_cursor=ft.MouseCursor.CLICK, on_click=self.abrir_calendario,
+            read_only=True, mouse_cursor=ft.MouseCursor.CLICK, on_click=self.abrir_calendario, error_max_lines=3,
         )
         self.armar_calendario()
         self.campo_cantidad = ft.TextField(
-            label="Cantidad de entradas", keyboard_type=ft.KeyboardType.NUMBER, prefix_icon=ft.Icons.CONFIRMATION_NUMBER, width=350,
+            label="Cantidad de entradas", keyboard_type=ft.KeyboardType.NUMBER, prefix_icon=ft.Icons.CONFIRMATION_NUMBER, width=350, error_max_lines=3,
             on_change=lambda e: self.cambiar_cantidad_edades(self.campo_cantidad.value),
         )
         self.armar_carrusel_edades()
         self.campo_tipo_pase = ft.Dropdown(
             label="Tipo de pase", width=350,
-            # cada opción muestra el precio por entrada, sacado del tipo de pase
             options=[ft.DropdownOption(key=tipo.value, text=f"{tipo.value} {formatear_monto(tipo.monto_entrada())}") for tipo in TipoPase],
-            on_select=self.actualizar_importes,
+            on_select=self.elegir_tipo_pase,
         )
         self.campo_forma_pago = ft.Dropdown(
             label="Forma de pago", width=350,
             options=[ft.DropdownOption(key="Efectivo", text="Efectivo"), ft.DropdownOption(key="Tarjeta", text="Tarjeta (Mercado Pago)")],
+            on_select=self.elegir_forma_pago,
         )
-        # los importes se muestran recién cuando cantidad, edades y tipo de pase están completos
-        self.texto_subtotal = ft.Text(visible=False)
-        self.texto_descuentos = ft.Text(visible=False)
-        self.texto_total = ft.Text(font_family=tema.FUENTE_TITULOS, size=20, visible=False)
+        self.texto_subtotal = ft.Text(color=tema.VERDE_OSCURO, visible=False)
+        self.texto_descuentos = ft.Text(color=tema.VERDE, visible=False)
+        self.texto_total = ft.Text(font_family=tema.FUENTE_TITULOS, size=20, color=tema.VERDE_OSCURO, visible=False)
         self.aviso_importes = ft.Text(
             "Completá cantidad, edades y tipo de pase para ver el importe.",
-            size=12, italic=True, text_align=ft.TextAlign.CENTER,
+            size=12, italic=True, color=tema.VERDE, text_align=ft.TextAlign.CENTER,
+        )
+        self.detalle_importes = ft.Container(
+            width=350, visible=False, border=ft.Border.all(1, tema.VERDE_CLARO), border_radius=8, padding=16,
+            content=ft.Column(
+                tight=True, spacing=6, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[
+                    self.texto_subtotal,
+                    self.texto_descuentos,
+                    ft.Divider(height=8, color=tema.VERDE_CLARO),
+                    self.texto_total,
+                ],
+            ),
         )
         self.resumen_importes = ft.Column(
-            tight=True, spacing=4, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[self.texto_subtotal, self.texto_descuentos, self.texto_total, self.aviso_importes],
+            tight=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[self.detalle_importes, self.aviso_importes],
         )
-        self.texto_error = ft.Text(color=tema.ROJO, text_align=ft.TextAlign.CENTER)  # errores que no son de un campo del formulario
+        self.texto_error = ft.Text(color=tema.ROJO, text_align=ft.TextAlign.CENTER)
         self.procesando = ft.Row(
             visible=False, tight=True,
             controls=[ft.ProgressRing(width=20, height=20), ft.Text("Procesando la compra...")],
@@ -83,9 +85,7 @@ class PantallaFormularioEntrada:
             visible=False, text_align=ft.TextAlign.CENTER,
         )
         self.boton_confirmar = ft.FilledButton(content="Confirmar compra", icon=ft.Icons.CHECK, on_click=self.confirmar_compra)
-        self.modo_checkout: ft.LaunchMode | None = None  # cómo se abrió el checkout de Mercado Pago, para poder cerrarlo
-
-    # calendario de la fecha de visita: solo se pueden tocar los días en que el parque está disponible.
+        self.modo_checkout: ft.LaunchMode | None = None
 
     def armar_calendario(self) -> None:
         self.ahora_calendario = datetime.now()
@@ -111,7 +111,6 @@ class PantallaFormularioEntrada:
         )
 
     def abrir_calendario(self, e=None) -> None:
-        # la disponibilidad se calcula al abrirlo, por si ya pasó el horario de compra de hoy
         self.ahora_calendario = datetime.now()
         self.mes_calendario = (self.fecha_elegida or self.ahora_calendario.date()).replace(day=1)
         self.dibujar_mes()
@@ -132,7 +131,6 @@ class PantallaFormularioEntrada:
 
     def dibujar_mes(self) -> None:
         hoy = self.ahora_calendario.date()
-        # solo se puede ir del mes actual al de dentro de un mes, que son los que tienen días para reservar
         self.titulo_mes.value = f"{self.MESES[self.mes_calendario.month - 1]} {self.mes_calendario.year}"
         self.boton_mes_anterior.disabled = self.mes_calendario <= hoy.replace(day=1)
         self.boton_mes_siguiente.disabled = self.mes_calendario >= self.parque.sumar_un_mes(hoy).replace(day=1)
@@ -144,7 +142,7 @@ class PantallaFormularioEntrada:
 
     def dibujar_dia(self, dia: date) -> ft.Container:
         if dia.month != self.mes_calendario.month:
-            return self.celda_dia(None)  # días del mes anterior o siguiente: lugar vacío
+            return self.celda_dia(None)
         disponible = self.dia_disponible(dia)
         seleccionado = dia == self.fecha_elegida
         es_hoy = dia == self.ahora_calendario.date()
@@ -165,7 +163,6 @@ class PantallaFormularioEntrada:
     def elegir_fecha(self, fecha: date) -> None:
         self.fecha_elegida = fecha
         self.page.pop_dialog()
-        # el controller recibe la fecha como texto dd/mm/aaaa, igual que antes
         self.campo_fecha.value = f"{fecha:%d/%m/%Y}"
         self.campo_fecha.error = None
         self.page.update()
@@ -175,9 +172,8 @@ class PantallaFormularioEntrada:
         self.edades_guardadas: list[str] = []
         self.cards_edad: list[ft.Container] = []
         self.card_actual = 0
-        self.arrastre = 0.0  # cuánto se movió el dedo en el deslizamiento actual
+        self.arrastre = 0.0
         self.pila_edades = ft.Stack(width=self.ANCHO_CARD, height=self.ALTO_CARD, clip_behavior=ft.ClipBehavior.HARD_EDGE)
-        # el detector de gestos envuelve las cards para poder cambiarlas deslizando el dedo
         self.deslizador_edades = ft.GestureDetector(
             content=self.pila_edades, visible=False,
             on_horizontal_drag_start=self.empezar_deslizamiento,
@@ -186,7 +182,6 @@ class PantallaFormularioEntrada:
         )
         self.aviso_edades = ft.Text("Ingresá la cantidad de entradas para cargar las edades", italic=True, color=tema.VERDE)
         self.ayuda_deslizar = ft.Text("Deslizá a la derecha para volver al visitante anterior", italic=True, size=12, visible=False)
-        # errores de las edades en general
         self.error_edades = ft.Text(color=tema.ROJO, size=12, text_align=ft.TextAlign.CENTER, visible=False)
         self.carrusel_edades = ft.Column(
             tight=True, spacing=4,
@@ -257,7 +252,7 @@ class PantallaFormularioEntrada:
         self.campos_edad = [
             ft.TextField(
                 label="Edad", value=self.edades_guardadas[i] if i < len(self.edades_guardadas) else "",
-                keyboard_type=ft.KeyboardType.NUMBER, prefix_icon=ft.Icons.PERSON,
+                keyboard_type=ft.KeyboardType.NUMBER, prefix_icon=ft.Icons.PERSON, error_max_lines=3,
                 on_change=self.avanzar_al_terminar_de_escribir,
                 on_submit=self.ir_edad_siguiente,
             )
@@ -266,12 +261,19 @@ class PantallaFormularioEntrada:
         self.cards_edad = [self.armar_card_edad(i, campo) for i, campo in enumerate(self.campos_edad)]
         self.pila_edades.controls = self.cards_edad
         self.card_actual = min(self.card_actual, max(cantidad - 1, 0))
-
         self.aviso_edades.visible = cantidad == 0
         self.deslizador_edades.visible = cantidad > 0
         self.ayuda_deslizar.visible = cantidad > 1
         self.actualizar_importes()
         self.ubicar_cards_edad()
+
+    def elegir_tipo_pase(self, e=None) -> None:
+        self.campo_tipo_pase.error_text = None
+        self.actualizar_importes()
+
+    def elegir_forma_pago(self, e=None) -> None:
+        self.campo_forma_pago.error_text = None
+        self.page.update()
 
     def actualizar_importes(self, e=None) -> None:
         """Muestra los importes con las reglas de Entrada, sin confirmar ni guardar la compra."""
@@ -288,15 +290,15 @@ class PantallaFormularioEntrada:
             entrada.generar_monto_total()
             subtotal = entrada.tipo_pase.monto_entrada() * entrada.cantidad
             self.texto_subtotal.value = f"Subtotal: {formatear_monto(subtotal)}"
-            self.texto_descuentos.value = f"Descuentos por edad: {formatear_monto(subtotal - entrada.monto_total)}"
+            self.texto_descuentos.value = f"Descuento: - {formatear_monto(subtotal - entrada.monto_total)}"
             self.texto_total.value = f"Total: {formatear_monto(entrada.monto_total)}"
         for texto in (self.texto_subtotal, self.texto_descuentos, self.texto_total):
             texto.visible = completo
+        self.detalle_importes.visible = completo
         self.aviso_importes.visible = not completo
         self.page.update()
 
     def armar_card_edad(self, indice: int, campo: ft.TextField) -> ft.Container:
-        # sin card ni color de fondo: el visitante se ve sobre el mismo fondo crema de la pantalla
         return ft.Container(
             width=self.ANCHO_CARD, height=self.ALTO_CARD, top=0, padding=ft.Padding.symmetric(horizontal=16, vertical=4),
             animate_position=ft.Animation(duration=300, curve=ft.AnimationCurve.EASE_OUT),
@@ -439,7 +441,6 @@ class PantallaFormularioEntrada:
                 self.campo_forma_pago.value,
             )
         except ErrorValidacion as error:
-            # datos inválidos se quedan en el formulario, con cada error debajo de su campo, para corregirlos
             self.mostrar_errores(error)
             self.cambiar_estado_procesando(False)
             return
@@ -447,21 +448,14 @@ class PantallaFormularioEntrada:
             self.terminar_compra(motivo_rechazo=str(error))
             return
         except ErrorMail:
-            # la compra se hizo, solo falló el mail de confirmación
             self.terminar_compra(entrada=controller.entrada, mail_enviado=False)
             return
 
         self.terminar_compra(entrada=entrada)
 
     def terminar_compra(self, **resultado) -> None:
-        # primero se muestra el resultado y después se intenta cerrar el checkout, si cerrarlo no anda, el resultado igual queda en la app
         PantallaResultadoPago(self.page, self.al_volver, **resultado).mostrar()
         self.cerrar_checkout()
-
-    # checkout de Mercado Pago: se abre en el dispositivo donde se está usando la app.
-    # En el celular lo abre en el navegador interno de la app (in-app web view): la app no pasa a segundo
-    # plano, así que no pierde la conexión y al terminar el pago muestra el resultado.
-    # Ese navegador guarda su propia sesión de Mercado Pago (no la de Chrome).
 
     def es_celular(self) -> bool:
         return self.page.platform in (ft.PagePlatform.ANDROID, ft.PagePlatform.IOS)

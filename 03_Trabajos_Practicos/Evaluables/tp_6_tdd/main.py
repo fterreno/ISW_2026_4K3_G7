@@ -1,8 +1,5 @@
 import sys
 from pathlib import Path
-
-# las capas (boundaries, controllers, entities) están en la raíz del proyecto;
-# se agrega al path para poder ejecutar main.py desde cualquier carpeta
 RAIZ = Path(__file__).resolve().parent
 sys.path.insert(0, str(RAIZ))
 

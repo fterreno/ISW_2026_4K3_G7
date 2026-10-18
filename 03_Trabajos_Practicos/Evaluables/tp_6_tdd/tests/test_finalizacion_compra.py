@@ -2,7 +2,7 @@ from datetime import date
 from controllers.controller_comprar_entrada import ControllerComprarEntrada
 
 
-# 8.1 Probar que al finalizar una compra correcta se informe la cantidad de entradas compradas y la fecha de visita. PASA
+# 9.1 Probar que al finalizar una compra correcta se informe la cantidad de entradas compradas y la fecha de visita. PASA
 def test_compra_finalizada_informa_cantidad_fecha(datos_validos, ahora, parque, destinatario, pasarela_aprobada, servicio_mail):
     controller = ControllerComprarEntrada(destinatario, parque, pasarela=pasarela_aprobada, servicio_mail=servicio_mail)
     resultado = controller.comprar_entrada(**datos_validos, ahora=ahora)

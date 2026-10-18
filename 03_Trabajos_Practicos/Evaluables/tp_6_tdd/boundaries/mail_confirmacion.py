@@ -1,21 +1,15 @@
 from email.message import EmailMessage
 from html import escape
-
 from boundaries.factura_pdf import FacturaPDF
 from assets.style.formato_moneda_peso import formatear_monto
 from entities.factura import Factura
 from entities.forma_pago import FormaPago
 
-# el mail va sin colores: tablas simples con borde fino y la fuente Lato
 FUENTE = "font-family: Lato, Arial, sans-serif;"
-# Lato desde Google Fonts para los clientes de mail que cargan fuentes web (Apple Mail, iOS); el resto usa Arial
 LINK_FUENTE = '<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">'
 CELDA = "padding: 6px 8px; border: 1px solid #000000; text-align: left;"
 MONTO = "text-align: right; white-space: nowrap;"
 TOTAL = f"padding: 4px 8px; {MONTO}"
-
-# estilos para celulares: los clientes de mail que soportan media queries (Gmail, Apple Mail) los aplican
-# y pisan los estilos en línea con !important; los que no, muestran la versión de escritorio
 ESTILOS = """
     body, table, td, th { font-family: Lato, Arial, sans-serif; }
     @media only screen and (max-width: 600px) {
@@ -26,9 +20,7 @@ ESTILOS = """
         .solo-mobile { display: block !important; max-height: none !important; overflow: visible !important; }
     }
 """
-# lo que solo se ve en el celular: oculto por defecto (mso-hide es para Outlook de escritorio)
 SOLO_MOBILE = "display: none; max-height: 0; overflow: hidden; mso-hide: all; font-size: 13px;"
-
 AVISO_EFECTIVO = ("Se informa que al haber seleccionado la modalidad de pago en efectivo, deberá abonar el importe total "
                   "correspondiente a su reserva al momento de ingresar al parque. En caso de no efectuarse el pago, "
                   "el parque se reserva el derecho de admisión del visitante.")
@@ -147,7 +139,6 @@ class MailConfirmacion:
         """
 
     def tabla_totales(self) -> str:
-        # los totales van en otra tabla: con la columna Precio oculta en el celular, un colspan desarmaría la grilla
         return f"""
             <table class="tabla-mail" style="width: 100%; border-collapse: collapse; margin-top: 8px; {FUENTE}">
                 <tr>

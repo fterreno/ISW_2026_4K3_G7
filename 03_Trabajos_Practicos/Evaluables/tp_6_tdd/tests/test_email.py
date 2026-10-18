@@ -1,23 +1,10 @@
 import os
-from unittest.mock import MagicMock
 
 import pytest
 from controllers.controller_comprar_entrada import ControllerComprarEntrada
 from entities.errores import ErrorMail
 from entities.forma_pago import FormaPago
-from entities.mail import AdaptadorMailGmail
 from entities.usuario import Usuario
-
-
-# Es para utilizar un servidor falso al correr cada test. Para hacer una prueba con el test real mirar README
-@pytest.fixture
-def servidor_smtp():
-    """Reemplaza a smtplib.SMTP_SSL: no se conecta a Gmail, solo registra las llamadas."""
-    smtp_ssl = MagicMock()
-    adaptador = AdaptadorMailGmail(cliente_smtp=smtp_ssl, usuario="ecoharmony@gmail.com", contrasena="clave-de-prueba")
-    # El servidor que se obtiene con "with smtplib.SMTP_SSL(...) as servidor"
-    servidor = smtp_ssl.return_value.__enter__.return_value
-    return adaptador, servidor
 
 
 # 7.1 Probar que una compra confirmada envíe el mail de confirmación. PASA

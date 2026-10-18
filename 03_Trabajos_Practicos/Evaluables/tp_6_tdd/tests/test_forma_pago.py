@@ -16,7 +16,7 @@ def test_pago_en_efectivo():
     assert validar_forma_pago("Efectivo") == FormaPago.EFECTIVO
 
 
-# 5.2 Probar seleccionar pago con tarjeta (Mercado Pago). PASA
+# 5.2 Probar seleccionar pago con tarjeta a través de Mercado Pago. PASA
 def test_pago_con_tarjeta():
     assert validar_forma_pago("Tarjeta") == FormaPago.TARJETA
 

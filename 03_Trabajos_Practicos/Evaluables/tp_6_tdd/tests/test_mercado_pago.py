@@ -58,14 +58,14 @@ def test_compra_con_tarjeta_redirige_a_mercado_pago(datos_validos, ahora, parque
     assert pasarela_aprobada.pagos == [controller.entrada]
 
 
-# 6.2 Probar un pago rechazado por falta de saldo. FALLA la operación de pago, se debe informar el problema
+# 6.2 PProbar un pago rechazado por falta de saldo y se informa del problema. PASA
 def test_pago_rechazado_por_falta_de_saldo(datos_validos, ahora, parque, destinatario, pasarela_sin_saldo, servicio_mail):
     controller = ControllerComprarEntrada(destinatario, parque, pasarela=pasarela_sin_saldo, servicio_mail=servicio_mail)
     with pytest.raises(ErrorPago, match="Saldo insuficiente"):
         controller.comprar_entrada(**datos_validos, ahora=ahora)
 
 
-# 6.3 Probar que, si el pago no se confirma, no se envíe el mail de confirmación. PASA si no se envía el mail
+# 6.3 Probar que, si el pago no se confirma, no se envíe el mail de confirmación. PASA
 def test_pago_no_confirmado_no_envia_mail(datos_validos, ahora, parque, destinatario, pasarela_sin_saldo, servicio_mail):
     controller = ControllerComprarEntrada(destinatario, parque, pasarela=pasarela_sin_saldo, servicio_mail=servicio_mail)
     with pytest.raises(ErrorPago):

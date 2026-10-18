@@ -12,9 +12,8 @@ class LineaFactura:
     visitante: int
     edad: int
     precio_unitario: float
-    descuento: float  # en pesos
+    descuento: float
     subtotal: float
-
 
 @dataclass
 class Factura:
