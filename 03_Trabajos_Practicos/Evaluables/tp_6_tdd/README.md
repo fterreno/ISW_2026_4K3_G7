@@ -60,8 +60,16 @@ python -m uv run pytest -v -rs
 
 Para correr los test de "envio mail" con el servidor de gmail real (y no un mockup) hay que crear un archivo ".env". Analizar el archivo ".env.example" para realizar la carga de datos correspondientes respecto al mail destino (creado especificamente para este trabajo practico). Luego hay que ejecutar el siguiente comando:
 
-```bash
+En PowerShell (Windows):
+
+```powershell
 $env:ENVIAR_MAIL_REAL="1"; python -m uv run pytest -v -k mail_real -s
+```
+
+En bash (Linux/macOS):
+
+```bash
+ENVIAR_MAIL_REAL=1 python -m uv run pytest -v -k mail_real -s
 ```
 
 #### Ejecutar el pago real con Mercado Pago
@@ -78,6 +86,14 @@ La compra con tarjeta usa `PasarelaMercadoPago`, que se integra con Checkout Pro
 
 4. Hacer el pago completo. Cada test imprime un link: abrirlo en incógnito, iniciar sesión con el usuario comprador de prueba y pagar con una [tarjeta de prueba](https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/additional-content/your-integrations/test/cards). El nombre del titular define el resultado: `APRO` aprueba el pago y `FUND` lo rechaza por saldo insuficiente; el test indica cuál usar (6.1 usa `APRO`, 6.2 y 6.3 usan `FUND`).
 
-   ```bash
+   En PowerShell (Windows):
+
+   ```powershell
    $env:MP_PAGO_REAL="1"; python -m uv run pytest -v tests/test_mercado_pago.py -k real -s
+   ```
+
+   En bash (Linux/macOS):
+
+   ```bash
+   MP_PAGO_REAL=1 python -m uv run pytest -v tests/test_mercado_pago.py -k real -s
    ```
