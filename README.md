@@ -151,3 +151,4 @@ git tag -a linea_base_1_herramientas_scm -m "Línea Base 1 tras corrección del 
 | *`linea_base_1_herramientas_scm`* | *24/09/2026* | *Linea base 1 tras corrección del trabajo practico evaluable 4* |
 | *`linea_base_2_dinamica_scrum`* | *09/10/2026* | *Linea base 2 tas correcion del trabajo practico evaluable 7* |
 | *`linea_base_3_tdd`* | *27/10/2026* | *Línea base 3 tras corrección del trabajo practico evaluable 6*|
+| *`linea_base_4_kanban`* | *5/11/2026* | *Línea base 4 tras la ejecucion del trabajo practico evaluable 10*|
