@@ -11,14 +11,11 @@
 - 95028 Alvaretto Caterina
 - 94309 Arce Sayago Camila
 - 431124 Cardozo Soledad Sofía
-- 84037 Ficarra Carla Valentina
 - 88440 Garcia Pintos Valentin
-- 78797 Ostermann Guillermo
 - 94017 Pereyra Agustín
 - 97376 Pregot Ulises Valentin
 - 86363 Pucheta Lanfranco
 - 90112 Terreno Monla Florencia Sofia
-- 92380 Vaca Sofia Eugenia
 
 **Docentes:**
 
