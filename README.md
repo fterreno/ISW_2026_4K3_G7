@@ -140,7 +140,7 @@ Las líneas base se marcarán utilizando etiquetas (tags) en el motor de Git.
 
 **Ejemplo de uso:**
 ```bash
-git tag -a linea_base_1_herramientas_scm -m "Línea Base 1 tras corrección del TP evaluable 1"
+git tag -a linea_base_1_herramientas_scm -m "Línea base 1 tras corrección del TP evaluable 1"
 ```
 
 ### Historial de Línea Base
@@ -152,3 +152,4 @@ git tag -a linea_base_1_herramientas_scm -m "Línea Base 1 tras corrección del 
 | *`linea_base_2_dinamica_scrum`* | *09/10/2026* | *Linea base 2 tas correcion del trabajo practico evaluable 7* |
 | *`linea_base_3_tdd`* | *27/10/2026* | *Línea base 3 tras corrección del trabajo practico evaluable 6*|
 | *`linea_base_4_kanban`* | *5/11/2026* | *Línea base 4 tras la ejecucion del trabajo practico evaluable 10*|
+| *`linea_base_5_microservicio_alto_trafico`* | *5/11/2026* | *Línea base 5 tras la ejecucion del trabajo de investifacion grupal 1*|
