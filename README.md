@@ -88,17 +88,17 @@ ISW_2026_4K3_G/
 
 | Ítem de Configuración | Tipo | Convención de Nombre | Extensión | Ubicación |
 |---|---|---|---|---|
-| Bibliografía | Material de Estudio | `<autor>_<titilo>` | `.pdf`| `ISW_2026_4K3_G7/01_Recursos_Catedra/Bibliografia/` |
+| Bibliografía | Material de Estudio | `<autor>_<titulo>` | `.pdf`| `ISW_2026_4K3_G7/01_Recursos_Catedra/Bibliografia/` |
 | Guías | Material de Estudio | `guia_<titulo>` | `.pdf` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Guias/` |
-| Planificación | Planificación | `planificacion_<titulo>` | `.pdf`, `.xls` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/` |
+| Planificación | Planificación | `planificacion_<titulo>` | `.pdf`, `.xls`, `.xlsx` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Planificacion/` |
 | Presentaciones | Material de Estudio | `<nro>_<titulo>`  | `.pdf` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Presentaciones/` |
-| Templates | Material de Estudio | `template_<titulo>` | `.doc`, `.xls` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Templates/` |
+| Templates | Material de Estudio | `template_<titulo>` | `.doc`, `.docx`, `.xls`, `.xlsx` | `ISW_2026_4K3_G7/01_Recursos_Catedra/Templates/` |
 | Registro de Clases | Material de Estudio Grupal | `<AAAA-MM-DD>_<autor>` | `.doc`, `.pdf`, `.md` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Registro_Clases/` |
-| Resúmenes | Material de Estudio Grupal | `resumen_parcial_<nro>_<autor>` | `.pdf` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Resumenes/` |
+| Resúmenes | Material de Estudio Grupal | `resumen_parcial_<nro>_<autor>` | `.pdf`, `.md` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Resumenes/` |
 | Ejercicios de la Guía | Material de Estudio Grupal | `<nro>_<nombre_ejercicio>_<autor>` | `.pdf`, `.doc`, `.png`, `.jpeg`, `.md` | `ISW_2026_4K3_G7/02_Material_Estudio_Grupal/Ejercicios/` |
-| Trabajos Prácticos Evaluables | Entregas | `tp_<nro>_<nombre>` | `.pdf` o archivos de código | `ISW_2026_4K3_G7/03_Trabajos_Practicos/Evaluables/` |
+| Trabajos Prácticos Evaluables | Entregas | `tp_<nro>_<nombre>` | `.pdf`, archivos de código y recursos, `.tar.gz` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/Evaluables/` |
 | Trabajos de Investigación Grupal | Entregas | `tig_<nro>_<nombre>` | `.pdf` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/Investigacion_Grupal/` |
-| Trabajos Prácticos No Evaluables | Trabajo en Clase | `tp_<nro>_<nombre>` | `.pdf`, `.doc`, `.png`, `.jpeg`, `.md` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/No_Evaluables/` |
+| Trabajos Prácticos No Evaluables | Trabajo en Clase | `tp_<nro>_<nombre>` | `.pdf`, `.doc`, `.docx`, `.png`, `.jpeg`, `.md` | `ISW_2026_4K3_G7/03_Trabajos_Practicos/No_Evaluables/` |
 | Plan de Gestión de Configuración | Gestión de Proyecto | `README` | `.md` | `ISW_2026_4K3_G7/` |
 
 Aclaraciones sobre las reglas de nombrado:
