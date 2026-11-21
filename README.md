@@ -119,7 +119,7 @@ Para mantener la consistencia en el historial del repositorio, todos los mensaje
 
 **Prefijos permitidos:**
 
-- `[NUEVO]`: Para la creación o subida de cualquier archivo nuevo, ya sean entregables, material de estudio, apuntes o plantillas *(Ej: `[NUEVO] Se sube la resolución del TP4` o `[NUEVO] Se agrega PDF de la Unidad 3`)*.
+- `[NUEVO]`: Para incorporar contenido nuevo al repositorio: subir archivos nuevos (entregables, material de estudio, apuntes o plantillas), agregar funcionalidad o pruebas al código de un trabajo práctico (incluidos los pasos Red, Green y Refactor de TDD), agregar registros o secciones nuevas a un documento existente (como el historial de línea base) y los merges que integran ese contenido a `main` *(Ej: `[NUEVO] Se sube la resolución del TP4`, `[NUEVO] Green - Se implementa la validación de forma de pago` o `[NUEVO] Se registra la línea base 4`)*.
 - `[CORRECCION]`: Para solucionar errores o modificar entregas y archivos previos *(Ej: `[CORRECCION] Se arregla ubicación de la carpeta de no evaluables`)*.
 - `[REORGANIZACION]`: Para mover carpetas, renombrar archivos o ajustar la estructura del repositorio sin cambiar el contenido esencial *(Ej: `[REORGANIZACION] Se mueve archivo de planificación a la carpeta correcta`)*.
 
