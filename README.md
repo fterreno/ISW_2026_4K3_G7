@@ -151,3 +151,4 @@ git tag -a linea_base_1_herramientas_scm -m "Línea base 1 tras corrección del 
 | *`linea_base_4_kanban`* | *5/11/2026* | *Línea base 4 tras la ejecucion del trabajo practico evaluable 10*|
 | *`linea_base_5_microservicio_alto_trafico`* | *5/11/2026* | *Línea base 5 tras la ejecucion del trabajo de investigacion grupal 1*|
 | *`linea_base_6_design_thinking`* | *12/11/2026* | *Línea base 6 tras la ejecucion del trabajo practico evaluable 12*|
+| *`linea_base_7_poster_cientifico`* | *21/11/2026* | *Línea base 7 tras la presentacion del trabajo de investigacion*|
