@@ -66,7 +66,7 @@ Para evitar conflictos y mantener el repositorio sincronizado, todos los integra
 ## Estructura del Repositorio
 
 ```
-ISW_2026_4K3_G/
+ISW_2026_4K3_G7/
 ├── 01_Recursos_Catedra/
 │   ├── Bibliografia/
 │   ├── Guias/
@@ -103,10 +103,10 @@ ISW_2026_4K3_G/
 
 Aclaraciones sobre las reglas de nombrado:
 
-- El nombre del archivo se escribe en formato snake_case, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
+- El nombre del archivo se escribe en formato snake_case, todo en minúsculas, sin espacios ni tildes (ej. unidad_1_introduccion.pdf).
 - El contenido encerrado con "<>" será remplazado con el siguiente criterio:
   - "AAAA-MM-DD": es fecha de la clase a la que corresponden las notas.
-  - "autor": es el integrante del equipo que realizó las notas.
+  - "autor": es el apellido del integrante del equipo que realizó las notas, en minúsculas. Si son varios autores, se separan con guion bajo (ej. arce_alvaretto).
   - "nro": será un numero decimal entero correspondiente al parcial o trabajo practico del que trata el archivo.
   - "nombre": se corresponde al nombre asignado por la catedra para el Trabajos Prácticos o Trabajos de Investigación Grupal.
   - "nombre_ejercicio": nombre descriptivo del ejercicio.
